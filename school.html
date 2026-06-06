@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The School — Shaka Fuerteventura</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Barlow', sans-serif; background: #f0ede8; color: #111; }
+
+    /* TOP BAR */
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 7px 40px; background: #1a1a1a; border-bottom: 1px solid #2a2a2a; }
+    .topbar-social { display: flex; align-items: center; gap: 14px; }
+    .topbar-social a { color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.2s; display: flex; align-items: center; }
+    .topbar-social a:hover { color: #fff; }
+    .topbar-marquee { flex: 1; overflow: hidden; margin: 0 32px; }
+    .topbar-marquee-inner { display: inline-flex; gap: 64px; white-space: nowrap; animation: marquee 30s linear infinite; }
+    .topbar-marquee-inner a, .topbar-marquee-inner span { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.65); text-decoration: none; }
+    .topbar-marquee-inner a { color: rgba(255,255,255,0.9); border-bottom: 1px solid rgba(255,255,255,0.3); }
+    .topbar-marquee-inner a:hover { color: #fff; border-bottom-color: #fff; }
+    .topbar-marquee-inner .sep { color: rgba(255,255,255,0.2); }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .topbar-lang { display: flex; gap: 6px; align-items: center; }
+    .topbar-lang a { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; padding: 2px 5px; }
+    .topbar-lang a:hover, .topbar-lang a.active { color: #fff; }
+    .topbar-lang span { color: rgba(255,255,255,0.15); font-size: 9px; }
+
+    /* NAVBAR */
+    .nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 40px; background: #fff; border-bottom: 1px solid #e0ddd8; position: sticky; top: 0; z-index: 100; }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; }
+    .nav-logo img { height: 115px; width: auto; }
+    .nav-links { display: flex; gap: 32px; position: absolute; left: 50%; transform: translateX(-50%); }
+    .nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #333; text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: #111; }
+    .nav-links a.active { border-bottom: 2px solid #273043; padding-bottom: 2px; }
+
+    /* HERO */
+    .hero { position: relative; height: 340px; overflow: hidden; display: flex; align-items: flex-end; }
+    .hero-bg { position: absolute; inset: 0; background-image: url('images/background6.jpg'); background-size: cover; background-position: center 50%; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(240,237,232,0) 10%, rgba(240,237,232,0.96) 100%); }
+    .hero-content { position: relative; z-index: 2; padding: 0 48px 36px; }
+    .hero-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #111; margin-bottom: 8px; }
+    .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: 88px; letter-spacing: 6px; line-height: 0.95; color: #111; padding-top: 4px; }
+    .cover-line { width: 28px; height: 3px; background: #111; margin: 14px 0 10px; }
+    .hero-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #333; }
+
+    /* SECTION WRAP */
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 56px 48px 0; scroll-margin-top: 140px; }
+    /* INTRO */
+    .intro { background: #fff; text-align: center; padding: 56px 48px; }
+    .intro-inner { max-width: 860px; margin: 0 auto; }
+    .intro-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 8px; }
+    .intro-heading { font-family: 'Bebas Neue', sans-serif; font-size: 44px; letter-spacing: 3px; color: #111; line-height: 1; margin-bottom: 24px; }
+    .intro-text { font-family: 'Barlow', sans-serif; font-size: 16px; color: #555; line-height: 1.4; margin-bottom: 16px; }
+    .intro-text:last-child { margin-bottom: 0; }
+    .intro-text strong { color: #111; font-weight: 600; }
+    .section-head { margin-bottom: 28px; }
+    .section-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #aaa; margin-bottom: 6px; }
+    .section-title { display: flex; align-items: center; gap: 14px; }
+    .section-title img { height: 40px; width: auto; }
+    .section-title h2 { font-family: 'Bebas Neue', sans-serif; font-size: 46px; letter-spacing: 3px; color: #111; line-height: 1; }
+    .section-desc { font-family: 'Barlow', sans-serif; font-size: 14px; font-style: italic; color: #777; margin-top: 8px; max-width: 600px; line-height: 1.5; }
+
+    /* SPORT CHOICE */
+    .sports { background: #fff; padding: 24px 48px 56px; }
+    .sports-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .sport-card { text-align: center; }
+    .sport-photo { width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 4px; margin-bottom: 18px; }
+    .sport-photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+    .sport-card:hover .sport-photo img { transform: scale(1.04); }
+    .sport-name { font-family: 'Bebas Neue', sans-serif; font-size: 38px; letter-spacing: 3px; color: #111; line-height: 1; margin-bottom: 12px; }
+    .sport-desc { font-family: 'Barlow', sans-serif; font-size: 14.5px; color: #666; line-height: 1.5; margin-bottom: 20px; max-width: 420px; margin-left: auto; margin-right: auto; }
+    .sport-btn { display: inline-block; font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 3px; text-transform: uppercase; color: #fff; background: #111; padding: 11px 32px; border-radius: 2px; text-decoration: none; transition: background 0.2s; }
+    .sport-btn:hover { background: #273043; }
+
+    /* COURSE CARDS */
+    .course-block { margin-bottom: 32px; scroll-margin-top: 140px; }
+    .course-sport { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; color: #273043; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+    .course-sport img { height: 26px; width: auto; }
+    .card-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .card { background: #fff; border: 1.5px solid #e0ddd8; border-radius: 4px; padding: 22px 24px; transition: border-color 0.2s, transform 0.2s; }
+    .card:hover { border-color: #273043; transform: translateY(-2px); }
+    .card.featured { border-color: #273043; }
+    .card-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 6px; }
+    .card-detail { font-family: 'Barlow', sans-serif; font-size: 12.5px; font-style: italic; color: #999; margin-bottom: 14px; line-height: 1.4; min-height: 34px; }
+    .card-price { font-family: 'Bebas Neue', sans-serif; font-size: 44px; letter-spacing: 2px; color: #111; line-height: 1; }
+    .card-price span { font-size: 18px; color: #aaa; letter-spacing: 1px; }
+    .card.featured .card-price { color: #273043; }
+    .badge { display: inline-block; font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #fff; background: #273043; padding: 3px 8px; border-radius: 2px; margin-bottom: 10px; }
+
+    /* RENTAL TABLE */
+    .rental-note { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; font-style: italic; margin-top: 12px; }
+
+    /* DIVIDER */
+    .divider { max-width: 1100px; margin: 56px auto 0; padding: 0 48px; }
+    .divider-line { height: 1px; background: #e0ddd8; }
+
+    /* WHATSAPP CTA */
+    .cta-band { max-width: 1100px; margin: 56px auto 0; padding: 0 48px 64px; }
+    .cta-inner { background: #111; border-radius: 6px; padding: 36px 40px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+    .cta-text h3 { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; color: #fff; line-height: 1; margin-bottom: 6px; }
+    .cta-text p { font-family: 'Barlow', sans-serif; font-size: 14px; color: rgba(255,255,255,0.6); }
+    .cta-btn { display: inline-flex; align-items: center; gap: 10px; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; color: #111; background: #25d366; padding: 14px 28px; border-radius: 50px; text-decoration: none; transition: background 0.2s; }
+    .cta-btn:hover { background: #1ebe5d; }
+
+    /* FOOTER */
+    footer { background: #111; padding: 10px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; position: relative; }
+    footer img { height: 80px; width: auto; }
+    .footer-links { display: flex; gap: 24px; position: absolute; left: 50%; transform: translateX(-50%); }
+    .footer-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #666; text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-spacer { width: 80px; }
+
+    /* WA FLOAT */
+    .wa-float { position: fixed; bottom: 24px; right: 24px; z-index: 990; display: flex; align-items: center; gap: 10px; background: #25d366; color: #fff; text-decoration: none; padding: 12px 20px 12px 16px; border-radius: 50px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 1.5px; box-shadow: 0 4px 16px rgba(37,211,102,0.35); transition: background 0.2s; }
+    .wa-float:hover { background: #1ebe5d; }
+
+    /* MOBILE MENU */
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; position: absolute; left: 20px; top: 50%; transform: translateY(-50%); }
+    .nav-hamburger span { display: block; width: 24px; height: 2px; background: #111; transition: all 0.3s; }
+    .nav-drawer { position: fixed; top: 0; left: 0; width: 85%; max-width: 340px; height: 100vh; background: #fff; z-index: 999; transform: translateX(-100%); transition: transform 0.3s ease; overflow-y: auto; display: flex; flex-direction: column; }
+    .nav-drawer.open { transform: translateX(0); }
+    .nav-drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 998; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    .nav-drawer-overlay.open { opacity: 1; pointer-events: all; }
+    .nav-drawer-close { display: flex; justify-content: flex-end; padding: 20px 20px 0; }
+    .nav-drawer-close button { background: none; border: none; cursor: pointer; font-size: 28px; color: #333; line-height: 1; }
+    .nav-drawer-links { padding: 12px 0; flex: 1; }
+    .nav-drawer-links a { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; color: #111; text-decoration: none; border-bottom: 1px solid #f0ede8; transition: background 0.15s; }
+    .nav-drawer-links a:hover { background: #faf9f6; }
+    .nav-drawer-links a svg { width: 14px; height: 14px; stroke: #aaa; fill: none; stroke-width: 2; }
+    .nav-drawer-divider { height: 1px; background: #e0ddd8; margin: 8px 0; }
+    .nav-drawer-lang { padding: 16px 24px; border-bottom: 1px solid #f0ede8; }
+    .nav-drawer-lang-label { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 10px; }
+    .nav-drawer-lang-links { display: flex; flex-direction: column; gap: 2px; }
+    .nav-drawer-lang-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #555; text-decoration: none; padding: 8px 0; display: block; }
+    .nav-drawer-lang-links a.active { color: #111; }
+    .nav-drawer-social { display: flex; gap: 20px; padding: 20px 24px 32px; }
+    .nav-drawer-social a { color: #555; transition: color 0.2s; }
+    .nav-drawer-social a:hover { color: #111; }
+
+    @media (max-width: 768px) {
+      .topbar-social, .topbar-lang { display: none; }
+      .topbar { padding: 7px 20px; }
+      .nav { padding: 8px 20px; justify-content: center; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .hero { height: 260px; }
+      .hero-content { padding: 0 24px 28px; }
+      .hero-title { font-size: 60px; }
+      .wrap { padding: 40px 24px 0; }
+      .intro { padding: 40px 24px; }
+      .sports { padding: 16px 24px 40px; }
+      .sports-grid { grid-template-columns: 1fr; gap: 36px; }
+      /* Cards become compact list rows on mobile */
+      .card-row { display: flex; flex-direction: column; gap: 0; border: 1.5px solid #e0ddd8; border-radius: 4px; overflow: hidden; }
+      .card { border: none; border-bottom: 1px solid #f0ede8; border-radius: 0; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; transform: none !important; }
+      .card:last-child { border-bottom: none; }
+      .card:hover { transform: none; background: #faf9f6; }
+      .card.featured { border-left: 3px solid #273043; }
+      .card-text { display: flex; flex-direction: column; }
+      .card-label { margin-bottom: 2px; font-size: 13px; color: #111; }
+      .card-detail { margin-bottom: 0; min-height: 0; font-size: 11px; line-height: 1.3; }
+      .card-detail br { display: none; }
+      .card-price { font-size: 26px; flex-shrink: 0; }
+      .card-price span { font-size: 13px; }
+      .badge { display: none; }
+      .divider, .cta-band { padding-left: 24px; padding-right: 24px; }
+      .section-title h2 { font-size: 38px; }
+      .cta-inner { flex-direction: column; align-items: flex-start; padding: 28px 24px; }
+      footer { padding: 12px 20px; }
+      footer img { height: 56px; }
+      .footer-links { gap: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-social">
+      <a href="https://www.facebook.com/shakafuerte/" target="_blank" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+      <a href="https://wa.me/34679561225" target="_blank" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+    </div>
+    <div class="topbar-marquee">
+      <div class="topbar-marquee-inner">
+        <a href="#contact">🤙 Book your lesson here!</a><span class="sep">·</span>
+        <span>⭐ 5★ Google &nbsp;·&nbsp; 4.8★ GetYourGuide</span><span class="sep">·</span>
+        <span>🏄 Rent &amp; Go — just show up and ride</span><span class="sep">·</span>
+        <span>📍 C.C. Botánico · Costa Calma · Fuerteventura</span><span class="sep">·</span>
+        <a href="#contact">🤙 Book your lesson here!</a><span class="sep">·</span>
+        <span>⭐ 5★ Google &nbsp;·&nbsp; 4.8★ GetYourGuide</span><span class="sep">·</span>
+        <span>🏄 Rent &amp; Go — just show up and ride</span><span class="sep">·</span>
+        <span>📍 C.C. Botánico · Costa Calma · Fuerteventura</span><span class="sep">·</span>
+      </div>
+    </div>
+    <div class="topbar-lang">
+      <a href="#" class="active">EN</a><span>·</span><a href="#">ES</a><span>·</span><a href="#">IT</a><span>·</span><a href="#">DE</a>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <button class="nav-hamburger" onclick="openDrawer()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <a href="index.html" class="nav-logo"><img src="images/logo-shaka-web.png" alt="Shaka Fuerteventura"></a>
+    <div class="nav-links">
+      <a href="school.html" class="active">The School</a>
+      <a href="shop.html">The Shop</a>
+      <a href="about.html">About Us</a>
+      <a href="about.html#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Lessons &amp; Coaching</p>
+      <h1 class="hero-title">The School</h1>
+      <div class="cover-line"></div>
+      <p class="hero-tagline">First lesson, life time addiction</p>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <div class="intro">
+    <div class="intro-inner">
+    <p class="intro-eyebrow">The Shaka Method</p>
+    <h2 class="intro-heading">Tailored to You</h2>
+    <p class="intro-text">Whether it's your very first time on a board or you're chasing your next move, our lessons are <strong>tailored to you</strong>. Our instructors follow every student from a <strong>support boat</strong>, so you're never alone on the water, at <strong>any level, from absolute beginner to advanced</strong>.</p>
+    <p class="intro-text">Giorgio, Mitch and Henri are <strong>VDWS-certified instructors with over 15 years</strong> of teaching experience. They know how to read the conditions, read the rider, and get you progressing fast while having fun.</p>
+    <p class="intro-text">The bay of <strong>Costa Calma</strong> is the perfect place to learn: <strong>flat, shallow water protected from the wind</strong>. Safe, calm and forgiving. <strong>Perfect for kids too</strong>.</p>
+    </div>
+  </div>
+
+  <!-- SPORT CHOICE -->
+  <div class="sports">
+    <div class="sports-grid">
+      <div class="sport-card">
+        <div class="sport-photo"><img src="images/sport-windsurf.jpg" alt="Windsurf lesson Costa Calma"></div>
+        <h3 class="sport-name">Windsurf</h3>
+        <p class="sport-desc">The original board sport. Feel the wind, ride the water, and experience pure freedom. Perfect for all ages, from your first tack to planing at full speed.</p>
+        <a href="#windsurf-prices" class="sport-btn">More info</a>
+      </div>
+      <div class="sport-card">
+        <div class="sport-photo"><img src="images/sport-wing.jpg" alt="Wingfoil lesson Costa Calma"></div>
+        <h3 class="sport-name">Wingfoil</h3>
+        <p class="sport-desc">The hottest sport on the water. Hold the wing, rise on the foil, and fly above the surface. Easier to learn than it looks, addictive from the first flight.</p>
+        <a href="#wing-prices" class="sport-btn">More info</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- WINDSURF -->
+  <div class="wrap" id="windsurf-prices">
+    <div class="section-head">
+      <p class="section-eyebrow">Lessons</p>
+      <div class="section-title"><img src="icons/icon_windsurf.png" alt=""><h2>Windsurf</h2></div>
+      <p class="section-desc">Group lessons in small groups, or private one-to-one coaching. All equipment and wetsuit included, instructor on the boat.</p>
+    </div>
+    <div class="card-row">
+      <div class="card">
+        <div class="card-text"><div class="card-label">1 Lesson</div><div class="card-detail">2 hours · 1 day<br>Equipment &amp; wetsuit included</div></div>
+        <div class="card-price">75 <span>€</span></div>
+      </div>
+      <div class="card featured">
+        <span class="badge">Best value</span>
+        <div class="card-text"><div class="card-label">Full Course</div><div class="card-detail">6 hours · 3 days<br>Equipment &amp; wetsuit included</div></div>
+        <div class="card-price">190 <span>€</span></div>
+      </div>
+      <div class="card">
+        <div class="card-text"><div class="card-label">Private</div><div class="card-detail">Per hour · one-to-one coaching</div></div>
+        <div class="card-price">95 <span>€/h</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"><div class="divider-line"></div></div>
+
+  <!-- WINGFOIL -->
+  <div class="wrap" id="wing-prices">
+    <div class="section-head">
+      <p class="section-eyebrow">Lessons</p>
+      <div class="section-title"><img src="icons/icon_wingfoil.png" alt=""><h2>Wingfoil</h2></div>
+      <p class="section-desc">Group lessons in small groups, or private one-to-one coaching. All equipment included, instructor on the boat.</p>
+    </div>
+    <div class="card-row">
+      <div class="card">
+        <div class="card-text"><div class="card-label">1 Lesson</div><div class="card-detail">1.5 hours · 1 day<br>Equipment included</div></div>
+        <div class="card-price">95 <span>€</span></div>
+      </div>
+      <div class="card featured">
+        <span class="badge">Best value</span>
+        <div class="card-text"><div class="card-label">Full Course</div><div class="card-detail">4.5 hours · 3 days<br>Equipment included</div></div>
+        <div class="card-price">250 <span>€</span></div>
+      </div>
+      <div class="card">
+        <div class="card-text"><div class="card-label">Private</div><div class="card-detail">Per hour · one-to-one coaching</div></div>
+        <div class="card-price">145 <span>€/h</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"><div class="divider-line"></div></div>
+
+  <!-- ON-SITE RENTAL -->
+  <div class="wrap">
+    <div class="section-head">
+      <p class="section-eyebrow">Rent &amp; Go</p>
+      <div class="section-title"><h2>On-Site Rental</h2></div>
+      <p class="section-desc">Already know how to ride? Grab the gear and jump straight in the lagoon — rental right on the beach, no transport needed.</p>
+    </div>
+    <div class="card-row">
+      <div class="card">
+        <div class="card-text"><div class="card-label">Windsurf</div><div class="card-detail">Complete set</div></div>
+        <div class="card-price">30 <span>€/1h</span></div>
+        <div class="rental-note">2h 50€ · +10€ each extra hour</div>
+      </div>
+      <div class="card">
+        <div class="card-text"><div class="card-label">Wingfoil</div><div class="card-detail">Complete set</div></div>
+        <div class="card-price">45 <span>€/1h</span></div>
+        <div class="rental-note">2h 75€ · +10€ each extra hour</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"><div class="divider-line"></div></div>
+
+  <!-- SUP & KAYAK -->
+  <div class="wrap">
+    <div class="section-head">
+      <p class="section-eyebrow">No Wind? No Problem</p>
+      <div class="section-title"><h2>SUP &amp; Kayak</h2></div>
+      <p class="section-desc">Explore the lagoon at your own pace — no experience needed, perfect for the whole family.</p>
+    </div>
+    <div class="card-row">
+      <div class="card">
+        <div class="card-text"><div class="card-label">SUP</div><div class="card-detail">Board &amp; paddle included</div></div>
+        <div class="card-price">20 <span>€/1h</span></div>
+        <div class="rental-note">+10€ each extra hour</div>
+      </div>
+      <div class="card">
+        <div class="card-text"><div class="card-label">Kayak · Single</div><div class="card-detail">One seat</div></div>
+        <div class="card-price">25 <span>€/1h</span></div>
+        <div class="rental-note">+10€ each extra hour</div>
+      </div>
+      <div class="card">
+        <div class="card-text"><div class="card-label">Kayak · Double</div><div class="card-detail">Two seats</div></div>
+        <div class="card-price">35 <span>€/1h</span></div>
+        <div class="rental-note">+10€ each extra hour</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-band" id="contact">
+    <div class="cta-inner">
+      <div class="cta-text">
+        <h3>Ready to Book?</h3>
+        <p>Message us on WhatsApp — we'll sort you out in minutes.</p>
+      </div>
+      <a href="https://wa.me/34679561225" target="_blank" class="cta-btn">
+        <svg viewBox="0 0 32 32" fill="currentColor" width="22" height="22"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.492.655 4.83 1.8 6.856L2 30l7.344-1.778A13.94 13.94 0 0 0 16 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.6a11.55 11.55 0 0 1-5.89-1.607l-.422-.252-4.36 1.056 1.084-4.248-.276-.436A11.56 11.56 0 0 1 4.4 16C4.4 9.59 9.59 4.4 16 4.4S27.6 9.59 27.6 16 22.41 27.6 16 27.6zm6.338-8.664c-.347-.174-2.055-1.014-2.374-1.13-.319-.115-.551-.173-.783.174-.232.346-.9 1.13-1.103 1.362-.202.232-.405.26-.752.086-.347-.173-1.465-.54-2.791-1.722-1.031-.92-1.727-2.055-1.929-2.402-.202-.347-.022-.534.152-.707.156-.155.347-.405.52-.607.174-.202.232-.347.347-.578.116-.232.058-.434-.029-.607-.087-.174-.783-1.888-1.073-2.587-.282-.678-.569-.586-.783-.597l-.667-.011a1.28 1.28 0 0 0-.926.434c-.318.347-1.215 1.188-1.215 2.896s1.244 3.358 1.418 3.59c.173.231 2.449 3.738 5.934 5.24.829.358 1.477.572 1.981.732.832.265 1.59.228 2.189.138.668-.1 2.055-.84 2.345-1.652.29-.811.29-1.507.202-1.652-.087-.144-.318-.231-.665-.405z"/></svg>
+        WhatsApp Us
+      </a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <img src="images/logo-shaka-web.png" alt="Shaka Fuerteventura">
+    <div class="footer-links">
+      <a href="school.html">The School</a>
+      <a href="shop.html">The Shop</a>
+      <a href="about.html">About Us</a>
+      <a href="about.html#contact">Contact</a>
+    </div>
+    <div class="footer-spacer"></div>
+  </footer>
+
+  <!-- WA FLOAT -->
+  <a href="https://wa.me/34679561225" target="_blank" class="wa-float" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 32 32" fill="currentColor" width="26" height="26"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.492.655 4.83 1.8 6.856L2 30l7.344-1.778A13.94 13.94 0 0 0 16 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.6a11.55 11.55 0 0 1-5.89-1.607l-.422-.252-4.36 1.056 1.084-4.248-.276-.436A11.56 11.56 0 0 1 4.4 16C4.4 9.59 9.59 4.4 16 4.4S27.6 9.59 27.6 16 22.41 27.6 16 27.6zm6.338-8.664c-.347-.174-2.055-1.014-2.374-1.13-.319-.115-.551-.173-.783.174-.232.346-.9 1.13-1.103 1.362-.202.232-.405.26-.752.086-.347-.173-1.465-.54-2.791-1.722-1.031-.92-1.727-2.055-1.929-2.402-.202-.347-.022-.534.152-.707.156-.155.347-.405.52-.607.174-.202.232-.347.347-.578.116-.232.058-.434-.029-.607-.087-.174-.783-1.888-1.073-2.587-.282-.678-.569-.586-.783-.597l-.667-.011a1.28 1.28 0 0 0-.926.434c-.318.347-1.215 1.188-1.215 2.896s1.244 3.358 1.418 3.59c.173.231 2.449 3.738 5.934 5.24.829.358 1.477.572 1.981.732.832.265 1.59.228 2.189.138.668-.1 2.055-.84 2.345-1.652.29-.811.29-1.507.202-1.652-.087-.144-.318-.231-.665-.405z"/></svg>
+    <span>Chat with us</span>
+  </a>
+
+  <!-- MOBILE DRAWER -->
+  <div class="nav-drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+  <div class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-close"><button onclick="closeDrawer()" aria-label="Close menu">&#215;</button></div>
+    <div class="nav-drawer-links">
+      <a href="school.html">The School <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a href="shop.html">The Shop <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a href="about.html">About Us <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a href="about.html#contact">Contact <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+    </div>
+    <div class="nav-drawer-divider"></div>
+    <div class="nav-drawer-lang">
+      <div class="nav-drawer-lang-label">Language</div>
+      <div class="nav-drawer-lang-links">
+        <a href="#" class="active">English</a><a href="#">Español</a><a href="#">Italiano</a><a href="#">Deutsch</a>
+      </div>
+    </div>
+    <div class="nav-drawer-divider"></div>
+    <div class="nav-drawer-social">
+      <a href="https://www.facebook.com/shakafuerte/" target="_blank" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+      <a href="https://wa.me/34679561225" target="_blank" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+    </div>
+  </div>
+
+  <script>
+    function openDrawer() { document.getElementById('navDrawer').classList.add('open'); document.getElementById('drawerOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeDrawer() { document.getElementById('navDrawer').classList.remove('open'); document.getElementById('drawerOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+  </script>
+</body>
+</html>

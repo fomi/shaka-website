@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shaka Fuerteventura — Windsurf School & Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Barlow', sans-serif; background: #f0ede8; color: #111; }
+
+    /* TOP BAR */
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 7px 40px; background: #1a1a1a; border-bottom: 1px solid #2a2a2a; }
+    .topbar-social { display: flex; align-items: center; gap: 14px; }
+    .topbar-social a { color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.2s; display: flex; align-items: center; }
+    .topbar-social a:hover { color: #fff; }
+    .topbar-social svg { width: 17px; height: 17px; }
+    .topbar-marquee { flex: 1; overflow: hidden; margin: 0 32px; }
+    .topbar-marquee-inner { display: inline-flex; gap: 64px; white-space: nowrap; animation: marquee 30s linear infinite; }
+    .topbar-marquee-inner a, .topbar-marquee-inner span { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.65); text-decoration: none; }
+    .topbar-marquee-inner a { color: rgba(255,255,255,0.9); border-bottom: 1px solid rgba(255,255,255,0.3); }
+    .topbar-marquee-inner a:hover { color: #fff; border-bottom-color: #fff; }
+    .topbar-marquee-inner .sep { color: rgba(255,255,255,0.2); }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .topbar-lang { display: flex; gap: 6px; align-items: center; }
+    .topbar-lang a { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; padding: 2px 5px; }
+    .topbar-lang a:hover, .topbar-lang a.active { color: #fff; }
+    .topbar-lang span { color: rgba(255,255,255,0.15); font-size: 9px; }
+
+    /* NAVBAR */
+    .nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 40px; background: #fff; border-bottom: 1px solid #e0ddd8; position: sticky; top: 0; z-index: 100; }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; }
+    .nav-logo img { height: 115px; width: auto; }
+    .nav-links { display: flex; gap: 32px; position: absolute; left: 50%; transform: translateX(-50%); }
+    .nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #333; text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: #111; }
+
+    /* HERO */
+    .hero { position: relative; height: 520px; overflow: hidden; }
+    .hero-slides { position: relative; width: 100%; height: 100%; }
+    .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease; display: flex; align-items: flex-end; }
+    .hero-slide.active { opacity: 1; z-index: 1; }
+    .hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(240,237,232,0) 25%, rgba(240,237,232,0.95) 100%); }
+    .hero-content { position: relative; z-index: 2; padding: 0 48px 44px; }
+    .hero-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #111; margin-bottom: 8px; min-height: 14px; }
+    .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: 110px; letter-spacing: 8px; line-height: 0.88; color: #111; }
+    .hero-title span { display: block; font-size: 34px; letter-spacing: 14px; color: #111; margin-top: 6px; }
+    .hero-title-cta { font-size: 82px; min-height: 150px; display: flex; flex-direction: column; justify-content: flex-start; }
+    .hero-title-cta span { font-size: 26px; letter-spacing: 11px; margin-top: 0; line-height: 1; }
+    .cover-line { width: 28px; height: 3px; background: #111; margin: 18px 0 12px; }
+    .hero-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #333; display: inline-flex; align-items: center; min-height: 45px; }
+    .hero-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 45px; box-sizing: border-box; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: #fff; text-transform: uppercase; padding: 12px 28px; background: #273043; border-radius: 2px; text-decoration: none; transition: background 0.2s; margin-top: 4px; }
+    .hero-btn:hover { background: #111; }
+    .hero-dots { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; gap: 10px; }
+    .hero-dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(17,17,17,0.25); border: none; cursor: pointer; padding: 0; transition: background 0.2s; }
+    .hero-dot.active { background: #111; }
+
+    /* SPLIT PANELS */
+    .split { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid #e0ddd8; scroll-margin-top: 140px; }
+    .sp { background: #fff; border-top: 1px solid #e0ddd8; position: relative; transition: background 0.25s; display: flex; flex-direction: column; }
+    .sp:first-child { }
+    .sp:hover { background: #faf9f6; }
+    .sp-tag { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #aaa; margin-bottom: 10px; }
+    .sp-title { font-family: 'Bebas Neue', sans-serif; font-size: 88px; letter-spacing: 6px; line-height: 0.95; color: #111; padding-top: 4px; }
+    .sp-line { width: 28px; height: 3px; background: #111; margin: 18px 0 16px; }
+    .sp-desc { font-family: 'Barlow', sans-serif; font-size: 13.5px; font-style: italic; color: #555; line-height: 1.6; max-width: 340px; margin-bottom: 24px; }
+    .sp-sports { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+    .sport-pill { display: flex; align-items: center; gap: 7px; border: 1.5px solid #111; border-radius: 3px; padding: 6px 11px; }
+    .sport-pill img { height: 24px; width: auto; }
+    .sport-pill span { font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 1.5px; color: #111; }
+    .sp-btn { display: inline-flex; align-self: flex-start; align-items: center; gap: 7px; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: #fff; text-transform: uppercase; padding: 12px 28px; background: #273043; border: none; border-radius: 2px; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+    .sp-btn:hover { background: #111; }
+    .sp-btn svg { width: 16px; height: 16px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* INFO BOXES */
+    .sp-inner { padding: 48px 48px 24px; display: flex; flex-direction: column; flex: 1; }
+    .sp-inner .sp-sports { flex: 1; align-content: flex-start; }
+    .sp-info-boxes { display: flex; flex-direction: column; margin-top: 24px; }
+    .sp-info-box { display: flex; align-items: center; gap: 14px; padding: 14px 48px; background: transparent; transition: background 0.2s; cursor: default; width: 100%; }
+    .sp-info-box:hover { background: #f5f2ed; }
+    .sp-info-box svg { flex-shrink: 0; color: #273043; }
+    .sp-info-label { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 2px; }
+    .sp-info-val { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 1.5px; color: #111; }
+
+    /* FOOTER */
+    footer { background: #111; padding: 10px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; position: relative; }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 5px; color: #fff; }
+    .footer-logo span { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #666; display: block; margin-top: 2px; }
+    .footer-links { display: flex; gap: 24px; position: absolute; left: 50%; transform: translateX(-50%); }
+    .footer-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #666; text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-contact { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 1.5px; color: #666; text-align: right; }
+    .footer-contact a { color: #aaa; text-decoration: none; }
+    .footer-contact a:hover { color: #fff; }
+
+    /* WA FLOAT */
+    .wa-float { position: fixed; bottom: 90px; right: 24px; z-index: 990; display: flex; align-items: center; gap: 10px; background: #25d366; color: #fff; text-decoration: none; padding: 12px 20px 12px 16px; border-radius: 50px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 1.5px; box-shadow: 0 4px 16px rgba(37,211,102,0.35); transition: background 0.2s; }
+    .wa-float:hover { background: #1ebe5d; }
+
+    /* MOBILE MENU */
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; position: absolute; left: 20px; top: 50%; transform: translateY(-50%); }
+    .nav-hamburger span { display: block; width: 24px; height: 2px; background: #111; transition: all 0.3s; }
+    .nav-drawer { position: fixed; top: 0; left: 0; width: 85%; max-width: 340px; height: 100vh; background: #fff; z-index: 999; transform: translateX(-100%); transition: transform 0.3s ease; overflow-y: auto; display: flex; flex-direction: column; }
+    .nav-drawer.open { transform: translateX(0); }
+    .nav-drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 998; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    .nav-drawer-overlay.open { opacity: 1; pointer-events: all; }
+    .nav-drawer-close { display: flex; justify-content: flex-end; padding: 20px 20px 0; }
+    .nav-drawer-close button { background: none; border: none; cursor: pointer; font-size: 28px; color: #333; line-height: 1; }
+    .nav-drawer-links { padding: 12px 0; flex: 1; }
+    .nav-drawer-links a { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; color: #111; text-decoration: none; border-bottom: 1px solid #f0ede8; transition: background 0.15s; }
+    .nav-drawer-links a:hover { background: #faf9f6; }
+    .nav-drawer-links a svg { width: 14px; height: 14px; stroke: #aaa; fill: none; stroke-width: 2; }
+    .nav-drawer-divider { height: 1px; background: #e0ddd8; margin: 8px 0; }
+    .nav-drawer-lang { padding: 16px 24px; border-bottom: 1px solid #f0ede8; }
+    .nav-drawer-lang-label { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 10px; }
+    .nav-drawer-lang-links { display: flex; flex-direction: column; gap: 2px; }
+    .nav-drawer-lang-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #555; text-decoration: none; padding: 8px 0; border-bottom: none; display: block; }
+    .nav-drawer-lang-links a.active { color: #111; }
+    .nav-drawer-lang-links a:hover { color: #111; background: none; }
+    .nav-drawer-social { display: flex; gap: 20px; padding: 20px 24px 32px; }
+    .nav-drawer-social a { color: #555; transition: color 0.2s; }
+    .nav-drawer-social a:hover { color: #111; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .topbar-social, .topbar-lang { display: none; }
+      .topbar { padding: 7px 20px; }
+      .nav { padding: 8px 20px; justify-content: center; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .hero { height: 380px; }
+      .hero-title-cta { font-size: 56px; }
+      .hero-content { padding: 0 24px 32px; }
+      .hero-title { font-size: 72px; }
+      .hero-title span { font-size: 24px; }
+      .split { grid-template-columns: 1fr; }
+      .sp { padding: 36px 24px 0; }
+      .sp:first-child { border-right: none; }
+      .sp-title { font-size: 72px; }
+      .sp-info-box { margin: 0 -24px; padding-left: 24px; padding-right: 24px; }
+      .sp-info-boxes { border-bottom: none; }
+      .sp { border-top: none; }
+      .split { border-top: none; }
+      footer { padding: 12px 20px; }
+      footer img { height: 56px !important; }
+      .footer-links { gap: 14px; }
+    }
+    /* REVIEWS */
+    .reviews { background: #fff; overflow: hidden; }
+    .reviews-title { padding: 16px 56px 0; }
+    .reviews-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 8px; }
+    .reviews-heading { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 3px; color: #111; line-height: 1; }
+    .reviews-inner { display: flex; transition: transform 0.5s ease; }
+    .review-slide { display: grid; grid-template-columns: 1fr 1fr; min-width: 100%; min-height: 420px; }
+    .review-text { padding: 48px 56px; display: flex; flex-direction: column; justify-content: center; }
+    .review-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+    .review-stars { font-size: 20px; color: #111; letter-spacing: 2px; }
+    .review-source { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; }
+    .review-quote { font-family: 'Barlow', sans-serif; font-size: 15px; font-style: italic; color: #333; line-height: 1.75; margin-bottom: 24px; }
+    .review-author { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; }
+    .review-photo { display: flex; align-items: center; justify-content: center; }
+    .review-photo img { width: 300px; height: 300px; object-fit: cover; display: block; flex-shrink: 0; }
+    .reviews-controls { display: flex; align-items: center; justify-content: center; gap: 32px; padding: 20px 0; background: #fff; padding-bottom: 32px; }
+    .rev-btn { background: none; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #aaa; transition: color 0.2s; padding: 0; }
+    .rev-btn:hover { color: #111; }
+    .rev-dots { display: none; }
+    
+    
+
+    @media (max-width: 768px) {
+      .review-slide { grid-template-columns: 1fr; min-height: auto; }
+      .review-slide { grid-template-columns: 1fr; }
+      .review-text { padding: 32px 24px; }
+      .review-photo { height: 260px; }
+      .review-photo img { width: 100%; height: 260px; object-fit: cover; }
+    }
+    /* GALLERY */
+    .gallery { display: grid; grid-template-columns: 1fr 1fr; height: 380px; padding: 0 48px; gap: 48px; background: #fff; padding-bottom: 48px; }
+    .gallery-img { overflow: hidden; }
+    .gallery-img img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; transition: transform 0.4s ease; }
+    .gallery-img:first-child img { object-position: center 40%; }
+    .gallery-img:last-child img { object-position: center 30%; }
+    .gallery-img:hover img { transform: scale(1.03); }
+
+    @media (max-width: 768px) {
+      .gallery { grid-template-columns: 1fr; height: auto; padding: 0 20px; }
+      .gallery-img { height: 220px; }
+    }
+    /* CONTACT FORM */
+    .contact { background: #fff; margin-top: 48px; }
+    .contact-inner { padding: 56px 56px 64px; max-width: 900px; margin: 0 auto; }
+    .contact-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 8px; }
+    .contact-heading { font-family: 'Bebas Neue', sans-serif; font-size: 52px; letter-spacing: 4px; color: #111; line-height: 1; margin-bottom: 16px; }
+    .contact-intro { font-family: 'Barlow', sans-serif; font-size: 15px; color: #555; line-height: 1.7; margin-bottom: 36px; max-width: 680px; }
+    .contact-form { display: flex; flex-direction: column; gap: 20px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-group { display: flex; flex-direction: column; }
+    .form-group label { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #333; margin-bottom: 8px; }
+    .form-group input, .form-group textarea { font-family: 'Barlow', sans-serif; font-size: 15px; color: #111; padding: 12px 14px; border: 1.5px solid #e0ddd8; border-radius: 3px; background: #faf9f6; transition: border-color 0.2s; resize: vertical; }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #273043; }
+    .form-check { display: flex; align-items: center; gap: 10px; font-family: 'Barlow', sans-serif; font-size: 13px; color: #555; cursor: pointer; }
+    .form-check input { width: 16px; height: 16px; accent-color: #273043; }
+    .form-check a { color: #273043; text-decoration: underline; }
+    .form-submit { align-self: flex-start; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: #fff; text-transform: uppercase; padding: 12px 36px; background: #111; border: none; border-radius: 2px; cursor: pointer; transition: background 0.2s; margin-top: 4px; }
+    .form-submit:hover { background: #273043; }
+
+    @media (max-width: 768px) {
+      .contact-inner { padding: 40px 24px 48px; }
+      .contact-heading { font-size: 40px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    /* INSTAGRAM */
+    .insta { background: #fff; margin-top: 48px; padding: 0 48px 64px; }
+    .insta-header { text-align: center; margin-bottom: 28px; }
+    .insta-title { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 3px; color: #111; margin-bottom: 4px; }
+    .insta-handle { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #273043; text-decoration: none; transition: color 0.2s; }
+    .insta-handle:hover { color: #111; }
+    .insta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 720px; margin: 0 auto; }
+    .insta-cell { aspect-ratio: 1 / 1; background: #faf9f6; border: 1.5px solid #e0ddd8; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; text-decoration: none; transition: background 0.2s, color 0.2s; }
+    .insta-cell:hover { background: #f0ede8; color: #273043; }
+
+    @media (max-width: 768px) {
+      .insta { padding: 0 24px 48px; }
+      .insta-grid { gap: 8px; }
+      .insta-cell { font-size: 11px; }
+    }
+    /* BACK TO TOP (floating) */
+    .totop { position: fixed; bottom: 150px; right: 24px; z-index: 990; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; background: #111; color: #fff; border: none; border-radius: 50%; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity 0.3s, background 0.2s, transform 0.2s; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+    .totop.visible { opacity: 1; pointer-events: all; }
+    .totop:hover { background: #273043; }
+    .totop:hover svg { transform: translateY(-3px); }
+    .totop svg { transition: transform 0.2s; }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-social">
+      <a href="https://www.facebook.com/shakafuerte/" target="_blank" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+      <a href="https://wa.me/34679561225" target="_blank" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </a>
+    </div>
+    <div class="topbar-marquee">
+      <div class="topbar-marquee-inner">
+        <a href="#contact">🤙 Book your lesson here!</a>
+        <span class="sep">·</span>
+        <span>⭐ 5★ Google &nbsp;·&nbsp; 4.8★ GetYourGuide</span>
+        <span class="sep">·</span>
+        <span>🏄 Rent &amp; Go — just show up and ride</span>
+        <span class="sep">·</span>
+        <span>📍 C.C. Botánico · Costa Calma · Fuerteventura</span>
+        <span class="sep">·</span>
+        <a href="#contact">🤙 Book your lesson here!</a>
+        <span class="sep">·</span>
+        <span>⭐ 5★ Google &nbsp;·&nbsp; 4.8★ GetYourGuide</span>
+        <span class="sep">·</span>
+        <span>🏄 Rent &amp; Go — just show up and ride</span>
+        <span class="sep">·</span>
+        <span>📍 C.C. Botánico · Costa Calma · Fuerteventura</span>
+        <span class="sep">·</span>
+      </div>
+    </div>
+    <div class="topbar-lang">
+      <a href="#" class="active">EN</a><span>·</span>
+      <a href="#">ES</a><span>·</span>
+      <a href="#">IT</a><span>·</span>
+      <a href="#">DE</a>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <button class="nav-hamburger" onclick="openDrawer()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="nav-logo">
+      <img src="images/logo-shaka-web.png" alt="Shaka Fuerteventura">
+    </a>
+    <div class="nav-links">
+      <a href="school.html">The School</a>
+      <a href="shop.html">The Shop</a>
+      <a href="about.html">About Us</a>
+      <a href="about.html#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-slides" id="heroSlides">
+
+      <!-- SLIDE 1: General -->
+      <div class="hero-slide active">
+        <div class="hero-bg" style="background-image: url('images/background6.jpg'); background-position: center 40%;"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="hero-eyebrow">Wind · Kite · Wing · Surf</p>
+          <h1 class="hero-title hero-title-cta">
+            SHAKA
+            <span>Fuerteventura</span>
+          </h1>
+          <div class="cover-line"></div>
+          <a href="#explore" class="hero-btn">Discover
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- SLIDE 2: Lessons -->
+      <div class="hero-slide">
+        <div class="hero-bg" style="background-color: #e8e4dc; display:flex; align-items:center; justify-content:center;">
+          <span style="font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#999;">Lesson pic</span>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="hero-eyebrow">The School</p>
+          <h1 class="hero-title hero-title-cta">Book Your<br>Lesson!</h1>
+          <div class="cover-line"></div>
+          <a href="school.html" class="hero-btn">Discover the School
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- SLIDE 3: Rental -->
+      <div class="hero-slide">
+        <div class="hero-bg" style="background-color: #dde4e8; display:flex; align-items:center; justify-content:center;">
+          <span style="font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#999;">Rental pic</span>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="hero-eyebrow">The Shop</p>
+          <h1 class="hero-title hero-title-cta">Book Your<br>Equipment!</h1>
+          <div class="cover-line"></div>
+          <a href="shop.html" class="hero-btn">Discover the Shop
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DOTS -->
+    <div class="hero-dots" id="heroDots">
+      <button class="hero-dot active" onclick="goSlide(0)" aria-label="Slide 1"></button>
+      <button class="hero-dot" onclick="goSlide(1)" aria-label="Slide 2"></button>
+      <button class="hero-dot" onclick="goSlide(2)" aria-label="Slide 3"></button>
+    </div>
+  </section>
+
+  <!-- SPLIT: SCHOOL / SHOP -->
+  <section class="split" id="explore">
+
+    <!-- THE SCHOOL -->
+    <div class="sp">
+      <div class="sp-inner">
+      <p class="sp-tag">Lessons &amp; Coaching</p>
+      <h2 class="sp-title">THE<br>SCHOOL</h2>
+      <div class="sp-line"></div>
+      <p class="sp-desc">First lesson, life time addiction. Group and private courses for all levels — from your first steps on the water to advanced foiling. Instructor on the boat, always with you.</p>
+      <div class="sp-sports">
+        <div class="sport-pill"><img src="icons/icon_windsurf.png" alt="Windsurf"><span>Windsurf</span></div>
+        <div class="sport-pill"><img src="icons/icon_wingfoil.png" alt="Wingfoil"><span>Wingfoil</span></div>
+        <div class="sport-pill"><img src="icons/icon_surf.png" alt="SUP"><span>SUP</span></div>
+        <div class="sport-pill"><img src="icons/icon_bodyboard.png" alt="Kayak"><span>Kayak</span></div>
+      </div>
+      <a href="school.html" class="sp-btn">
+        Discover
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      </div>
+      <div class="sp-info-boxes">
+        <div class="sp-info-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <div><div class="sp-info-label">Location</div><div class="sp-info-val">Costa Calma · Lagoon</div></div>
+        </div>
+        <div class="sp-info-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <div><div class="sp-info-label">Opening Times</div><div class="sp-info-val">10:00 – 17:00</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- THE SHOP -->
+    <div class="sp">
+      <div class="sp-inner">
+      <p class="sp-tag">Rental &amp; Equipment</p>
+      <h2 class="sp-title">THE<br>SHOP</h2>
+      <div class="sp-line"></div>
+      <p class="sp-desc">Top-brand gear rental for all wind and water sports. Daily and multi-day packages. Just show up and ride — we take care of the rest.</p>
+      <div class="sp-sports">
+        <div class="sport-pill"><img src="icons/icon_windsurf.png" alt="Windsurf"><span>Windsurf</span></div>
+        <div class="sport-pill"><img src="icons/icon_kitesurf.png" alt="Kitesurf"><span>Kitesurf</span></div>
+        <div class="sport-pill"><img src="icons/icon_wingfoil.png" alt="Wingfoil"><span>Wingfoil</span></div>
+        <div class="sport-pill"><img src="icons/icon_surf.png" alt="Surf"><span>Surf</span></div>
+        <div class="sport-pill"><img src="icons/icon_bodyboard.png" alt="Bodyboard"><span>Bodyboard</span></div>
+        <div class="sport-pill"><img src="icons/icon_bike.png" alt="Bike"><span>Bike</span></div>
+      </div>
+      <a href="shop.html" class="sp-btn">
+        Discover
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      </div>
+      <div class="sp-info-boxes">
+        <div class="sp-info-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <div><div class="sp-info-label">Location</div><div class="sp-info-val">C.C. Botánico · Costa Calma</div></div>
+        </div>
+        <div class="sp-info-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <div><div class="sp-info-label">Opening Times</div><div class="sp-info-val">9:00 – 15:00 · 18:00 – 20:00</div></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="reviews">
+    <div class="reviews-title">
+      <p class="reviews-eyebrow">Verified Reviews</p>
+      <h2 class="reviews-heading">What They Say About Us</h2>
+    </div>
+    <div class="reviews-inner" id="reviewsInner">
+
+      <!-- REVIEW 1 -->
+      <div class="review-slide">
+        <div class="review-text">
+          <div class="review-header">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-source">Google Review</div>
+          </div>
+          <blockquote class="review-quote">"Great experience! Everything went really smoothly, super easy and uncomplicated. The staff was nice, the gear was in great shape, and I had a really good time on the water. Nothing to complain about at all — would definitely come again! A friend also did a few surf lessons through Shaka and had a great experience too. Everything was well organized, the instructor was super friendly and helpful. Shaka is definitely a great place for both renting gear and taking lessons!"</blockquote>
+          <div class="review-author">— Verified Guest</div>
+        </div>
+        <div class="review-photo">
+          <img src="images/review1.jpg" alt="Windsurf action">
+        </div>
+      </div>
+
+      <!-- REVIEW 2 -->
+      <div class="review-slide">
+        <div class="review-text">
+          <div class="review-header">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-source">Google Review</div>
+          </div>
+          <blockquote class="review-quote">"Me and my daughter (12 year old) took a windsurf course, the experience was amazing. Very knowledgeable, passionate, flexible and patient instructors. Mitch and Giorgio did their best to ensure we learn as much as possible while having fun."</blockquote>
+          <div class="review-author">— Verified Guest</div>
+        </div>
+        <div class="review-photo">
+          <img src="images/review2.jpg" alt="Shaka beach">
+        </div>
+      </div>
+
+      <!-- REVIEW 3 -->
+      <div class="review-slide">
+        <div class="review-text">
+          <div class="review-header">
+            <div class="review-stars">★★★★★</div>
+            <div class="review-source">Google Review</div>
+          </div>
+          <blockquote class="review-quote">"An exceptional place to learn how to windsurf, from zero to real ride in just two hours — these guys really teach you, not wasting your time and money! Good quality equipment, professional trainers, very helpful both on the water and on the land. Will definitely return to improve my skills 🤙"</blockquote>
+          <div class="review-author">— Verified Guest</div>
+        </div>
+        <div class="review-photo">
+          <img src="images/review3.jpg" alt="Shaka school flags">
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="reviews-controls">
+      <button class="rev-btn" onclick="moveReview(-1)" aria-label="Previous">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="rev-btn" onclick="moveReview(1)" aria-label="Next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <div class="gallery">
+    <div class="gallery-img"><img src="images/gallery1.jpg" alt="Shaka windsurfer lagoon"></div>
+    <div class="gallery-img"><img src="images/gallery2.jpg" alt="Fuerteventura sunset"></div>
+  </div>
+
+  <!-- CONTACT FORM -->
+  <section class="contact">
+    <div class="contact-inner">
+      <p class="contact-eyebrow">Get in Touch</p>
+      <h2 class="contact-heading">Ready to Hit the Water?</h2>
+      <p class="contact-intro">Whether it's your first windsurf lesson or you just need gear for the day, we're here to help. Send us a message, call, or WhatsApp — let's get you on the water.</p>
+
+      <form action="https://api.web3forms.com/submit" method="POST" class="contact-form">
+        <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY">
+        <input type="hidden" name="subject" value="New contact from Shaka website">
+        <input type="checkbox" name="botcheck" style="display:none;">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Full name *</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Mobile phone with country code *</label>
+          <input type="tel" id="phone" name="phone" required>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="6"></textarea>
+        </div>
+
+        <label class="form-check">
+          <input type="checkbox" required>
+          <span>* I agree to the <a href="#">Privacy Policy</a></span>
+        </label>
+
+        <button type="submit" class="form-submit">Send</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- INSTAGRAM -->
+  <section class="insta">
+    <div class="insta-header">
+      <p class="insta-title">Follow us on Instagram!</p>
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" class="insta-handle">@shaka_fuerte</a>
+    </div>
+    <div class="insta-grid">
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" class="insta-cell">Foto Insta 1</a>
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" class="insta-cell">Foto Insta 2</a>
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" class="insta-cell">Foto Insta 3</a>
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" class="insta-cell">Foto Insta 4</a>
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" class="insta-cell">Foto Insta 5</a>
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" class="insta-cell">Foto Insta 6</a>
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" class="insta-cell">Foto Insta 7</a>
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" class="insta-cell">Foto Insta 8</a>
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" class="insta-cell">Foto Insta 9</a>
+    </div>
+  </section>
+
+  <!-- BACK TO TOP -->
+  <button class="totop" id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+
+  <!-- FOOTER -->
+  <footer>
+    <img src="images/logo-shaka-web.png" alt="Shaka Fuerteventura" style="height:80px;width:auto;">
+    <div class="footer-links">
+      <a href="school.html">The School</a>
+      <a href="shop.html">The Shop</a>
+      <a href="about.html">About Us</a>
+      <a href="about.html#contact">Contact</a>
+    </div>
+
+  </footer>
+
+  <!-- WA FLOAT -->
+  <a href="https://wa.me/34679561225" target="_blank" class="wa-float" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 32 32" fill="currentColor" width="26" height="26"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.492.655 4.83 1.8 6.856L2 30l7.344-1.778A13.94 13.94 0 0 0 16 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.6a11.55 11.55 0 0 1-5.89-1.607l-.422-.252-4.36 1.056 1.084-4.248-.276-.436A11.56 11.56 0 0 1 4.4 16C4.4 9.59 9.59 4.4 16 4.4S27.6 9.59 27.6 16 22.41 27.6 16 27.6zm6.338-8.664c-.347-.174-2.055-1.014-2.374-1.13-.319-.115-.551-.173-.783.174-.232.346-.9 1.13-1.103 1.362-.202.232-.405.26-.752.086-.347-.173-1.465-.54-2.791-1.722-1.031-.92-1.727-2.055-1.929-2.402-.202-.347-.022-.534.152-.707.156-.155.347-.405.52-.607.174-.202.232-.347.347-.578.116-.232.058-.434-.029-.607-.087-.174-.783-1.888-1.073-2.587-.282-.678-.569-.586-.783-.597l-.667-.011a1.28 1.28 0 0 0-.926.434c-.318.347-1.215 1.188-1.215 2.896s1.244 3.358 1.418 3.59c.173.231 2.449 3.738 5.934 5.24.829.358 1.477.572 1.981.732.832.265 1.59.228 2.189.138.668-.1 2.055-.84 2.345-1.652.29-.811.29-1.507.202-1.652-.087-.144-.318-.231-.665-.405z"/></svg>
+    <span>Chat with us</span>
+  </a>
+
+  <!-- MOBILE DRAWER -->
+  <div class="nav-drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+  <div class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-close">
+      <button onclick="closeDrawer()" aria-label="Close menu">&#215;</button>
+    </div>
+    <div class="nav-drawer-links">
+      <a href="school.html">The School <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a href="shop.html">The Shop <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a href="about.html">About Us <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a href="about.html#contact">Contact <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+    </div>
+    <div class="nav-drawer-divider"></div>
+    <div class="nav-drawer-lang">
+      <div class="nav-drawer-lang-label">Language</div>
+      <div class="nav-drawer-lang-links">
+        <a href="#" class="active">English</a>
+        <a href="#">Español</a>
+        <a href="#">Italiano</a>
+        <a href="#">Deutsch</a>
+      </div>
+    </div>
+    <div class="nav-drawer-divider"></div>
+    <div class="nav-drawer-social">
+      <a href="https://www.facebook.com/shakafuerte/" target="_blank" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+      <a href="https://wa.me/34679561225" target="_blank" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function openDrawer() {
+      document.getElementById('navDrawer').classList.add('open');
+      document.getElementById('drawerOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+      document.getElementById('navDrawer').classList.remove('open');
+      document.getElementById('drawerOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // Reviews carousel
+    let revCurrent = 0;
+    const revTotal = 3;
+    const inner = document.getElementById('reviewsInner');
+    const dotsEl = document.getElementById('revDots');
+
+    function goReview(n) {
+      revCurrent = (n + revTotal) % revTotal;
+      inner.style.transform = `translateX(-${revCurrent * 100}%)`;
+      document.querySelectorAll('.rev-dot').forEach((d, i) => d.classList.toggle('active', i === revCurrent));
+    }
+
+    function moveReview(dir) { goReview(revCurrent + dir); }
+
+    // Back to top visibility
+    const toTopBtn = document.getElementById('toTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 500) toTopBtn.classList.add('visible');
+      else toTopBtn.classList.remove('visible');
+    });
+
+    // Hero carousel
+    let heroCurrent = 0;
+    const heroSlides = document.querySelectorAll('.hero-slide');
+    const heroDots = document.querySelectorAll('.hero-dot');
+    const heroTotal = heroSlides.length;
+    let heroTimer;
+
+    function goSlide(n) {
+      heroCurrent = (n + heroTotal) % heroTotal;
+      heroSlides.forEach((s, i) => s.classList.toggle('active', i === heroCurrent));
+      heroDots.forEach((d, i) => d.classList.toggle('active', i === heroCurrent));
+      resetHeroTimer();
+    }
+
+    function nextSlide() { goSlide(heroCurrent + 1); }
+
+    function resetHeroTimer() {
+      clearInterval(heroTimer);
+      heroTimer = setInterval(nextSlide, 5500);
+    }
+
+    const heroEl = document.querySelector('.hero');
+    heroEl.addEventListener('mouseenter', () => clearInterval(heroTimer));
+    heroEl.addEventListener('mouseleave', resetHeroTimer);
+    resetHeroTimer();
+  </script>
+</body>
+</html>

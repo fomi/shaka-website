@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Shop — Shaka Fuerteventura</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Barlow', sans-serif; background: #f0ede8; color: #111; }
+
+    /* ── TOP BAR ── */
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 7px 40px; background: #1a1a1a; border-bottom: 1px solid #2a2a2a; }
+    .topbar-social { display: flex; align-items: center; gap: 14px; }
+    .topbar-social a { color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.2s; display: flex; align-items: center; }
+    .topbar-social a:hover { color: #fff; }
+    .topbar-marquee { flex: 1; overflow: hidden; margin: 0 32px; }
+    .topbar-marquee-inner { display: inline-flex; gap: 64px; white-space: nowrap; animation: marquee 30s linear infinite; }
+    .topbar-marquee-inner a, .topbar-marquee-inner span { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.65); text-decoration: none; }
+    .topbar-marquee-inner a { color: rgba(255,255,255,0.9); border-bottom: 1px solid rgba(255,255,255,0.3); }
+    .topbar-marquee-inner a:hover { color: #fff; border-bottom-color: #fff; }
+    .topbar-marquee-inner .sep { color: rgba(255,255,255,0.2); }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .topbar-lang { display: flex; gap: 6px; align-items: center; }
+    .topbar-lang a { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; padding: 2px 5px; }
+    .topbar-lang a:hover, .topbar-lang a.active { color: #fff; }
+    .topbar-lang span { color: rgba(255,255,255,0.15); font-size: 9px; }
+
+    .nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 40px; background: #fff; border-bottom: 1px solid #e0ddd8; position: sticky; top: 0; z-index: 100; }
+    .nav-logo { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+    .nav-logo img { height: 115px; width: auto; }
+    .nav-logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 5px; color: #111; line-height: 1; }
+    .nav-logo-sub { font-family: 'Barlow Condensed', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #aaa; margin-top: 3px; }
+    .nav-links { display: flex; gap: 32px; position: absolute; left: 50%; transform: translateX(-50%); }
+    .nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #333; text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: #111; }
+    .nav-links a.active { color: #111; border-bottom: 2px solid #273043; padding-bottom: 2px; }
+    .nav-lang { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #aaa; cursor: pointer; }
+
+    .hero { position: relative; height: 340px; overflow: hidden; display: flex; align-items: flex-end; }
+    .hero-bg { position: absolute; inset: 0; background-image: url('images/background6.jpg'); background-size: cover; background-position: center 60%; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(240,237,232,0) 10%, rgba(240,237,232,0.96) 100%); }
+    .hero-content { position: relative; z-index: 2; padding: 0 48px 36px; }
+    .hero-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 8px; }
+    .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: 88px; letter-spacing: 6px; line-height: 0.88; color: #111; }
+    .cover-line { width: 28px; height: 3px; background: #111; margin: 14px 0 10px; }
+    .hero-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #333; }
+
+    /* INTRO */
+    .intro { background: #fff; border-top: 1px solid #e0ddd8; padding: 32px 48px; }
+    .intro-text { font-family: 'Barlow', sans-serif; font-size: 13.5px; font-style: italic; color: #555; line-height: 1.6; max-width: 700px; }
+    .intro-notes { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+    .intro-note { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #aaa; border: 1px solid #e0ddd8; border-radius: 3px; padding: 5px 10px; }
+
+    /* SECTION */
+    .section { padding: 48px 48px 0; }
+    .section:last-of-type { padding-bottom: 64px; }
+
+    .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #e0ddd8; }
+    .section-header img { height: 48px; width: auto; }
+    .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 4px; color: #111; line-height: 1; }
+    .section-sub { font-family: 'Barlow', sans-serif; font-size: 13px; font-style: italic; color: #777; margin-top: 2px; }
+    .brand-note { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; font-style: italic; margin-bottom: 14px; }
+
+    /* PRICE TABLE */
+    .price-table-wrap { overflow-x: auto; margin-bottom: 8px; }
+    table.pt {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Barlow Condensed', sans-serif;
+    }
+    table.pt thead th {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #111;
+      text-align: center;
+      padding: 0 0 8px;
+      border-bottom: 1px solid #111;
+    }
+    table.pt thead th:first-child { text-align: left; }
+    table.pt tbody td {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: 0.5px;
+      color: #111;
+      text-align: center;
+      padding: 8px 4px;
+      border-bottom: 1px solid #f0ede8;
+    }
+    table.pt tbody tr:last-child td { border-bottom: none; }
+    table.pt tbody td:first-child {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      text-align: left;
+      letter-spacing: 0.5px;
+    }
+
+    .divider { height: 1px; background: #e0ddd8; margin: 48px 48px 0; }
+
+    /* ABOUT BOX */
+    .about-box { margin: 48px 48px 0; background: #fff; border: 1px solid #e0ddd8; border-radius: 3px; padding: 32px 36px; }
+    .about-section-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #273043; margin-bottom: 6px; }
+    .about-text { font-family: 'Barlow', sans-serif; font-size: 13.5px; font-style: italic; color: #555; line-height: 1.6; margin-bottom: 20px; }
+    .about-text:last-child { margin-bottom: 0; }
+    .about-divider { height: 1px; background: #e0ddd8; margin: 20px 0; }
+
+    /* CONTACT */
+    .contact-box { margin: 48px 48px 64px; border: 2.5px solid #111; border-radius: 7px; padding: 28px 32px; background: #fff; display: flex; align-items: center; gap: 40px; flex-wrap: wrap; }
+    .contact-wa { display: flex; align-items: center; gap: 16px; flex: 1; min-width: 200px; }
+    .contact-wa svg { flex-shrink: 0; }
+    .contact-wa-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 4px; }
+    .contact-wa-val { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 3px; color: #111; line-height: 1; }
+    .contact-divider { width: 1px; height: 60px; background: #e0ddd8; flex-shrink: 0; }
+    .contact-qr { display: flex; align-items: center; gap: 16px; flex: 1; min-width: 180px; }
+    .contact-qr img { width: 80px; height: 80px; flex-shrink: 0; }
+    .contact-qr-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 4px; }
+    .contact-qr-val { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: #111; line-height: 1; }
+
+    footer { background: #111; padding: 32px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 5px; color: #fff; }
+    .footer-logo span { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #666; display: block; margin-top: 2px; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #666; text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-contact { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 1.5px; color: #666; text-align: right; }
+    .footer-contact a { color: #aaa; text-decoration: none; }
+    .footer-contact a:hover { color: #fff; }
+
+    @media (max-width: 768px) {
+      .nav { padding: 12px 20px; }
+      .nav-links { display: none; }
+      .hero { height: 280px; }
+      .hero-content { padding: 0 24px 28px; }
+      .hero-title { font-size: 64px; }
+      .intro, .section { padding-left: 24px; padding-right: 24px; }
+      .divider { margin-left: 24px; margin-right: 24px; }
+      .about-box, .contact-box { margin-left: 24px; margin-right: 24px; }
+      .contact-box { flex-direction: column; gap: 20px; }
+      .contact-divider { display: none; }
+      footer { flex-direction: column; align-items: flex-start; padding: 28px 24px; }
+      .footer-contact { text-align: left; }
+    }
+
+    /* ── MOBILE MENU ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #111;
+      transition: all 0.3s;
+    }
+    .nav-drawer {
+      position: fixed;
+      top: 0; left: 0;
+      width: 85%;
+      max-width: 340px;
+      height: 100vh;
+      background: #fff;
+      z-index: 999;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .nav-drawer.open { transform: translateX(0); }
+    .nav-drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .nav-drawer-overlay.open { opacity: 1; pointer-events: all; }
+    .nav-drawer-close {
+      display: flex;
+      justify-content: flex-end;
+      padding: 20px 20px 0;
+    }
+    .nav-drawer-close button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 28px;
+      color: #333;
+      line-height: 1;
+    }
+    .nav-drawer-links {
+      padding: 12px 0;
+      flex: 1;
+    }
+    .nav-drawer-links a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 3px;
+      color: #111;
+      text-decoration: none;
+      border-bottom: 1px solid #f0ede8;
+      transition: background 0.15s;
+    }
+    .nav-drawer-links a:hover { background: #faf9f6; }
+    .nav-drawer-links a svg { width: 14px; height: 14px; stroke: #aaa; fill: none; stroke-width: 2; }
+    .nav-drawer-divider { height: 1px; background: #e0ddd8; margin: 8px 0; }
+    .nav-drawer-lang {
+      padding: 16px 24px;
+      border-bottom: 1px solid #f0ede8;
+    }
+    .nav-drawer-lang-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 10px;
+    }
+    .nav-drawer-lang-links { display: flex; flex-direction: column; gap: 2px; }
+    .nav-drawer-lang-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #555;
+      text-decoration: none;
+      padding: 8px 0;
+      border-bottom: none;
+      display: block;
+    }
+    .nav-drawer-lang-links a.active { color: #111; }
+    .nav-drawer-lang-links a:hover { color: #111; background: none; }
+    .nav-drawer-social {
+      display: flex;
+      gap: 20px;
+      padding: 20px 24px 32px;
+    }
+    .nav-drawer-social a {
+      color: #555;
+      transition: color 0.2s;
+    }
+    .nav-drawer-social a:hover { color: #111; }
+    .nav-drawer-social svg { width: 22px; height: 22px; }
+
+    @media (max-width: 768px) {
+      .topbar-social, .topbar-lang { display: none; }
+      .topbar { padding: 7px 20px; }
+      .nav { padding: 8px 20px; position: relative; justify-content: center; }
+      .nav-links, .nav-lang { display: none; }
+      .nav-hamburger { display: flex; position: absolute; left: 20px; top: 50%; transform: translateY(-50%); }
+    }
+
+    .wa-float {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 990;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #25d366;
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 20px 12px 16px;
+      border-radius: 50px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      box-shadow: 0 4px 16px rgba(37,211,102,0.35);
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .wa-float:hover { background: #1ebe5d; box-shadow: 0 6px 20px rgba(37,211,102,0.5); }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-social">
+      <a href="https://www.facebook.com/shakafuerte/" target="_blank" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/shakafuerte/" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+      <a href="https://wa.me/34679561225" target="_blank" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </a>
+    </div>
+    <div class="topbar-marquee">
+      <div class="topbar-marquee-inner">
+        <a href="#contact">🤙 Book your lesson here!</a>
+        <span class="sep">·</span>
+        <span>⭐ 5★ Google &nbsp;·&nbsp; 4.8★ GetYourGuide</span>
+        <span class="sep">·</span>
+        <span>🏄 Rent &amp; Go — just show up and ride</span>
+        <span class="sep">·</span>
+        <span>📍 C.C. Botánico · Costa Calma · Fuerteventura</span>
+        <span class="sep">·</span>
+        <a href="#contact">🤙 Book your lesson here!</a>
+        <span class="sep">·</span>
+        <span>⭐ 5★ Google &nbsp;·&nbsp; 4.8★ GetYourGuide</span>
+        <span class="sep">·</span>
+        <span>🏄 Rent &amp; Go — just show up and ride</span>
+        <span class="sep">·</span>
+        <span>📍 C.C. Botánico · Costa Calma · Fuerteventura</span>
+        <span class="sep">·</span>
+      </div>
+    </div>
+    <div class="topbar-lang">
+      <a href="#" class="active">EN</a><span>·</span>
+      <a href="#">ES</a><span>·</span>
+      <a href="#">IT</a><span>·</span>
+      <a href="#">DE</a>
+    </div>
+  </div>
+
+  <nav class="nav">
+      <button class="nav-hamburger" onclick="openDrawer()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+          <a href="index.html" class="nav-logo">
+      <img src="images/logo-shaka-web.png" alt="Shaka Fuerteventura">
+    </a>
+    <div class="nav-links">
+      <a href="school.html">The School</a>
+      <a href="shop.html" class="active">The Shop</a>
+      <a href="about.html">About Us</a>
+      <a href="about.html#contact">Contact</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Rental &amp; Equipment</p>
+      <h1 class="hero-title">The Shop</h1>
+      <div class="cover-line"></div>
+      <p class="hero-tagline">Top-brand gear · Just show up and ride</p>
+    </div>
+  </section>
+
+  <div class="intro">
+    <p class="intro-text">
+      Shaka has been part of Costa Calma for over 5 years. <strong>Matteo</strong>, our shop manager,
+      is always available, flexible and ready to meet every need.
+      Located in the Botanico shopping centre — easy car access for loading and unloading.
+    </p>
+    <div class="intro-notes">
+      <span class="intro-note">All rentals 24h</span>
+      <span class="intro-note">Free universal roofrack</span>
+      <span class="intro-note">Top brands</span>
+      <span class="intro-note">Daily &amp; multi-day packages</span>
+    </div>
+  </div>
+
+  <!-- WINDSURF -->
+  <div class="section">
+    <div class="section-header">
+      <img src="icons/icon_windsurf.png" alt="Windsurf">
+      <div>
+        <div class="section-title">WINDSURF</div>
+        <div class="section-sub">Board, sail, mast, boom — everything included.</div>
+      </div>
+    </div>
+    <p class="brand-note">Brands: Severne · Goya · Neilpryde · RRD · JP · Starboard · Tabou · Fanatic</p>
+    <div class="price-table-wrap">
+      <table class="pt">
+        <thead>
+          <tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Complete set</td><td>65 €</td><td>243 €</td><td>325 €</td><td>455 €</td><td>535 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="brand-note" style="margin-top:8px;">* Extra Carbon boom &amp; extension +10€/day · Only board or sails 40€/day, 195€/6 days</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- KITESURF -->
+  <div class="section">
+    <div class="section-header">
+      <img src="icons/icon_kitesurf.png" alt="Kitesurf">
+      <div>
+        <div class="section-title">KITESURF</div>
+        <div class="section-sub">Board, kite, bar, safety leash and pump included.</div>
+      </div>
+    </div>
+    <p class="brand-note">Brands: Naish</p>
+    <div class="price-table-wrap">
+      <table class="pt">
+        <thead>
+          <tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Complete set</td><td>85 €</td><td>280 €</td><td>375 €</td><td>525 €</td><td>620 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="brand-note" style="margin-top:8px;">* Only board or kite 40€/day, 195€/6 days</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- WINGFOIL -->
+  <div class="section">
+    <div class="section-header">
+      <img src="icons/icon_wingfoil.png" alt="Wingfoil">
+      <div>
+        <div class="section-title">WINGFOIL</div>
+        <div class="section-sub">Board, wing and foil included.</div>
+      </div>
+    </div>
+    <p class="brand-note">Brands: Naish · Duotone · Dakine · Neilpryde</p>
+    <div class="price-table-wrap">
+      <table class="pt">
+        <thead>
+          <tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Complete set</td><td>95 €</td><td>320 €</td><td>445 €</td><td>620 €</td><td>735 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="brand-note" style="margin-top:8px;">* Only board or wing 40€/day, 195€/6 days</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SURF / BODYBOARD / SKATE / BIKE -->
+  <div class="section">
+    <div class="section-header">
+      <img src="icons/icon_surf.png" alt="Surf">
+      <div>
+        <div class="section-title">SURF &amp; MORE</div>
+        <div class="section-sub">When the wind takes a day off — we don't.</div>
+      </div>
+    </div>
+
+    <!-- SURF -->
+    <p class="brand-note" style="margin-bottom:8px;">Surf · Board, leash and wax included</p>
+    <div class="price-table-wrap" style="margin-bottom:28px;">
+      <table class="pt">
+        <thead>
+          <tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Soft</td><td>18 €</td><td>65 €</td><td>100 €</td><td>140 €</td><td>165 €</td></tr>
+          <tr><td>Hard</td><td>23 €</td><td>85 €</td><td>120 €</td><td>165 €</td><td>195 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BODYBOARD -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+      <img src="icons/icon_bodyboard.png" style="height:28px;width:auto;" alt="Bodyboard">
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:#111;">BODYBOARD &amp; SKIMBOARD</span>
+    </div>
+    <div class="price-table-wrap" style="margin-bottom:28px;">
+      <table class="pt">
+        <thead>
+          <tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Bodyboard</td><td>8 €</td><td>30 €</td><td>40 €</td><td>53 €</td><td>70 €</td></tr>
+          <tr><td>Skimboard</td><td>7 €</td><td>25 €</td><td>35 €</td><td>50 €</td><td>65 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SKATE -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+      <img src="icons/icon_skate.png" style="height:28px;width:auto;" alt="Skate">
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:#111;">SURF SKATE</span>
+    </div>
+    <div class="price-table-wrap" style="margin-bottom:28px;">
+      <table class="pt">
+        <thead>
+          <tr><th>Days</th><th>1</th><th>4</th><th>6</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Surf Skate</td><td>11 €</td><td>35 €</td><td>50 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BIKE -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+      <img src="icons/icon_bike.png" style="height:28px;width:auto;" alt="Bike">
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:#111;">BIKE — ILOVEBIKES</span>
+    </div>
+    <div class="price-table-wrap">
+      <table class="pt">
+        <thead>
+          <tr><th></th><th>1 day</th><th>Extra day</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>MTB</td><td>25 €</td><td>22 €</td></tr>
+          <tr><td>Road</td><td>35 €</td><td>33 €</td></tr>
+          <tr><td>E-Bike</td><td>45 €</td><td>42 €</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ABOUT BOX -->
+  <div class="about-box">
+    <div class="about-section-label">The Shop</div>
+    <p class="about-text">
+      Located in the Botanico shopping centre, easily accessible by car for loading and unloading your gear.
+      Inside: streetwear, beachwear, water sports accessories and <strong>ILOVEBIKES</strong> bicycle rental.
+      When you're done on the water, step into <strong>BEACH HOUSE</strong> pizzeria, right in our space, for the perfect refuel.
+    </p>
+    <div class="about-divider"></div>
+    <div class="about-section-label">The Team</div>
+    <p class="about-text">
+      <strong>Giorgio</strong>, <strong>Mitch</strong> and <strong>Henri</strong> — three passionate watermen with 15 years of teaching experience.
+      <strong>Matteo</strong>, our shop manager, is always available and flexible. Book <strong>Gabor</strong>, the surf photographer — he will capture every wipeout and every progression.
+    </p>
+  </div>
+
+  <!-- CONTACT BOX -->
+  <div class="contact-box">
+    <div class="contact-wa">
+      <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C6.48 2 2 6.48 2 12c0 1.76.46 3.41 1.27 4.84L2 22l5.32-1.25C8.7 21.5 10.3 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.5 0-2.93-.42-4.15-1.16l-.3-.18-3.07.72.74-3-.2-.32C4.34 14.85 4 13.45 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8zm4.5-5.97c-.25-.13-1.47-.72-1.7-.8-.23-.08-.39-.13-.56.13-.17.25-.65.8-.79.97-.15.17-.29.19-.54.06-.25-.13-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.13-.56-1.34-.77-1.84-.2-.48-.41-.42-.56-.42h-.48c-.17 0-.43.06-.66.31s-.86.85-.86 2.08c0 1.22.88 2.4 1 2.57.13.17 1.74 2.66 4.22 3.73.59.25 1.05.4 1.41.52.59.19 1.13.16 1.56.1.47-.07 1.47-.6 1.68-1.18.21-.59.21-1.09.15-1.18-.06-.1-.23-.16-.48-.29z" fill="#111"/>
+      </svg>
+      <div>
+        <div class="contact-wa-label">Questions? Message us on WhatsApp</div>
+        <div class="contact-wa-val">+34 679 561 225</div>
+      </div>
+    </div>
+    <div class="contact-divider"></div>
+    <div class="contact-qr">
+      <img src="images/qr.jpg" alt="QR Shaka location">
+      <div>
+        <div class="contact-qr-label">Find us</div>
+        <div class="contact-qr-val">Botanico Centre<br>Costa Calma</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">
+      SHAKA
+      <span>Fuerteventura · Costa Calma</span>
+    </div>
+    <div class="footer-links">
+      <a href="school.html">The School</a>
+      <a href="shop.html">The Shop</a>
+      <a href="about.html">About Us</a>
+      <a href="about.html#contact">Contact</a>
+    </div>
+    <div class="footer-contact">
+      <a href="https://wa.me/34679561225">WhatsApp: +34 679 561 225</a><br>
+      <a href="https://shaka-fuerte.com">shaka-fuerte.com</a>
+    </div>
+  </footer>
+
+
+
+  <!-- WHATSAPP FLOAT -->
+  <a href="https://wa.me/34679561225" target="_blank" class="wa-float" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    <span>Chat with us</span>
+  </a>
+
+  <!-- MOBILE DRAWER -->
+  <div class="nav-drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+  <div class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-close">
+      <button onclick="closeDrawer()" aria-label="Close menu">&#215;</button>
+    </div>
+    <div class="nav-drawer-links">
+      <a href="school.html">The School <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a href="shop.html">The Shop <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a href="about.html">About Us <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a href="about.html#contact">Contact <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+    </div>
+    <div class="nav-drawer-divider"></div>
+    <div class="nav-drawer-lang">
+      <div class="nav-drawer-lang-label">Language</div>
+      <div class="nav-drawer-lang-links">
+        <a href="#" class="active">English</a>
+        <a href="#">Español</a>
+        <a href="#">Italiano</a>
+        <a href="#">Deutsch</a>
+      </div>
+    </div>
+    <div class="nav-drawer-divider"></div>
+    <div class="nav-drawer-social">
+      <a href="https://www.facebook.com/shakafuerte/" target="_blank" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/shakafuerte/" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+      <a href="https://wa.me/34679561225" target="_blank" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </a>
+    </div>
+  </div>
+  <script>
+    function openDrawer() {
+      document.getElementById('navDrawer').classList.add('open');
+      document.getElementById('drawerOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+      document.getElementById('navDrawer').classList.remove('open');
+      document.getElementById('drawerOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  </script>
+</body>
+</html>
