@@ -7,9 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Barlow', sans-serif; background: #f0ede8; color: #111; }
+    body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; }
 
-    /* ── TOP BAR ── */
+    /* TOP BAR */
     .topbar { display: flex; justify-content: space-between; align-items: center; padding: 7px 40px; background: #1a1a1a; border-bottom: 1px solid #2a2a2a; }
     .topbar-social { display: flex; align-items: center; gap: 14px; }
     .topbar-social a { color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.2s; display: flex; align-items: center; }
@@ -26,269 +26,158 @@
     .topbar-lang a:hover, .topbar-lang a.active { color: #fff; }
     .topbar-lang span { color: rgba(255,255,255,0.15); font-size: 9px; }
 
+    /* NAVBAR */
     .nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 40px; background: #fff; border-bottom: 1px solid #e0ddd8; position: sticky; top: 0; z-index: 100; }
-    .nav-logo { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; }
     .nav-logo img { height: 115px; width: auto; }
-    .nav-logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 5px; color: #111; line-height: 1; }
-    .nav-logo-sub { font-family: 'Barlow Condensed', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #aaa; margin-top: 3px; }
     .nav-links { display: flex; gap: 32px; position: absolute; left: 50%; transform: translateX(-50%); }
     .nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #333; text-decoration: none; transition: color 0.2s; }
-    .nav-links a:hover { color: #111; }
-    .nav-links a.active { color: #111; border-bottom: 2px solid #273043; padding-bottom: 2px; }
-    .nav-lang { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #aaa; cursor: pointer; }
+    .nav-links a:hover, .nav-links a.active { color: #111; }
+    .nav-links a.active { border-bottom: 2px solid #273043; padding-bottom: 2px; }
 
+    /* HERO */
     .hero { position: relative; height: 340px; overflow: hidden; display: flex; align-items: flex-end; }
     .hero-bg { position: absolute; inset: 0; background-image: url('images/background6.jpg'); background-size: cover; background-position: center 60%; }
-    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(240,237,232,0) 10%, rgba(240,237,232,0.96) 100%); }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,0) 10%, rgba(255,255,255,0.96) 100%); }
     .hero-content { position: relative; z-index: 2; padding: 0 48px 36px; }
-    .hero-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 8px; }
-    .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: 88px; letter-spacing: 6px; line-height: 0.88; color: #111; }
+    .hero-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #111; margin-bottom: 8px; }
+    .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: 88px; letter-spacing: 6px; line-height: 0.95; color: #111; padding-top: 4px; }
     .cover-line { width: 28px; height: 3px; background: #111; margin: 14px 0 10px; }
     .hero-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #333; }
 
     /* INTRO */
-    .intro { background: #fff; border-top: 1px solid #e0ddd8; padding: 32px 48px; }
-    .intro-text { font-family: 'Barlow', sans-serif; font-size: 13.5px; font-style: italic; color: #555; line-height: 1.6; max-width: 700px; }
-    .intro-notes { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
-    .intro-note { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #aaa; border: 1px solid #e0ddd8; border-radius: 3px; padding: 5px 10px; }
+    .intro { background: #fff; text-align: center; padding: 56px 48px; }
+    .intro-inner { max-width: 860px; margin: 0 auto; }
+    .intro-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 8px; }
+    .intro-heading { font-family: 'Bebas Neue', sans-serif; font-size: 44px; letter-spacing: 3px; color: #111; line-height: 1; margin-bottom: 24px; }
+    .intro-text { font-family: 'Barlow', sans-serif; font-size: 16px; color: #555; line-height: 1.4; margin-bottom: 16px; }
+    .intro-text:last-child { margin-bottom: 0; }
+    .intro-text strong { color: #111; font-weight: 600; }
 
-    /* SECTION */
-    .section { padding: 48px 48px 0; }
-    .section:last-of-type { padding-bottom: 64px; }
+    /* SPORT CHOICE (big 3) */
+    .sports { background: #fff; padding: 24px 48px 40px; }
+    .sports-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .sport-card { text-align: center; }
+    .sport-photo { width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 4px; margin-bottom: 16px; }
+    .sport-photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+    .sport-card:hover .sport-photo img { transform: scale(1.04); }
+    .sport-name { font-family: 'Bebas Neue', sans-serif; font-size: 34px; letter-spacing: 3px; color: #111; line-height: 1; margin-bottom: 8px; }
+    .sport-brands { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; margin-bottom: 16px; }
+    .sport-btn { display: inline-block; font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 3px; text-transform: uppercase; color: #fff; background: #111; padding: 9px 26px; border-radius: 2px; text-decoration: none; transition: background 0.2s; }
+    .sport-btn:hover { background: #273043; }
 
-    .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #e0ddd8; }
-    .section-header img { height: 48px; width: auto; }
-    .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 4px; color: #111; line-height: 1; }
-    .section-sub { font-family: 'Barlow', sans-serif; font-size: 13px; font-style: italic; color: #777; margin-top: 2px; }
-    .brand-note { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; font-style: italic; margin-bottom: 14px; }
+    /* SMALL SPORTS (4) */
+    .mini-sports { background: #fff; padding: 8px 48px 48px; }
+    .mini-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .mini-card { text-align: center; border: 1.5px solid #e0ddd8; border-radius: 4px; padding: 20px 14px; text-decoration: none; transition: border-color 0.2s, transform 0.2s; }
+    .mini-card:hover { border-color: #273043; transform: translateY(-2px); }
+    .mini-card img { height: 40px; width: auto; margin-bottom: 10px; }
+    .mini-name { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1.5px; color: #111; line-height: 1.1; }
+
+    /* SECTION WRAP */
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 56px 48px 0; scroll-margin-top: 140px; }
+    .section-head { margin-bottom: 24px; }
+    .section-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #aaa; margin-bottom: 6px; }
+    .section-title { display: flex; align-items: center; gap: 14px; }
+    .section-title img { height: 40px; width: auto; }
+    .section-title h2 { font-family: 'Bebas Neue', sans-serif; font-size: 46px; letter-spacing: 3px; color: #111; line-height: 1; }
+    .brand-note { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #999; margin: 8px 0 0; }
 
     /* PRICE TABLE */
-    .price-table-wrap { overflow-x: auto; margin-bottom: 8px; }
-    table.pt {
-      width: 100%;
-      border-collapse: collapse;
-      font-family: 'Barlow Condensed', sans-serif;
-    }
-    table.pt thead th {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #111;
-      text-align: center;
-      padding: 0 0 8px;
-      border-bottom: 1px solid #111;
-    }
+    .price-table-wrap { overflow-x: auto; }
+    table.pt { width: 100%; border-collapse: collapse; font-family: 'Barlow Condensed', sans-serif; }
+    table.pt thead th { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #111; text-align: center; padding: 0 8px 10px; border-bottom: 2px solid #111; }
     table.pt thead th:first-child { text-align: left; }
-    table.pt tbody td {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 18px;
-      letter-spacing: 0.5px;
-      color: #111;
-      text-align: center;
-      padding: 8px 4px;
-      border-bottom: 1px solid #f0ede8;
-    }
+    table.pt tbody td { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.5px; color: #111; text-align: center; padding: 11px 8px; border-bottom: 1px solid #f0ede8; }
     table.pt tbody tr:last-child td { border-bottom: none; }
-    table.pt tbody td:first-child {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      color: #333;
-      text-align: left;
-      letter-spacing: 0.5px;
-    }
+    table.pt tbody td:first-child { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; color: #333; text-align: left; letter-spacing: 0.5px; text-transform: uppercase; }
 
-    .divider { height: 1px; background: #e0ddd8; margin: 48px 48px 0; }
+    /* DIVIDER */
+    .divider { max-width: 1100px; margin: 56px auto 0; padding: 0 48px; }
+    .divider-line { height: 1px; background: #e0ddd8; }
 
-    /* ABOUT BOX */
-    .about-box { margin: 48px 48px 0; background: #fff; border: 1px solid #e0ddd8; border-radius: 3px; padding: 32px 36px; }
-    .about-section-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #273043; margin-bottom: 6px; }
-    .about-text { font-family: 'Barlow', sans-serif; font-size: 13.5px; font-style: italic; color: #555; line-height: 1.6; margin-bottom: 20px; }
-    .about-text:last-child { margin-bottom: 0; }
-    .about-divider { height: 1px; background: #e0ddd8; margin: 20px 0; }
+    /* INFO + MAP */
+    .info-map { background: #fff; padding: 56px 48px; }
+    .info-map-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: stretch; }
+    .info-side { display: flex; flex-direction: column; justify-content: center; }
+    .info-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 6px; }
+    .info-heading { font-family: 'Bebas Neue', sans-serif; font-size: 44px; letter-spacing: 3px; color: #111; line-height: 1; margin-bottom: 24px; }
+    .info-block { display: flex; flex-direction: column; gap: 18px; }
+    .info-row { display: flex; align-items: flex-start; gap: 14px; }
+    .info-row svg { flex-shrink: 0; color: #273043; margin-top: 2px; }
+    .info-label { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 3px; }
+    .info-val { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1px; color: #111; line-height: 1.2; }
+    .inline-link { color: #273043; text-decoration: underline; font-weight: 600; }
+    .inline-link:hover { color: #111; }
+    .map-side { min-height: 320px; border-radius: 6px; overflow: hidden; border: 1.5px solid #e0ddd8; }
+    .map-side iframe { display: block; width: 100%; height: 100%; min-height: 320px; }
 
-    /* CONTACT */
-    .contact-box { margin: 48px 48px 64px; border: 2.5px solid #111; border-radius: 7px; padding: 28px 32px; background: #fff; display: flex; align-items: center; gap: 40px; flex-wrap: wrap; }
-    .contact-wa { display: flex; align-items: center; gap: 16px; flex: 1; min-width: 200px; }
-    .contact-wa svg { flex-shrink: 0; }
-    .contact-wa-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 4px; }
-    .contact-wa-val { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 3px; color: #111; line-height: 1; }
-    .contact-divider { width: 1px; height: 60px; background: #e0ddd8; flex-shrink: 0; }
-    .contact-qr { display: flex; align-items: center; gap: 16px; flex: 1; min-width: 180px; }
-    .contact-qr img { width: 80px; height: 80px; flex-shrink: 0; }
-    .contact-qr-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 4px; }
-    .contact-qr-val { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: #111; line-height: 1; }
+    /* GALLERY */
+    .gallery { background: #fff; padding: 24px 48px 64px; }
+    .gallery-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .gallery-cell { aspect-ratio: 3 / 2; background: #faf9f6; border: 1.5px solid #e0ddd8; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: #ccc; overflow: hidden; }
+    .gallery-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    footer { background: #111; padding: 32px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 5px; color: #fff; }
-    .footer-logo span { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #666; display: block; margin-top: 2px; }
-    .footer-links { display: flex; gap: 24px; }
+    /* FOOTER */
+    footer { background: #111; padding: 10px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; position: relative; }
+    footer img { height: 80px; width: auto; }
+    .footer-links { display: flex; gap: 24px; position: absolute; left: 50%; transform: translateX(-50%); }
     .footer-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #666; text-decoration: none; transition: color 0.2s; }
     .footer-links a:hover { color: #fff; }
-    .footer-contact { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 1.5px; color: #666; text-align: right; }
-    .footer-contact a { color: #aaa; text-decoration: none; }
-    .footer-contact a:hover { color: #fff; }
+    .footer-spacer { width: 80px; }
 
-    @media (max-width: 768px) {
-      .nav { padding: 12px 20px; }
-      .nav-links { display: none; }
-      .hero { height: 280px; }
-      .hero-content { padding: 0 24px 28px; }
-      .hero-title { font-size: 64px; }
-      .intro, .section { padding-left: 24px; padding-right: 24px; }
-      .divider { margin-left: 24px; margin-right: 24px; }
-      .about-box, .contact-box { margin-left: 24px; margin-right: 24px; }
-      .contact-box { flex-direction: column; gap: 20px; }
-      .contact-divider { display: none; }
-      footer { flex-direction: column; align-items: flex-start; padding: 28px 24px; }
-      .footer-contact { text-align: left; }
-    }
+    /* WA FLOAT */
+    .wa-float { position: fixed; bottom: 24px; right: 24px; z-index: 990; display: flex; align-items: center; gap: 10px; background: #25d366; color: #fff; text-decoration: none; padding: 12px 20px 12px 16px; border-radius: 50px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 1.5px; box-shadow: 0 4px 16px rgba(37,211,102,0.35); transition: background 0.2s; }
+    .wa-float:hover { background: #1ebe5d; }
 
-    /* ── MOBILE MENU ── */
-    .nav-hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      padding: 4px;
-      background: none;
-      border: none;
-    }
-    .nav-hamburger span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: #111;
-      transition: all 0.3s;
-    }
-    .nav-drawer {
-      position: fixed;
-      top: 0; left: 0;
-      width: 85%;
-      max-width: 340px;
-      height: 100vh;
-      background: #fff;
-      z-index: 999;
-      transform: translateX(-100%);
-      transition: transform 0.3s ease;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-    }
+    /* MOBILE MENU */
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; position: absolute; left: 20px; top: 50%; transform: translateY(-50%); }
+    .nav-hamburger span { display: block; width: 24px; height: 2px; background: #111; transition: all 0.3s; }
+    .nav-drawer { position: fixed; top: 0; left: 0; width: 85%; max-width: 340px; height: 100vh; background: #fff; z-index: 999; transform: translateX(-100%); transition: transform 0.3s ease; overflow-y: auto; display: flex; flex-direction: column; }
     .nav-drawer.open { transform: translateX(0); }
-    .nav-drawer-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.4);
-      z-index: 998;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s;
-    }
+    .nav-drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 998; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
     .nav-drawer-overlay.open { opacity: 1; pointer-events: all; }
-    .nav-drawer-close {
-      display: flex;
-      justify-content: flex-end;
-      padding: 20px 20px 0;
-    }
-    .nav-drawer-close button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 28px;
-      color: #333;
-      line-height: 1;
-    }
-    .nav-drawer-links {
-      padding: 12px 0;
-      flex: 1;
-    }
-    .nav-drawer-links a {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 24px;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px;
-      letter-spacing: 3px;
-      color: #111;
-      text-decoration: none;
-      border-bottom: 1px solid #f0ede8;
-      transition: background 0.15s;
-    }
+    .nav-drawer-close { display: flex; justify-content: flex-end; padding: 20px 20px 0; }
+    .nav-drawer-close button { background: none; border: none; cursor: pointer; font-size: 28px; color: #333; line-height: 1; }
+    .nav-drawer-links { padding: 12px 0; flex: 1; }
+    .nav-drawer-links a { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; color: #111; text-decoration: none; border-bottom: 1px solid #f0ede8; transition: background 0.15s; }
     .nav-drawer-links a:hover { background: #faf9f6; }
     .nav-drawer-links a svg { width: 14px; height: 14px; stroke: #aaa; fill: none; stroke-width: 2; }
     .nav-drawer-divider { height: 1px; background: #e0ddd8; margin: 8px 0; }
-    .nav-drawer-lang {
-      padding: 16px 24px;
-      border-bottom: 1px solid #f0ede8;
-    }
-    .nav-drawer-lang-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #aaa;
-      margin-bottom: 10px;
-    }
+    .nav-drawer-lang { padding: 16px 24px; border-bottom: 1px solid #f0ede8; }
+    .nav-drawer-lang-label { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 10px; }
     .nav-drawer-lang-links { display: flex; flex-direction: column; gap: 2px; }
-    .nav-drawer-lang-links a {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #555;
-      text-decoration: none;
-      padding: 8px 0;
-      border-bottom: none;
-      display: block;
-    }
+    .nav-drawer-lang-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #555; text-decoration: none; padding: 8px 0; display: block; }
     .nav-drawer-lang-links a.active { color: #111; }
-    .nav-drawer-lang-links a:hover { color: #111; background: none; }
-    .nav-drawer-social {
-      display: flex;
-      gap: 20px;
-      padding: 20px 24px 32px;
-    }
-    .nav-drawer-social a {
-      color: #555;
-      transition: color 0.2s;
-    }
+    .nav-drawer-social { display: flex; gap: 20px; padding: 20px 24px 32px; }
+    .nav-drawer-social a { color: #555; transition: color 0.2s; }
     .nav-drawer-social a:hover { color: #111; }
-    .nav-drawer-social svg { width: 22px; height: 22px; }
 
     @media (max-width: 768px) {
       .topbar-social, .topbar-lang { display: none; }
       .topbar { padding: 7px 20px; }
-      .nav { padding: 8px 20px; position: relative; justify-content: center; }
-      .nav-links, .nav-lang { display: none; }
-      .nav-hamburger { display: flex; position: absolute; left: 20px; top: 50%; transform: translateY(-50%); }
+      .nav { padding: 8px 20px; justify-content: center; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .hero { height: 260px; }
+      .hero-content { padding: 0 24px 28px; }
+      .hero-title { font-size: 60px; }
+      .intro { padding: 40px 24px; }
+      .sports { padding: 16px 24px 24px; }
+      .sports-grid { grid-template-columns: 1fr; gap: 32px; }
+      .mini-sports { padding: 8px 24px 40px; }
+      .mini-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .wrap { padding: 40px 24px 0; }
+      .divider { padding-left: 24px; padding-right: 24px; }
+      .section-title h2 { font-size: 38px; }
+      .info-map { padding: 40px 24px; }
+      .info-map-inner { grid-template-columns: 1fr; gap: 28px; }
+      .gallery { padding: 16px 24px 40px; }
+      .gallery-grid { grid-template-columns: 1fr; gap: 12px; }
+      footer { padding: 12px 20px; }
+      footer img { height: 56px; }
+      .footer-links { gap: 14px; }
     }
-
-    .wa-float {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 990;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #25d366;
-      color: #fff;
-      text-decoration: none;
-      padding: 12px 20px 12px 16px;
-      border-radius: 50px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      box-shadow: 0 4px 16px rgba(37,211,102,0.35);
-      transition: background 0.2s, box-shadow 0.2s;
-    }
-    .wa-float:hover { background: #1ebe5d; box-shadow: 0 6px 20px rgba(37,211,102,0.5); }
   </style>
 </head>
 <body>
@@ -296,51 +185,31 @@
   <!-- TOP BAR -->
   <div class="topbar">
     <div class="topbar-social">
-      <a href="https://www.facebook.com/shakafuerte/" target="_blank" aria-label="Facebook">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-      </a>
-      <a href="https://www.instagram.com/shakafuerte/" target="_blank" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-      </a>
-      <a href="https://wa.me/34679561225" target="_blank" aria-label="WhatsApp">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-      </a>
+      <a href="https://www.facebook.com/shakafuerte/" target="_blank" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+      <a href="https://wa.me/34679561225" target="_blank" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
     </div>
     <div class="topbar-marquee">
       <div class="topbar-marquee-inner">
-        <a href="#contact">🤙 Book your lesson here!</a>
-        <span class="sep">·</span>
-        <span>⭐ 5★ Google &nbsp;·&nbsp; 4.8★ GetYourGuide</span>
-        <span class="sep">·</span>
-        <span>🏄 Rent &amp; Go — just show up and ride</span>
-        <span class="sep">·</span>
-        <span>📍 C.C. Botánico · Costa Calma · Fuerteventura</span>
-        <span class="sep">·</span>
-        <a href="#contact">🤙 Book your lesson here!</a>
-        <span class="sep">·</span>
-        <span>⭐ 5★ Google &nbsp;·&nbsp; 4.8★ GetYourGuide</span>
-        <span class="sep">·</span>
-        <span>🏄 Rent &amp; Go — just show up and ride</span>
-        <span class="sep">·</span>
-        <span>📍 C.C. Botánico · Costa Calma · Fuerteventura</span>
-        <span class="sep">·</span>
+        <a href="#contact">🤙 Rent your gear here!</a><span class="sep">·</span>
+        <span>⭐ 5★ Google &nbsp;·&nbsp; 4.8★ GetYourGuide</span><span class="sep">·</span>
+        <span>🏄 Top brands · Free roofrack included</span><span class="sep">·</span>
+        <span>📍 C.C. Botánico · Costa Calma · Fuerteventura</span><span class="sep">·</span>
+        <a href="#contact">🤙 Rent your gear here!</a><span class="sep">·</span>
+        <span>⭐ 5★ Google &nbsp;·&nbsp; 4.8★ GetYourGuide</span><span class="sep">·</span>
+        <span>🏄 Top brands · Free roofrack included</span><span class="sep">·</span>
+        <span>📍 C.C. Botánico · Costa Calma · Fuerteventura</span><span class="sep">·</span>
       </div>
     </div>
     <div class="topbar-lang">
-      <a href="#" class="active">EN</a><span>·</span>
-      <a href="#">ES</a><span>·</span>
-      <a href="#">IT</a><span>·</span>
-      <a href="#">DE</a>
+      <a href="#" class="active">EN</a><span>·</span><a href="#">ES</a><span>·</span><a href="#">IT</a><span>·</span><a href="#">DE</a>
     </div>
   </div>
 
+  <!-- NAVBAR -->
   <nav class="nav">
-      <button class="nav-hamburger" onclick="openDrawer()" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
-          <a href="index.html" class="nav-logo">
-      <img src="images/logo-shaka-web.png" alt="Shaka Fuerteventura">
-    </a>
+    <button class="nav-hamburger" onclick="openDrawer()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <a href="index.html" class="nav-logo"><img src="images/logo-shaka-web.png" alt="Shaka Fuerteventura"></a>
     <div class="nav-links">
       <a href="school.html">The School</a>
       <a href="shop.html" class="active">The Shop</a>
@@ -349,6 +218,7 @@
     </div>
   </nav>
 
+  <!-- HERO -->
   <section class="hero">
     <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
@@ -360,162 +230,165 @@
     </div>
   </section>
 
+  <!-- INTRO -->
   <div class="intro">
-    <p class="intro-text">
-      Shaka has been part of Costa Calma for over 5 years. <strong>Matteo</strong>, our shop manager,
-      is always available, flexible and ready to meet every need.
-      Located in the Botanico shopping centre — easy car access for loading and unloading.
-    </p>
-    <div class="intro-notes">
-      <span class="intro-note">All rentals 24h</span>
-      <span class="intro-note">Free universal roofrack</span>
-      <span class="intro-note">Top brands</span>
-      <span class="intro-note">Daily &amp; multi-day packages</span>
+    <div class="intro-inner">
+      <p class="intro-eyebrow">The Shaka Shop</p>
+      <h2 class="intro-heading">Everything You Need to Ride</h2>
+      <p class="intro-text">Whether you're chasing wind or waves, our shop has you covered. We rent <strong>top-brand equipment</strong> for every wind and water sport, with gear you can <strong>swap anytime</strong> to match the conditions.</p>
+      <p class="intro-text">Based at <strong>C.C. Botánico in Costa Calma</strong>, with easy car access for loading and unloading. Every rental includes a <strong>free universal roofrack</strong>, and our team is always on hand to help you pick the right setup.</p>
+      <p class="intro-text">Not just rental: step inside for <strong>streetwear, beachwear and accessories</strong>, plus <strong>ILOVEBIKES</strong> bike rental and the <strong>Beach House</strong> pizzeria to refuel after your session.</p>
     </div>
   </div>
 
-  <!-- WINDSURF -->
-  <div class="section">
-    <div class="section-header">
-      <img src="icons/icon_windsurf.png" alt="Windsurf">
-      <div>
-        <div class="section-title">WINDSURF</div>
-        <div class="section-sub">Board, sail, mast, boom — everything included.</div>
+  <!-- BIG 3 SPORTS -->
+  <div class="sports">
+    <div class="sports-grid">
+      <div class="sport-card">
+        <div class="sport-photo"><img src="images/shop-windsurf.jpg" alt="Windsurf rental"></div>
+        <h3 class="sport-name">Windsurf</h3>
+        <p class="sport-brands">Severne · Goya · Neilpryde · RRD · JP · Starboard · Tabou · Fanatic</p>
+        <a href="#windsurf-prices" class="sport-btn">See prices</a>
+      </div>
+      <div class="sport-card">
+        <div class="sport-photo"><img src="images/shop-kite.jpg" alt="Kitesurf rental"></div>
+        <h3 class="sport-name">Kitesurf</h3>
+        <p class="sport-brands">Naish</p>
+        <a href="#kite-prices" class="sport-btn">See prices</a>
+      </div>
+      <div class="sport-card">
+        <div class="sport-photo"><img src="images/shop-wing.jpg" alt="Wingfoil rental"></div>
+        <h3 class="sport-name">Wingfoil</h3>
+        <p class="sport-brands">Naish · Duotone · Dakine · Neilpryde</p>
+        <a href="#wing-prices" class="sport-btn">See prices</a>
       </div>
     </div>
-    <p class="brand-note">Brands: Severne · Goya · Neilpryde · RRD · JP · Starboard · Tabou · Fanatic</p>
+  </div>
+
+  <!-- SMALL 4 SPORTS -->
+  <div class="mini-sports">
+    <div class="mini-grid">
+      <a href="#surf-prices" class="mini-card"><img src="icons/icon_surf.png" alt=""><div class="mini-name">Surf</div></a>
+      <a href="#bodyboard-prices" class="mini-card"><img src="icons/icon_bodyboard.png" alt=""><div class="mini-name">Bodyboard<br>&amp; Skimboard</div></a>
+      <a href="#skate-prices" class="mini-card"><img src="icons/icon_skate.png" alt=""><div class="mini-name">Surf Skate</div></a>
+      <a href="#bike-prices" class="mini-card"><img src="icons/icon_bike.png" alt=""><div class="mini-name">Bike</div></a>
+    </div>
+  </div>
+
+  <div class="divider"><div class="divider-line"></div></div>
+
+  <!-- WINDSURF PRICES -->
+  <div class="wrap" id="windsurf-prices">
+    <div class="section-head">
+      <div class="section-title"><img src="icons/icon_windsurf.png" alt=""><h2>Windsurf</h2></div>
+      <p class="brand-note">Complete set: board, sail, mast, boom · Severne · Goya · Neilpryde · RRD · JP · Starboard · Tabou · Fanatic</p>
+    </div>
     <div class="price-table-wrap">
       <table class="pt">
-        <thead>
-          <tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Complete set</td><td>65 €</td><td>243 €</td><td>325 €</td><td>455 €</td><td>535 €</td></tr>
-        </tbody>
+        <thead><tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr></thead>
+        <tbody><tr><td>Complete set</td><td>65 €</td><td>243 €</td><td>325 €</td><td>455 €</td><td>535 €</td></tr></tbody>
       </table>
     </div>
-    <p class="brand-note" style="margin-top:8px;">* Extra Carbon boom &amp; extension +10€/day · Only board or sails 40€/day, 195€/6 days</p>
+    <p class="brand-note">* Extra carbon boom &amp; extension +10€/day · Board or sail only 40€/day, 195€/6 days</p>
   </div>
 
-  <div class="divider"></div>
+  <div class="divider"><div class="divider-line"></div></div>
 
-  <!-- KITESURF -->
-  <div class="section">
-    <div class="section-header">
-      <img src="icons/icon_kitesurf.png" alt="Kitesurf">
-      <div>
-        <div class="section-title">KITESURF</div>
-        <div class="section-sub">Board, kite, bar, safety leash and pump included.</div>
-      </div>
+  <!-- KITESURF PRICES -->
+  <div class="wrap" id="kite-prices">
+    <div class="section-head">
+      <div class="section-title"><img src="icons/icon_kitesurf.png" alt=""><h2>Kitesurf</h2></div>
+      <p class="brand-note">Complete set: board, kite, bar, safety leash &amp; pump · Naish</p>
     </div>
-    <p class="brand-note">Brands: Naish</p>
     <div class="price-table-wrap">
       <table class="pt">
-        <thead>
-          <tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Complete set</td><td>85 €</td><td>280 €</td><td>375 €</td><td>525 €</td><td>620 €</td></tr>
-        </tbody>
+        <thead><tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr></thead>
+        <tbody><tr><td>Complete set</td><td>85 €</td><td>280 €</td><td>375 €</td><td>525 €</td><td>620 €</td></tr></tbody>
       </table>
     </div>
-    <p class="brand-note" style="margin-top:8px;">* Only board or kite 40€/day, 195€/6 days</p>
+    <p class="brand-note">* Board or kite only 40€/day, 195€/6 days</p>
   </div>
 
-  <div class="divider"></div>
+  <div class="divider"><div class="divider-line"></div></div>
 
-  <!-- WINGFOIL -->
-  <div class="section">
-    <div class="section-header">
-      <img src="icons/icon_wingfoil.png" alt="Wingfoil">
-      <div>
-        <div class="section-title">WINGFOIL</div>
-        <div class="section-sub">Board, wing and foil included.</div>
-      </div>
+  <!-- WINGFOIL PRICES -->
+  <div class="wrap" id="wing-prices">
+    <div class="section-head">
+      <div class="section-title"><img src="icons/icon_wingfoil.png" alt=""><h2>Wingfoil</h2></div>
+      <p class="brand-note">Complete set: board, foil, wing · Naish · Duotone · Dakine · Neilpryde</p>
     </div>
-    <p class="brand-note">Brands: Naish · Duotone · Dakine · Neilpryde</p>
     <div class="price-table-wrap">
       <table class="pt">
-        <thead>
-          <tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Complete set</td><td>95 €</td><td>320 €</td><td>445 €</td><td>620 €</td><td>735 €</td></tr>
-        </tbody>
+        <thead><tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr></thead>
+        <tbody><tr><td>Complete set</td><td>95 €</td><td>320 €</td><td>445 €</td><td>620 €</td><td>735 €</td></tr></tbody>
       </table>
     </div>
-    <p class="brand-note" style="margin-top:8px;">* Only board or wing 40€/day, 195€/6 days</p>
+    <p class="brand-note">* Board or wing only 40€/day, 195€/6 days</p>
   </div>
 
-  <div class="divider"></div>
+  <div class="divider"><div class="divider-line"></div></div>
 
-  <!-- SURF / BODYBOARD / SKATE / BIKE -->
-  <div class="section">
-    <div class="section-header">
-      <img src="icons/icon_surf.png" alt="Surf">
-      <div>
-        <div class="section-title">SURF &amp; MORE</div>
-        <div class="section-sub">When the wind takes a day off — we don't.</div>
-      </div>
+  <!-- SURF PRICES -->
+  <div class="wrap" id="surf-prices">
+    <div class="section-head">
+      <div class="section-title"><img src="icons/icon_surf.png" alt=""><h2>Surf</h2></div>
+      <p class="brand-note">Board, leash and wax included</p>
     </div>
-
-    <!-- SURF -->
-    <p class="brand-note" style="margin-bottom:8px;">Surf · Board, leash and wax included</p>
-    <div class="price-table-wrap" style="margin-bottom:28px;">
+    <div class="price-table-wrap">
       <table class="pt">
-        <thead>
-          <tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr>
-        </thead>
+        <thead><tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr></thead>
         <tbody>
           <tr><td>Soft</td><td>18 €</td><td>65 €</td><td>100 €</td><td>140 €</td><td>165 €</td></tr>
           <tr><td>Hard</td><td>23 €</td><td>85 €</td><td>120 €</td><td>165 €</td><td>195 €</td></tr>
         </tbody>
       </table>
     </div>
+  </div>
 
-    <!-- BODYBOARD -->
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-      <img src="icons/icon_bodyboard.png" style="height:28px;width:auto;" alt="Bodyboard">
-      <span style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:#111;">BODYBOARD &amp; SKIMBOARD</span>
+  <div class="divider"><div class="divider-line"></div></div>
+
+  <!-- BODYBOARD PRICES -->
+  <div class="wrap" id="bodyboard-prices">
+    <div class="section-head">
+      <div class="section-title"><img src="icons/icon_bodyboard.png" alt=""><h2>Bodyboard &amp; Skimboard</h2></div>
     </div>
-    <div class="price-table-wrap" style="margin-bottom:28px;">
+    <div class="price-table-wrap">
       <table class="pt">
-        <thead>
-          <tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr>
-        </thead>
+        <thead><tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr></thead>
         <tbody>
           <tr><td>Bodyboard</td><td>8 €</td><td>30 €</td><td>40 €</td><td>53 €</td><td>70 €</td></tr>
           <tr><td>Skimboard</td><td>7 €</td><td>25 €</td><td>35 €</td><td>50 €</td><td>65 €</td></tr>
         </tbody>
       </table>
     </div>
+  </div>
 
-    <!-- SKATE -->
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-      <img src="icons/icon_skate.png" style="height:28px;width:auto;" alt="Skate">
-      <span style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:#111;">SURF SKATE</span>
-    </div>
-    <div class="price-table-wrap" style="margin-bottom:28px;">
-      <table class="pt">
-        <thead>
-          <tr><th>Days</th><th>1</th><th>4</th><th>6</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Surf Skate</td><td>11 €</td><td>35 €</td><td>50 €</td></tr>
-        </tbody>
-      </table>
-    </div>
+  <div class="divider"><div class="divider-line"></div></div>
 
-    <!-- BIKE -->
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-      <img src="icons/icon_bike.png" style="height:28px;width:auto;" alt="Bike">
-      <span style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:#111;">BIKE — ILOVEBIKES</span>
+  <!-- SKATE PRICES -->
+  <div class="wrap" id="skate-prices">
+    <div class="section-head">
+      <div class="section-title"><img src="icons/icon_skate.png" alt=""><h2>Surf Skate</h2></div>
     </div>
     <div class="price-table-wrap">
       <table class="pt">
-        <thead>
-          <tr><th></th><th>1 day</th><th>Extra day</th></tr>
-        </thead>
+        <thead><tr><th>Days</th><th>1</th><th>4</th><th>6</th></tr></thead>
+        <tbody><tr><td>Surf Skate</td><td>11 €</td><td>35 €</td><td>50 €</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider"><div class="divider-line"></div></div>
+
+  <!-- BIKE PRICES -->
+  <div class="wrap" id="bike-prices">
+    <div class="section-head">
+      <div class="section-title"><img src="icons/icon_bike.png" alt=""><h2>Bike</h2></div>
+      <p class="brand-note">ILOVEBIKES rental</p>
+    </div>
+    <div class="price-table-wrap">
+      <table class="pt">
+        <thead><tr><th></th><th>1 day</th><th>Extra day</th></tr></thead>
         <tbody>
           <tr><td>MTB</td><td>25 €</td><td>22 €</td></tr>
           <tr><td>Road</td><td>35 €</td><td>33 €</td></tr>
@@ -525,76 +398,67 @@
     </div>
   </div>
 
-  <div class="divider"></div>
-
-  <!-- ABOUT BOX -->
-  <div class="about-box">
-    <div class="about-section-label">The Shop</div>
-    <p class="about-text">
-      Located in the Botanico shopping centre, easily accessible by car for loading and unloading your gear.
-      Inside: streetwear, beachwear, water sports accessories and <strong>ILOVEBIKES</strong> bicycle rental.
-      When you're done on the water, step into <strong>BEACH HOUSE</strong> pizzeria, right in our space, for the perfect refuel.
-    </p>
-    <div class="about-divider"></div>
-    <div class="about-section-label">The Team</div>
-    <p class="about-text">
-      <strong>Giorgio</strong>, <strong>Mitch</strong> and <strong>Henri</strong> — three passionate watermen with 15 years of teaching experience.
-      <strong>Matteo</strong>, our shop manager, is always available and flexible. Book <strong>Gabor</strong>, the surf photographer — he will capture every wipeout and every progression.
-    </p>
-  </div>
-
-  <!-- CONTACT BOX -->
-  <div class="contact-box">
-    <div class="contact-wa">
-      <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
-        <path d="M12 2C6.48 2 2 6.48 2 12c0 1.76.46 3.41 1.27 4.84L2 22l5.32-1.25C8.7 21.5 10.3 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.5 0-2.93-.42-4.15-1.16l-.3-.18-3.07.72.74-3-.2-.32C4.34 14.85 4 13.45 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8zm4.5-5.97c-.25-.13-1.47-.72-1.7-.8-.23-.08-.39-.13-.56.13-.17.25-.65.8-.79.97-.15.17-.29.19-.54.06-.25-.13-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.13-.56-1.34-.77-1.84-.2-.48-.41-.42-.56-.42h-.48c-.17 0-.43.06-.66.31s-.86.85-.86 2.08c0 1.22.88 2.4 1 2.57.13.17 1.74 2.66 4.22 3.73.59.25 1.05.4 1.41.52.59.19 1.13.16 1.56.1.47-.07 1.47-.6 1.68-1.18.21-.59.21-1.09.15-1.18-.06-.1-.23-.16-.48-.29z" fill="#111"/>
-      </svg>
-      <div>
-        <div class="contact-wa-label">Questions? Message us on WhatsApp</div>
-        <div class="contact-wa-val">+34 679 561 225</div>
+  <!-- INFO + MAP -->
+  <div class="info-map" id="contact">
+    <div class="info-map-inner">
+      <div class="info-side">
+        <p class="info-eyebrow">Find Us</p>
+        <h3 class="info-heading">The Shop</h3>
+        <div class="info-block">
+          <div class="info-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <div><div class="info-label">Opening Times</div><div class="info-val">9:00 – 15:00 · 18:00 – 20:00</div></div>
+          </div>
+          <div class="info-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <div><div class="info-label">Location</div><div class="info-val">Shaka Shop<br>C.C. Botánico, Costa Calma</div></div>
+          </div>
+          <div class="info-row">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            <div><div class="info-label">Book &amp; Info</div><div class="info-val"><a href="https://wa.me/34679561225" class="inline-link">WhatsApp +34 679 561 225</a></div></div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="contact-divider"></div>
-    <div class="contact-qr">
-      <img src="images/qr.jpg" alt="QR Shaka location">
-      <div>
-        <div class="contact-qr-label">Find us</div>
-        <div class="contact-qr-val">Botanico Centre<br>Costa Calma</div>
+      <div class="map-side">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14070.683448052896!2d-14.252299812841802!3d28.156506299999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xc479dec6d701b49%3A0xad780ca9e696aa6!2sShaka%20Fuerte%20Surf%20Shop%20%26%20Rental!5e0!3m2!1sit!2ses!4v1780758917537!5m2!1sit!2ses" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
   </div>
 
+  <!-- GALLERY -->
+  <div class="gallery">
+    <div class="gallery-grid">
+      <div class="gallery-cell">1</div>
+      <div class="gallery-cell">2</div>
+      <div class="gallery-cell">3</div>
+      <div class="gallery-cell">4</div>
+      <div class="gallery-cell">5</div>
+      <div class="gallery-cell">6</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
   <footer>
-    <div class="footer-logo">
-      SHAKA
-      <span>Fuerteventura · Costa Calma</span>
-    </div>
+    <img src="images/logo-shaka-web.png" alt="Shaka Fuerteventura">
     <div class="footer-links">
       <a href="school.html">The School</a>
       <a href="shop.html">The Shop</a>
       <a href="about.html">About Us</a>
       <a href="about.html#contact">Contact</a>
     </div>
-    <div class="footer-contact">
-      <a href="https://wa.me/34679561225">WhatsApp: +34 679 561 225</a><br>
-      <a href="https://shaka-fuerte.com">shaka-fuerte.com</a>
-    </div>
+    <div class="footer-spacer"></div>
   </footer>
 
-
-
-  <!-- WHATSAPP FLOAT -->
+  <!-- WA FLOAT -->
   <a href="https://wa.me/34679561225" target="_blank" class="wa-float" aria-label="Chat on WhatsApp">
-    <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    <svg viewBox="0 0 32 32" fill="currentColor" width="26" height="26"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.492.655 4.83 1.8 6.856L2 30l7.344-1.778A13.94 13.94 0 0 0 16 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.6a11.55 11.55 0 0 1-5.89-1.607l-.422-.252-4.36 1.056 1.084-4.248-.276-.436A11.56 11.56 0 0 1 4.4 16C4.4 9.59 9.59 4.4 16 4.4S27.6 9.59 27.6 16 22.41 27.6 16 27.6zm6.338-8.664c-.347-.174-2.055-1.014-2.374-1.13-.319-.115-.551-.173-.783.174-.232.346-.9 1.13-1.103 1.362-.202.232-.405.26-.752.086-.347-.173-1.465-.54-2.791-1.722-1.031-.92-1.727-2.055-1.929-2.402-.202-.347-.022-.534.152-.707.156-.155.347-.405.52-.607.174-.202.232-.347.347-.578.116-.232.058-.434-.029-.607-.087-.174-.783-1.888-1.073-2.587-.282-.678-.569-.586-.783-.597l-.667-.011a1.28 1.28 0 0 0-.926.434c-.318.347-1.215 1.188-1.215 2.896s1.244 3.358 1.418 3.59c.173.231 2.449 3.738 5.934 5.24.829.358 1.477.572 1.981.732.832.265 1.59.228 2.189.138.668-.1 2.055-.84 2.345-1.652.29-.811.29-1.507.202-1.652-.087-.144-.318-.231-.665-.405z"/></svg>
     <span>Chat with us</span>
   </a>
 
   <!-- MOBILE DRAWER -->
   <div class="nav-drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
   <div class="nav-drawer" id="navDrawer">
-    <div class="nav-drawer-close">
-      <button onclick="closeDrawer()" aria-label="Close menu">&#215;</button>
-    </div>
+    <div class="nav-drawer-close"><button onclick="closeDrawer()" aria-label="Close menu">&#215;</button></div>
     <div class="nav-drawer-links">
       <a href="school.html">The School <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
       <a href="shop.html">The Shop <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
@@ -605,36 +469,20 @@
     <div class="nav-drawer-lang">
       <div class="nav-drawer-lang-label">Language</div>
       <div class="nav-drawer-lang-links">
-        <a href="#" class="active">English</a>
-        <a href="#">Español</a>
-        <a href="#">Italiano</a>
-        <a href="#">Deutsch</a>
+        <a href="#" class="active">English</a><a href="#">Español</a><a href="#">Italiano</a><a href="#">Deutsch</a>
       </div>
     </div>
     <div class="nav-drawer-divider"></div>
     <div class="nav-drawer-social">
-      <a href="https://www.facebook.com/shakafuerte/" target="_blank" aria-label="Facebook">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-      </a>
-      <a href="https://www.instagram.com/shakafuerte/" target="_blank" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-      </a>
-      <a href="https://wa.me/34679561225" target="_blank" aria-label="WhatsApp">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-      </a>
+      <a href="https://www.facebook.com/shakafuerte/" target="_blank" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+      <a href="https://wa.me/34679561225" target="_blank" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
     </div>
   </div>
+
   <script>
-    function openDrawer() {
-      document.getElementById('navDrawer').classList.add('open');
-      document.getElementById('drawerOverlay').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeDrawer() {
-      document.getElementById('navDrawer').classList.remove('open');
-      document.getElementById('drawerOverlay').classList.remove('open');
-      document.body.style.overflow = '';
-    }
+    function openDrawer() { document.getElementById('navDrawer').classList.add('open'); document.getElementById('drawerOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeDrawer() { document.getElementById('navDrawer').classList.remove('open'); document.getElementById('drawerOverlay').classList.remove('open'); document.body.style.overflow = ''; }
   </script>
 </body>
 </html>

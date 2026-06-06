@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Barlow', sans-serif; background: #f0ede8; color: #111; }
+    body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; }
 
     /* TOP BAR */
     .topbar { display: flex; justify-content: space-between; align-items: center; padding: 7px 40px; background: #1a1a1a; border-bottom: 1px solid #2a2a2a; }
@@ -79,30 +79,72 @@
     .course-sport { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; color: #273043; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
     .course-sport img { height: 26px; width: auto; }
     .card-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
-    .card { background: #fff; border: 1.5px solid #e0ddd8; border-radius: 4px; padding: 22px 24px; transition: border-color 0.2s, transform 0.2s; }
+    .card { background: #fff; border: 1.5px solid #e0ddd8; border-radius: 4px; padding: 22px 24px; transition: border-color 0.2s, transform 0.2s; position: relative; display: flex; flex-direction: column; }
     .card:hover { border-color: #273043; transform: translateY(-2px); }
     .card.featured { border-color: #273043; }
-    .card-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 6px; }
-    .card-detail { font-family: 'Barlow', sans-serif; font-size: 12.5px; font-style: italic; color: #999; margin-bottom: 14px; line-height: 1.4; min-height: 34px; }
-    .card-price { font-family: 'Bebas Neue', sans-serif; font-size: 44px; letter-spacing: 2px; color: #111; line-height: 1; }
+    .card-label { font-family: 'Bebas Neue', sans-serif; font-size: 23px; font-weight: 400; letter-spacing: 1.5px; text-transform: uppercase; color: #111; margin-bottom: 6px; }
+    .card-detail { font-family: 'Barlow', sans-serif; font-size: 12.5px; font-style: italic; color: #999; margin-bottom: 14px; line-height: 1.4; min-height: 20px; }
+    .card-price { font-family: 'Bebas Neue', sans-serif; font-size: 44px; letter-spacing: 2px; color: #111; line-height: 1; margin-top: auto; }
     .card-price span { font-size: 18px; color: #aaa; letter-spacing: 1px; }
     .card.featured .card-price { color: #273043; }
-    .badge { display: inline-block; font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #fff; background: #273043; padding: 3px 8px; border-radius: 2px; margin-bottom: 10px; }
+    .price-block { margin-top: auto; }
+    .price-block .card-price { margin-top: 0; }
+    .badge { position: absolute; top: 14px; right: 14px; font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #fff; background: #273043; padding: 3px 8px; border-radius: 2px; }
 
     /* RENTAL TABLE */
     .rental-note { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; font-style: italic; margin-top: 12px; }
+    .inline-link { color: #273043; text-decoration: underline; font-weight: 600; }
+    .inline-link:hover { color: #111; }
+    .rental-card .card-detail { min-height: 40px; }
+    .price-rows { margin-top: auto; padding-top: 14px; }
+    .price-row { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 0; border-bottom: 1px solid #f0ede8; }
+    .price-row:last-child { border-bottom: none; }
+    .pr-label { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #555; }
+    .pr-val { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1px; color: #111; }
+    .price-row.pr-extra .pr-val { font-size: 20px; color: #999; }
+    .price-row.pr-extra .pr-label { color: #aaa; }
 
     /* DIVIDER */
     .divider { max-width: 1100px; margin: 56px auto 0; padding: 0 48px; }
     .divider-line { height: 1px; background: #e0ddd8; }
 
-    /* WHATSAPP CTA */
-    .cta-band { max-width: 1100px; margin: 56px auto 0; padding: 0 48px 64px; }
-    .cta-inner { background: #111; border-radius: 6px; padding: 36px 40px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
-    .cta-text h3 { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; color: #fff; line-height: 1; margin-bottom: 6px; }
-    .cta-text p { font-family: 'Barlow', sans-serif; font-size: 14px; color: rgba(255,255,255,0.6); }
-    .cta-btn { display: inline-flex; align-items: center; gap: 10px; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; color: #111; background: #25d366; padding: 14px 28px; border-radius: 50px; text-decoration: none; transition: background 0.2s; }
-    .cta-btn:hover { background: #1ebe5d; }
+    /* INFO + MAP */
+    .info-map { background: #fff; padding: 56px 48px; }
+    .info-map-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: stretch; }
+    .info-side { display: flex; flex-direction: column; justify-content: center; }
+    .info-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 6px; }
+    .info-heading { font-family: 'Bebas Neue', sans-serif; font-size: 44px; letter-spacing: 3px; color: #111; line-height: 1; margin-bottom: 24px; }
+    .info-block { display: flex; flex-direction: column; gap: 18px; }
+    .info-row { display: flex; align-items: flex-start; gap: 14px; }
+    .info-row svg { flex-shrink: 0; color: #273043; margin-top: 2px; }
+    .info-label { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 3px; }
+    .info-val { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1px; color: #111; line-height: 1.2; }
+    .map-side { min-height: 320px; border-radius: 6px; overflow: hidden; border: 1.5px solid #e0ddd8; }
+    .map-side iframe { display: block; width: 100%; height: 100%; min-height: 320px; }
+
+    /* BOOKING FORM */
+    .booking { background: #faf9f6; border-top: 1px solid #e0ddd8; padding: 56px 48px; }
+    .booking-inner { max-width: 900px; margin: 0 auto; }
+    .booking-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 6px; }
+    .booking-heading { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 3px; color: #111; line-height: 1; margin-bottom: 16px; }
+    .booking-intro { font-family: 'Barlow', sans-serif; font-size: 14.5px; color: #666; line-height: 1.6; margin-bottom: 32px; }
+    .booking-form { display: flex; flex-direction: column; gap: 20px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-group { display: flex; flex-direction: column; }
+    .form-group label { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #333; margin-bottom: 7px; }
+    .form-group input, .form-group select, .form-group textarea { font-family: 'Barlow', sans-serif; font-size: 15px; color: #111; padding: 11px 13px; border: 1.5px solid #e0ddd8; border-radius: 3px; background: #fff; transition: border-color 0.2s; resize: vertical; width: 100%; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #273043; }
+    .form-check { display: flex; align-items: center; gap: 10px; font-family: 'Barlow', sans-serif; font-size: 13px; color: #555; cursor: pointer; }
+    .form-check input { width: 16px; height: 16px; accent-color: #273043; }
+    .form-check a { color: #273043; text-decoration: underline; }
+    .form-submit { align-self: flex-start; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: #fff; text-transform: uppercase; padding: 13px 36px; background: #111; border: none; border-radius: 2px; cursor: pointer; transition: background 0.2s; }
+    .form-submit:hover { background: #273043; }
+
+    /* GALLERY */
+    .gallery { background: #fff; padding: 24px 48px 64px; }
+    .gallery-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .gallery-cell { aspect-ratio: 3 / 2; background: #faf9f6; border: 1.5px solid #e0ddd8; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: #ccc; overflow: hidden; }
+    .gallery-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     /* FOOTER */
     footer { background: #111; padding: 10px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; position: relative; }
@@ -154,7 +196,7 @@
       .sports-grid { grid-template-columns: 1fr; gap: 36px; }
       /* Cards become compact list rows on mobile */
       .card-row { display: flex; flex-direction: column; gap: 0; border: 1.5px solid #e0ddd8; border-radius: 4px; overflow: hidden; }
-      .card { border: none; border-bottom: 1px solid #f0ede8; border-radius: 0; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; transform: none !important; }
+      .card { border: none; border-bottom: 1px solid #f0ede8; border-radius: 0; padding: 14px 18px; display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 14px; transform: none !important; }
       .card:last-child { border-bottom: none; }
       .card:hover { transform: none; background: #faf9f6; }
       .card.featured { border-left: 3px solid #273043; }
@@ -165,12 +207,23 @@
       .card-price { font-size: 26px; flex-shrink: 0; }
       .card-price span { font-size: 13px; }
       .badge { display: none; }
-      .divider, .cta-band { padding-left: 24px; padding-right: 24px; }
+      /* Price block: price right-aligned column, note small below */
+      .price-block { display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0; text-align: right; }
+      .price-block .card-price { font-size: 26px; }
+      .price-block .rental-note { margin-top: 2px; font-size: 10px; letter-spacing: 1px; text-align: right; }
+      .divider { padding-left: 24px; padding-right: 24px; }
+      .info-map { padding: 40px 24px; }
+      .info-map-inner { grid-template-columns: 1fr; gap: 28px; }
       .section-title h2 { font-size: 38px; }
       .cta-inner { flex-direction: column; align-items: flex-start; padding: 28px 24px; }
       footer { padding: 12px 20px; }
       footer img { height: 56px; }
       .footer-links { gap: 14px; }
+      .gallery { padding: 16px 24px 40px; }
+      .gallery-grid { grid-template-columns: 1fr; gap: 12px; }
+      .booking { padding: 40px 24px; }
+      .booking-heading { font-size: 38px; }
+      .form-grid { grid-template-columns: 1fr; gap: 16px; }
     }
   </style>
 </head>
@@ -258,16 +311,16 @@
     <div class="section-head">
       <p class="section-eyebrow">Lessons</p>
       <div class="section-title"><img src="icons/icon_windsurf.png" alt=""><h2>Windsurf</h2></div>
-      <p class="section-desc">Group lessons in small groups, or private one-to-one coaching. All equipment and wetsuit included, instructor on the boat.</p>
+      <p class="section-desc">From total beginner to advanced. Two-hour group lessons in small groups, with your instructor always close by, helping you step by step. All inclusive: equipment and wetsuit.</p>
     </div>
     <div class="card-row">
       <div class="card">
-        <div class="card-text"><div class="card-label">1 Lesson</div><div class="card-detail">2 hours · 1 day<br>Equipment &amp; wetsuit included</div></div>
+        <div class="card-text"><div class="card-label">1 Lesson</div><div class="card-detail">2 hours · 1 day</div></div>
         <div class="card-price">75 <span>€</span></div>
       </div>
       <div class="card featured">
         <span class="badge">Best value</span>
-        <div class="card-text"><div class="card-label">Full Course</div><div class="card-detail">6 hours · 3 days<br>Equipment &amp; wetsuit included</div></div>
+        <div class="card-text"><div class="card-label">Full Course</div><div class="card-detail">6 hours · 3 days</div></div>
         <div class="card-price">190 <span>€</span></div>
       </div>
       <div class="card">
@@ -284,16 +337,16 @@
     <div class="section-head">
       <p class="section-eyebrow">Lessons</p>
       <div class="section-title"><img src="icons/icon_wingfoil.png" alt=""><h2>Wingfoil</h2></div>
-      <p class="section-desc">Group lessons in small groups, or private one-to-one coaching. All equipment included, instructor on the boat.</p>
+      <p class="section-desc">From your very first day on the wing to your first flight and beyond. Groups of maximum two people, with your instructor following you and giving advice every step of the way. All inclusive: equipment and wetsuit.</p>
     </div>
     <div class="card-row">
       <div class="card">
-        <div class="card-text"><div class="card-label">1 Lesson</div><div class="card-detail">1.5 hours · 1 day<br>Equipment included</div></div>
+        <div class="card-text"><div class="card-label">1 Lesson</div><div class="card-detail">1.5 hours · 1 day</div></div>
         <div class="card-price">95 <span>€</span></div>
       </div>
       <div class="card featured">
         <span class="badge">Best value</span>
-        <div class="card-text"><div class="card-label">Full Course</div><div class="card-detail">4.5 hours · 3 days<br>Equipment included</div></div>
+        <div class="card-text"><div class="card-label">Full Course</div><div class="card-detail">4.5 hours · 3 days</div></div>
         <div class="card-price">250 <span>€</span></div>
       </div>
       <div class="card">
@@ -308,20 +361,18 @@
   <!-- ON-SITE RENTAL -->
   <div class="wrap">
     <div class="section-head">
-      <p class="section-eyebrow">Rent &amp; Go</p>
+      <p class="section-eyebrow">Ride Now</p>
       <div class="section-title"><h2>On-Site Rental</h2></div>
-      <p class="section-desc">Already know how to ride? Grab the gear and jump straight in the lagoon — rental right on the beach, no transport needed.</p>
+      <p class="section-desc">Already know how to ride? Grab the gear and jump straight in the water, rental right on the beach, no transport needed. You can swap your equipment anytime during the rental. Need something really special? Take a look at <a href="shop.html" class="inline-link">The Shop</a>.</p>
     </div>
     <div class="card-row">
       <div class="card">
-        <div class="card-text"><div class="card-label">Windsurf</div><div class="card-detail">Complete set</div></div>
-        <div class="card-price">30 <span>€/1h</span></div>
-        <div class="rental-note">2h 50€ · +10€ each extra hour</div>
+        <div class="card-text"><div class="card-label">Windsurf</div><div class="card-detail">Complete set: board, sail and lifejacket<br>+10€ for wetsuit and harness</div></div>
+        <div class="price-block"><div class="card-price">30 <span>€/1h</span></div><div class="rental-note">2h 50€ · +10€ each extra hour</div></div>
       </div>
       <div class="card">
-        <div class="card-text"><div class="card-label">Wingfoil</div><div class="card-detail">Complete set</div></div>
-        <div class="card-price">45 <span>€/1h</span></div>
-        <div class="rental-note">2h 75€ · +10€ each extra hour</div>
+        <div class="card-text"><div class="card-label">Wingfoil</div><div class="card-detail">Complete set: board, foil, wing and lifejacket<br>+10€ for wetsuit</div></div>
+        <div class="price-block"><div class="card-price">45 <span>€/1h</span></div><div class="rental-note">2h 75€ · +10€ each extra hour</div></div>
       </div>
     </div>
   </div>
@@ -333,38 +384,139 @@
     <div class="section-head">
       <p class="section-eyebrow">No Wind? No Problem</p>
       <div class="section-title"><h2>SUP &amp; Kayak</h2></div>
-      <p class="section-desc">Explore the lagoon at your own pace — no experience needed, perfect for the whole family.</p>
+      <p class="section-desc">Explore the stunning bay of Costa Calma at your own pace, no experience needed, perfect for the whole family. Lifejackets included in the price.</p>
     </div>
     <div class="card-row">
       <div class="card">
-        <div class="card-text"><div class="card-label">SUP</div><div class="card-detail">Board &amp; paddle included</div></div>
-        <div class="card-price">20 <span>€/1h</span></div>
-        <div class="rental-note">+10€ each extra hour</div>
+        <div class="card-text"><div class="card-label">SUP</div><div class="card-detail">Board, paddle</div></div>
+        <div class="price-block"><div class="card-price">20 <span>€/1h</span></div><div class="rental-note">+10€ each extra hour</div></div>
       </div>
       <div class="card">
         <div class="card-text"><div class="card-label">Kayak · Single</div><div class="card-detail">One seat</div></div>
-        <div class="card-price">25 <span>€/1h</span></div>
-        <div class="rental-note">+10€ each extra hour</div>
+        <div class="price-block"><div class="card-price">25 <span>€/1h</span></div><div class="rental-note">+10€ each extra hour</div></div>
       </div>
       <div class="card">
         <div class="card-text"><div class="card-label">Kayak · Double</div><div class="card-detail">Two seats</div></div>
-        <div class="card-price">35 <span>€/1h</span></div>
-        <div class="rental-note">+10€ each extra hour</div>
+        <div class="price-block"><div class="card-price">35 <span>€/1h</span></div><div class="rental-note">+10€ each extra hour</div></div>
       </div>
     </div>
   </div>
 
-  <!-- CTA -->
-  <div class="cta-band" id="contact">
-    <div class="cta-inner">
-      <div class="cta-text">
-        <h3>Ready to Book?</h3>
-        <p>Message us on WhatsApp — we'll sort you out in minutes.</p>
+  <!-- INFO + MAP -->
+  <div class="info-map" id="contact">
+    <div class="info-map-inner">
+      <div class="info-side">
+        <p class="info-eyebrow">Find Us</p>
+        <h3 class="info-heading">On the Beach</h3>
+        <div class="info-block">
+          <div class="info-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <div>
+              <div class="info-label">Opening Times</div>
+              <div class="info-val">10:00 – 17:00 · every day</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <div>
+              <div class="info-label">Location</div>
+              <div class="info-val">Shaka School<br>Costa Calma, Fuerteventura</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            <div>
+              <div class="info-label">Book &amp; Info</div>
+              <div class="info-val"><a href="https://wa.me/34679561225" class="inline-link">WhatsApp +34 679 561 225</a></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <a href="https://wa.me/34679561225" target="_blank" class="cta-btn">
-        <svg viewBox="0 0 32 32" fill="currentColor" width="22" height="22"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.492.655 4.83 1.8 6.856L2 30l7.344-1.778A13.94 13.94 0 0 0 16 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.6a11.55 11.55 0 0 1-5.89-1.607l-.422-.252-4.36 1.056 1.084-4.248-.276-.436A11.56 11.56 0 0 1 4.4 16C4.4 9.59 9.59 4.4 16 4.4S27.6 9.59 27.6 16 22.41 27.6 16 27.6zm6.338-8.664c-.347-.174-2.055-1.014-2.374-1.13-.319-.115-.551-.173-.783.174-.232.346-.9 1.13-1.103 1.362-.202.232-.405.26-.752.086-.347-.173-1.465-.54-2.791-1.722-1.031-.92-1.727-2.055-1.929-2.402-.202-.347-.022-.534.152-.707.156-.155.347-.405.52-.607.174-.202.232-.347.347-.578.116-.232.058-.434-.029-.607-.087-.174-.783-1.888-1.073-2.587-.282-.678-.569-.586-.783-.597l-.667-.011a1.28 1.28 0 0 0-.926.434c-.318.347-1.215 1.188-1.215 2.896s1.244 3.358 1.418 3.59c.173.231 2.449 3.738 5.934 5.24.829.358 1.477.572 1.981.732.832.265 1.59.228 2.189.138.668-.1 2.055-.84 2.345-1.652.29-.811.29-1.507.202-1.652-.087-.144-.318-.231-.665-.405z"/></svg>
-        WhatsApp Us
-      </a>
+      <div class="map-side">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3517.3737443531427!2d-14.221569124728914!3d28.165546975922926!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xc479dc67e51b0c7%3A0x21b527634faa3c61!2sShaka%20Fuerte%20Watersport%20Center%20%26%20School!5e0!3m2!1sit!2ses!4v1780756078523!5m2!1sit!2ses" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOKING FORM -->
+  <section class="booking" id="book">
+    <div class="booking-inner">
+      <p class="booking-eyebrow">Booking</p>
+      <h2 class="booking-heading">Book Your Lesson Here</h2>
+      <p class="booking-intro">Fill out the form to book your lesson. We'll get in touch shortly via WhatsApp or SMS. Fields marked with * are mandatory — you can leave the rest for later, we'll sort the details together over WhatsApp.</p>
+
+      <form action="https://api.web3forms.com/submit" method="POST" class="booking-form">
+        <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY">
+        <input type="hidden" name="subject" value="New lesson booking from Shaka website">
+        <input type="checkbox" name="botcheck" style="display:none;">
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="b-name">Full Name *</label>
+            <input type="text" id="b-name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="b-email">Email *</label>
+            <input type="email" id="b-email" name="email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="b-phone">Mobile number (with country code) *</label>
+            <input type="tel" id="b-phone" name="phone" required>
+          </div>
+          <div class="form-group">
+            <label for="b-course">What would you like to book?</label>
+            <select id="b-course" name="booking_type">
+              <option>Windsurf lesson</option>
+              <option>Wingfoil lesson</option>
+              <option>Private lesson</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="b-days">How many days would you like to book?</label>
+            <select id="b-days" name="days">
+              <option>1 day (1 lesson)</option>
+              <option>3 days (full course)</option>
+              <option>More than 3 days</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="b-people">How many people?</label>
+            <input type="number" id="b-people" name="people" min="1" value="1">
+          </div>
+
+          <div class="form-group">
+            <label for="b-from">Preferred start date *</label>
+            <input type="date" id="b-from" name="date_from" required>
+          </div>
+        </div>
+
+        <div class="form-group form-full">
+          <label for="b-message">Message</label>
+          <textarea id="b-message" name="message" rows="5"></textarea>
+        </div>
+
+        <label class="form-check">
+          <input type="checkbox" required>
+          <span>* I agree to the <a href="#">Privacy Policy</a></span>
+        </label>
+
+        <button type="submit" class="form-submit">Send Booking Request</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <div class="gallery">
+    <div class="gallery-grid">
+      <div class="gallery-cell">1</div>
+      <div class="gallery-cell">2</div>
+      <div class="gallery-cell">3</div>
+      <div class="gallery-cell">4</div>
+      <div class="gallery-cell">5</div>
+      <div class="gallery-cell">6</div>
     </div>
   </div>
 
