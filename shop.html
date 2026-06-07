@@ -69,10 +69,12 @@
     /* SMALL SPORTS (4) */
     .mini-sports { background: #fff; padding: 8px 48px 48px; }
     .mini-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-    .mini-card { text-align: center; border: 1.5px solid #e0ddd8; border-radius: 4px; padding: 20px 14px; text-decoration: none; transition: border-color 0.2s, transform 0.2s; }
+    .mini-card { text-align: center; border: 1.5px solid #e0ddd8; border-radius: 4px; overflow: hidden; text-decoration: none; transition: border-color 0.2s, transform 0.2s; display: block; }
     .mini-card:hover { border-color: #273043; transform: translateY(-2px); }
-    .mini-card img { height: 40px; width: auto; margin-bottom: 10px; }
-    .mini-name { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1.5px; color: #111; line-height: 1.1; }
+    .mini-photo { width: 100%; aspect-ratio: 16 / 10; overflow: hidden; }
+    .mini-photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+    .mini-card:hover .mini-photo img { transform: scale(1.05); }
+    .mini-name { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1.5px; color: #111; line-height: 1.1; padding: 12px 8px; }
 
     /* SECTION WRAP */
     .wrap { max-width: 1100px; margin: 0 auto; padding: 56px 48px 0; scroll-margin-top: 140px; }
@@ -268,10 +270,22 @@
   <!-- SMALL 4 SPORTS -->
   <div class="mini-sports">
     <div class="mini-grid">
-      <a href="#surf-prices" class="mini-card"><img src="icons/icon_surf.png" alt=""><div class="mini-name">Surf</div></a>
-      <a href="#bodyboard-prices" class="mini-card"><img src="icons/icon_bodyboard.png" alt=""><div class="mini-name">Bodyboard<br>&amp; Skimboard</div></a>
-      <a href="#skate-prices" class="mini-card"><img src="icons/icon_skate.png" alt=""><div class="mini-name">Surf Skate</div></a>
-      <a href="#bike-prices" class="mini-card"><img src="icons/icon_bike.png" alt=""><div class="mini-name">Bike</div></a>
+      <a href="#surf-prices" class="mini-card">
+        <div class="mini-photo"><img src="images/shop-surf.jpg" alt="Surf"></div>
+        <div class="mini-name">Surf</div>
+      </a>
+      <a href="#bodyboard-prices" class="mini-card">
+        <div class="mini-photo"><img src="images/shop-bodyboard.jpg" alt="Bodyboard"></div>
+        <div class="mini-name">Bodyboard &amp; Skimboard</div>
+      </a>
+      <a href="#skate-prices" class="mini-card">
+        <div class="mini-photo"><img src="images/shop-skate.jpg" alt="Surf Skate"></div>
+        <div class="mini-name">Surf Skate</div>
+      </a>
+      <a href="#bike-prices" class="mini-card">
+        <div class="mini-photo"><img src="images/shop-bike.jpg" alt="Bike"></div>
+        <div class="mini-name">Bike</div>
+      </a>
     </div>
   </div>
 
