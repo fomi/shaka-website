@@ -76,6 +76,17 @@
     .mini-card:hover .mini-photo img { transform: scale(1.05); }
     .mini-name { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1.5px; color: #111; line-height: 1.1; padding: 12px 8px; }
 
+    /* HOW IT WORKS */
+    .howto { background: #faf9f6; border-top: 1px solid #e0ddd8; border-bottom: 1px solid #e0ddd8; padding: 48px 48px; }
+    .howto-head { text-align: center; margin-bottom: 36px; }
+    .howto-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 6px; }
+    .howto-heading { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 3px; color: #111; line-height: 1; }
+    .howto-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+    .howto-step { text-align: center; position: relative; }
+    .howto-icon { width: 72px; height: 72px; border-radius: 50%; background: #111; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; overflow: hidden; }
+    .howto-icon img { width: 72px; height: 72px; object-fit: cover; }
+    .howto-label { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #333; line-height: 1.2; }
+
     /* SECTION WRAP */
     .wrap { max-width: 1100px; margin: 0 auto; padding: 56px 48px 0; scroll-margin-top: 140px; }
     .section-head { margin-bottom: 24px; }
@@ -84,6 +95,20 @@
     .section-title img { height: 40px; width: auto; }
     .section-title h2 { font-family: 'Bebas Neue', sans-serif; font-size: 46px; letter-spacing: 3px; color: #111; line-height: 1; }
     .brand-note { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #999; margin: 8px 0 0; }
+
+    /* PRICE CARDS (big 3 sports) */
+    .price-row-layout { display: flex; gap: 24px; align-items: stretch; margin-top: 4px; }
+    .pcard-single { background: #fff; border: 1.5px solid #e0ddd8; border-radius: 4px; padding: 8px 24px; flex: 1; }
+    .price-photo { flex: 1; border-radius: 4px; overflow: hidden; }
+    .price-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .pcard-single .prow { display: flex; justify-content: space-between; align-items: baseline; padding: 13px 0; border-bottom: 1px solid #f0ede8; }
+    .pcard-single .prow:last-child { border-bottom: none; }
+    .pcard-single .prow-feat { border-bottom: 2px solid #111; padding: 15px 0; }
+    .pcard-single .prow-days { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #555; }
+    .pcard-single .prow-feat .prow-days { font-size: 18px; color: #111; }
+    .pcard-single .prow-days em { font-style: italic; font-weight: 400; color: #aaa; font-size: 13px; }
+    .pcard-single .prow-price { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1px; color: #111; }
+    .pcard-single .prow-feat .prow-price { font-size: 38px; color: #273043; }
 
     /* PRICE TABLE */
     .price-table-wrap { overflow-x: auto; }
@@ -165,6 +190,8 @@
       .hero-content { padding: 0 24px 28px; }
       .hero-title { font-size: 60px; }
       .intro { padding: 40px 24px; }
+      .howto { padding: 40px 24px; }
+      .howto-grid { grid-template-columns: 1fr 1fr 1fr; gap: 24px 8px; }
       .sports { padding: 16px 24px 24px; }
       .sports-grid { grid-template-columns: 1fr; gap: 32px; }
       .mini-sports { padding: 8px 24px 40px; }
@@ -172,6 +199,8 @@
       .wrap { padding: 40px 24px 0; }
       .divider { padding-left: 24px; padding-right: 24px; }
       .section-title h2 { font-size: 38px; }
+      .price-row-layout { flex-direction: column; gap: 0; }
+      .price-photo { display: none; }
       .info-map { padding: 40px 24px; }
       .info-map-inner { grid-template-columns: 1fr; gap: 28px; }
       .gallery { padding: 16px 24px 40px; }
@@ -243,13 +272,43 @@
     </div>
   </div>
 
+  <!-- HOW IT WORKS -->
+  <div class="howto">
+    <div class="howto-head">
+      <p class="howto-eyebrow">Renting Is Easy</p>
+      <h2 class="howto-heading">How It Works</h2>
+    </div>
+    <div class="howto-grid">
+      <div class="howto-step">
+        <div class="howto-icon"><img src="icons/icon_shop.png" alt=""></div>
+        <div class="howto-label">1. Come in the shop</div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-icon"><img src="icons/icon_click.png" alt=""></div>
+        <div class="howto-label">2. Choose your gear and how long</div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-icon"><img src="icons/icon_car.png" alt=""></div>
+        <div class="howto-label">3. Load up your car<br>(free roofrack included)</div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-icon"><img src="icons/icon_beach.png" alt=""></div>
+        <div class="howto-label">4. Ride everywhere</div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-icon"><img src="icons/icon_shop.png" alt=""></div>
+        <div class="howto-label">5. Bring back your gear at the end of your holiday</div>
+      </div>
+    </div>
+  </div>
+
   <!-- BIG 3 SPORTS -->
   <div class="sports">
     <div class="sports-grid">
       <div class="sport-card">
         <div class="sport-photo"><img src="images/shop-windsurf.jpg" alt="Windsurf rental"></div>
         <h3 class="sport-name">Windsurf</h3>
-        <p class="sport-brands">Severne · Goya · Neilpryde · RRD · JP · Starboard · Tabou · Fanatic</p>
+        <p class="sport-brands">Flikka · Patrick · Point7 · Neilpryde</p>
         <a href="#windsurf-prices" class="sport-btn">See prices</a>
       </div>
       <div class="sport-card">
@@ -261,7 +320,7 @@
       <div class="sport-card">
         <div class="sport-photo"><img src="images/shop-wing.jpg" alt="Wingfoil rental"></div>
         <h3 class="sport-name">Wingfoil</h3>
-        <p class="sport-brands">Naish · Duotone · Dakine · Neilpryde</p>
+        <p class="sport-brands">Naish · Duotone · Neilpryde · Dakine</p>
         <a href="#wing-prices" class="sport-btn">See prices</a>
       </div>
     </div>
@@ -295,13 +354,17 @@
   <div class="wrap" id="windsurf-prices">
     <div class="section-head">
       <div class="section-title"><img src="icons/icon_windsurf.png" alt=""><h2>Windsurf</h2></div>
-      <p class="brand-note">Complete set: board, sail, mast, boom · Severne · Goya · Neilpryde · RRD · JP · Starboard · Tabou · Fanatic</p>
+      <p class="brand-note">Complete set: board, sail, mast, boom · Flikka · Patrick · Point7 · Neilpryde</p>
     </div>
-    <div class="price-table-wrap">
-      <table class="pt">
-        <thead><tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr></thead>
-        <tbody><tr><td>Complete set</td><td>65 €</td><td>243 €</td><td>325 €</td><td>455 €</td><td>535 €</td></tr></tbody>
-      </table>
+    <div class="price-row-layout">
+      <div class="pcard pcard-single">
+        <div class="prow prow-feat"><span class="prow-days">1 day <em>· 24 hours</em></span><span class="prow-price">65 €</span></div>
+        <div class="prow"><span class="prow-days">4 days</span><span class="prow-price">243 €</span></div>
+        <div class="prow"><span class="prow-days">6 days</span><span class="prow-price">325 €</span></div>
+        <div class="prow"><span class="prow-days">9 days</span><span class="prow-price">455 €</span></div>
+        <div class="prow"><span class="prow-days">12 days</span><span class="prow-price">535 €</span></div>
+      </div>
+      <div class="price-photo"><img src="images/shop-windsurf.jpg" alt="Windsurf"></div>
     </div>
     <p class="brand-note">* Extra carbon boom &amp; extension +10€/day · Board or sail only 40€/day, 195€/6 days</p>
   </div>
@@ -314,11 +377,15 @@
       <div class="section-title"><img src="icons/icon_kitesurf.png" alt=""><h2>Kitesurf</h2></div>
       <p class="brand-note">Complete set: board, kite, bar, safety leash &amp; pump · Naish</p>
     </div>
-    <div class="price-table-wrap">
-      <table class="pt">
-        <thead><tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr></thead>
-        <tbody><tr><td>Complete set</td><td>85 €</td><td>280 €</td><td>375 €</td><td>525 €</td><td>620 €</td></tr></tbody>
-      </table>
+    <div class="price-row-layout">
+      <div class="pcard pcard-single">
+        <div class="prow prow-feat"><span class="prow-days">1 day <em>· 24 hours</em></span><span class="prow-price">85 €</span></div>
+        <div class="prow"><span class="prow-days">4 days</span><span class="prow-price">280 €</span></div>
+        <div class="prow"><span class="prow-days">6 days</span><span class="prow-price">375 €</span></div>
+        <div class="prow"><span class="prow-days">9 days</span><span class="prow-price">525 €</span></div>
+        <div class="prow"><span class="prow-days">12 days</span><span class="prow-price">620 €</span></div>
+      </div>
+      <div class="price-photo"><img src="images/shop-kite.jpg" alt="Kitesurf"></div>
     </div>
     <p class="brand-note">* Board or kite only 40€/day, 195€/6 days</p>
   </div>
@@ -329,13 +396,17 @@
   <div class="wrap" id="wing-prices">
     <div class="section-head">
       <div class="section-title"><img src="icons/icon_wingfoil.png" alt=""><h2>Wingfoil</h2></div>
-      <p class="brand-note">Complete set: board, foil, wing · Naish · Duotone · Dakine · Neilpryde</p>
+      <p class="brand-note">Complete set: board, foil, wing · Naish · Duotone · Neilpryde · Dakine</p>
     </div>
-    <div class="price-table-wrap">
-      <table class="pt">
-        <thead><tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr></thead>
-        <tbody><tr><td>Complete set</td><td>95 €</td><td>320 €</td><td>445 €</td><td>620 €</td><td>735 €</td></tr></tbody>
-      </table>
+    <div class="price-row-layout">
+      <div class="pcard pcard-single">
+        <div class="prow prow-feat"><span class="prow-days">1 day <em>· 24 hours</em></span><span class="prow-price">95 €</span></div>
+        <div class="prow"><span class="prow-days">4 days</span><span class="prow-price">320 €</span></div>
+        <div class="prow"><span class="prow-days">6 days</span><span class="prow-price">445 €</span></div>
+        <div class="prow"><span class="prow-days">9 days</span><span class="prow-price">620 €</span></div>
+        <div class="prow"><span class="prow-days">12 days</span><span class="prow-price">735 €</span></div>
+      </div>
+      <div class="price-photo"><img src="images/shop-wing.jpg" alt="Wingfoil"></div>
     </div>
     <p class="brand-note">* Board or wing only 40€/day, 195€/6 days</p>
   </div>
