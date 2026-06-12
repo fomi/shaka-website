@@ -36,8 +36,8 @@
     .nav-links a.active { border-bottom: 2px solid #273043; padding-bottom: 2px; }
 
     /* HERO */
-    .hero { position: relative; height: 340px; overflow: hidden; display: flex; align-items: flex-end; }
-    .hero-bg { position: absolute; inset: 0; background-image: url('images/background6.jpg'); background-size: cover; background-position: center 60%; }
+    .hero { position: relative; height: 520px; overflow: hidden; display: flex; align-items: flex-end; }
+    .hero-bg { position: absolute; inset: 0; background-image: url('images/background6.jpg'); background-size: cover; background-position: center 40%; }
     .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,0) 10%, rgba(255,255,255,0.96) 100%); }
     .hero-content { position: relative; z-index: 2; padding: 0 48px 36px; }
     .hero-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #111; margin-bottom: 8px; }
@@ -109,6 +109,30 @@
     .pcard-single .prow-days em { font-style: italic; font-weight: 400; color: #aaa; font-size: 13px; }
     .pcard-single .prow-price { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1px; color: #111; }
     .pcard-single .prow-feat .prow-price { font-size: 38px; color: #273043; }
+    /* twin-column rows (surf soft/hard, bodyboard, bike) */
+    .pcard-single .prow-twin { display: flex; gap: 32px; }
+    .pcard-single .prow-twin > span { min-width: 64px; text-align: right; }
+    .pcard-single .prow-head { padding: 8px 0; border-bottom: 1px solid #f0ede8; }
+    .pcard-single .prow-head .prow-twin > span { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; }
+    .pcard-single .prow-feat .prow-twin .prow-price { font-size: 30px; }
+    /* WHAT'S AVAILABLE BOX */
+    .avail-box { margin-top: 20px; background: #faf9f6; border: 1.5px solid #e0ddd8; border-radius: 4px; padding: 20px 24px; }
+    .avail-title { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 14px; }
+    .avail-rows { display: flex; flex-direction: column; gap: 14px; }
+    .avail-item { display: flex; flex-direction: column; gap: 3px; }
+    .avail-label { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #999; }
+    .avail-val { font-family: 'Bebas Neue', sans-serif; font-size: 19px; letter-spacing: 1px; color: #111; }
+    .avail-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .avail-cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .avail-col-title { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #e0ddd8; }
+    .avail-col .avail-line { font-family: 'Barlow', sans-serif; font-size: 13.5px; color: #555; line-height: 1.45; margin-bottom: 12px; }
+    .avail-col .avail-line:last-child { margin-bottom: 0; }
+    .avail-col .avail-line strong { font-weight: 600; color: #111; }
+    .avail-group { margin-bottom: 16px; }
+    .avail-group:last-child { margin-bottom: 0; }
+    .avail-group-label { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 7px; }
+    .avail-line { font-family: 'Barlow', sans-serif; font-size: 14px; color: #444; line-height: 1.6; }
+    .avail-line strong { font-weight: 600; color: #111; }
 
     /* PRICE TABLE */
     .price-table-wrap { overflow-x: auto; }
@@ -139,6 +163,24 @@
     .map-side { min-height: 320px; border-radius: 6px; overflow: hidden; border: 1.5px solid #e0ddd8; }
     .map-side iframe { display: block; width: 100%; height: 100%; min-height: 320px; }
 
+    /* BOOKING FORM */
+    .booking { background: #faf9f6; border-top: 1px solid #e0ddd8; padding: 56px 48px; }
+    .booking-inner { max-width: 900px; margin: 0 auto; }
+    .booking-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 6px; }
+    .booking-heading { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 3px; color: #111; line-height: 1; margin-bottom: 16px; }
+    .booking-intro { font-family: 'Barlow', sans-serif; font-size: 14.5px; color: #666; line-height: 1.6; margin-bottom: 32px; }
+    .booking-form { display: flex; flex-direction: column; gap: 20px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-group { display: flex; flex-direction: column; }
+    .form-group label { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #333; margin-bottom: 7px; }
+    .form-group input, .form-group select, .form-group textarea { font-family: 'Barlow', sans-serif; font-size: 15px; color: #111; padding: 11px 13px; border: 1.5px solid #e0ddd8; border-radius: 3px; background: #fff; transition: border-color 0.2s; resize: vertical; width: 100%; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #273043; }
+    .form-check { display: flex; align-items: center; gap: 10px; font-family: 'Barlow', sans-serif; font-size: 13px; color: #555; cursor: pointer; }
+    .form-check input { width: 16px; height: 16px; accent-color: #273043; }
+    .form-check a { color: #273043; text-decoration: underline; }
+    .form-submit { align-self: flex-start; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: #fff; text-transform: uppercase; padding: 13px 36px; background: #111; border: none; border-radius: 2px; cursor: pointer; transition: background 0.2s; }
+    .form-submit:hover { background: #273043; }
+
     /* GALLERY */
     .gallery { background: #fff; padding: 24px 48px 64px; }
     .gallery-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
@@ -160,23 +202,23 @@
     /* MOBILE MENU */
     .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; position: absolute; left: 20px; top: 50%; transform: translateY(-50%); }
     .nav-hamburger span { display: block; width: 24px; height: 2px; background: #111; transition: all 0.3s; }
-    .nav-drawer { position: fixed; top: 0; left: 0; width: 85%; max-width: 340px; height: 100vh; background: #fff; z-index: 999; transform: translateX(-100%); transition: transform 0.3s ease; overflow-y: auto; display: flex; flex-direction: column; }
+    .nav-drawer { position: fixed; top: 0; left: 0; width: 85%; max-width: 340px; height: 100vh; height: 100dvh; background: #fff; z-index: 999; transform: translateX(-100%); transition: transform 0.3s ease; overflow-y: auto; display: flex; flex-direction: column; padding-bottom: 20px; }
     .nav-drawer.open { transform: translateX(0); }
     .nav-drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 998; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
     .nav-drawer-overlay.open { opacity: 1; pointer-events: all; }
     .nav-drawer-close { display: flex; justify-content: flex-end; padding: 20px 20px 0; }
     .nav-drawer-close button { background: none; border: none; cursor: pointer; font-size: 28px; color: #333; line-height: 1; }
-    .nav-drawer-links { padding: 12px 0; flex: 1; }
-    .nav-drawer-links a { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; color: #111; text-decoration: none; border-bottom: 1px solid #f0ede8; transition: background 0.15s; }
+    .nav-drawer-links { padding: 6px 0; }
+    .nav-drawer-links a { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 3px; color: #111; text-decoration: none; border-bottom: 1px solid #f0ede8; transition: background 0.15s; }
     .nav-drawer-links a:hover { background: #faf9f6; }
     .nav-drawer-links a svg { width: 14px; height: 14px; stroke: #aaa; fill: none; stroke-width: 2; }
-    .nav-drawer-divider { height: 1px; background: #e0ddd8; margin: 8px 0; }
-    .nav-drawer-lang { padding: 16px 24px; border-bottom: 1px solid #f0ede8; }
+    .nav-drawer-divider { height: 1px; background: #e0ddd8; margin: 4px 0; }
+    .nav-drawer-lang { padding: 12px 24px; border-bottom: 1px solid #f0ede8; }
     .nav-drawer-lang-label { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 10px; }
-    .nav-drawer-lang-links { display: flex; flex-direction: column; gap: 2px; }
-    .nav-drawer-lang-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #555; text-decoration: none; padding: 8px 0; display: block; }
+    .nav-drawer-lang-links { display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px 18px; }
+    .nav-drawer-lang-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #555; text-decoration: none; padding: 5px 0; display: block; }
     .nav-drawer-lang-links a.active { color: #111; }
-    .nav-drawer-social { display: flex; gap: 20px; padding: 20px 24px 32px; }
+    .nav-drawer-social { display: flex; gap: 22px; padding: 16px 24px 28px; }
     .nav-drawer-social a { color: #555; transition: color 0.2s; }
     .nav-drawer-social a:hover { color: #111; }
 
@@ -186,7 +228,7 @@
       .nav { padding: 8px 20px; justify-content: center; }
       .nav-links { display: none; }
       .nav-hamburger { display: flex; }
-      .hero { height: 260px; }
+      .hero { height: 380px; }
       .hero-content { padding: 0 24px 28px; }
       .hero-title { font-size: 60px; }
       .intro { padding: 40px 24px; }
@@ -201,10 +243,15 @@
       .section-title h2 { font-size: 38px; }
       .price-row-layout { flex-direction: column; gap: 0; }
       .price-photo { display: none; }
+      .avail-cols { grid-template-columns: 1fr; gap: 20px; }
+      .avail-cols-3 { grid-template-columns: 1fr; }
       .info-map { padding: 40px 24px; }
       .info-map-inner { grid-template-columns: 1fr; gap: 28px; }
       .gallery { padding: 16px 24px 40px; }
       .gallery-grid { grid-template-columns: 1fr; gap: 12px; }
+      .booking { padding: 40px 24px; }
+      .booking-heading { font-size: 38px; }
+      .form-grid { grid-template-columns: 1fr; gap: 16px; }
       footer { padding: 12px 20px; }
       footer img { height: 56px; }
       .footer-links { gap: 14px; }
@@ -354,7 +401,7 @@
   <div class="wrap" id="windsurf-prices">
     <div class="section-head">
       <div class="section-title"><img src="icons/icon_windsurf.png" alt=""><h2>Windsurf</h2></div>
-      <p class="brand-note">Complete set: board, sail, mast, boom · Flikka · Patrick · Point7 · Neilpryde</p>
+      <p class="brand-note">Complete set: one board, two sails, mast, boom, extension, mast base and board bag</p>
     </div>
     <div class="price-row-layout">
       <div class="pcard pcard-single">
@@ -367,6 +414,22 @@
       <div class="price-photo"><img src="images/shop-windsurf.jpg" alt="Windsurf"></div>
     </div>
     <p class="brand-note">* Extra carbon boom &amp; extension +10€/day · Board or sail only 40€/day, 195€/6 days</p>
+    <div class="avail-box">
+      <div class="avail-title">What's Available</div>
+      <div class="avail-cols">
+        <div class="avail-col">
+          <div class="avail-col-title">Sails</div>
+          <div class="avail-line"><strong>Point7</strong> — Salt (wave) · Slash (freestyle)<br>3.6–5.6 m²</div>
+          <div class="avail-line"><strong>Neilpryde</strong> — Combat HD (wave) · Wizard (freestyle)<br>3.6–5.6 m²</div>
+        </div>
+        <div class="avail-col">
+          <div class="avail-col-title">Boards</div>
+          <div class="avail-line"><strong>Flikka</strong> Quad &amp; Thruster (wave) · 80 · 85 · 90 · 95 L</div>
+          <div class="avail-line"><strong>Flikka</strong> Freestyle · 90 · 93 · 98 L</div>
+          <div class="avail-line"><strong>Patrick</strong> Freeride · 83 · 87 · 103 · 113 L</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="divider"><div class="divider-line"></div></div>
@@ -375,7 +438,7 @@
   <div class="wrap" id="kite-prices">
     <div class="section-head">
       <div class="section-title"><img src="icons/icon_kitesurf.png" alt=""><h2>Kitesurf</h2></div>
-      <p class="brand-note">Complete set: board, kite, bar, safety leash &amp; pump · Naish</p>
+      <p class="brand-note">Complete set: board, kite, bar, safety leash &amp; pump</p>
     </div>
     <div class="price-row-layout">
       <div class="pcard pcard-single">
@@ -388,6 +451,20 @@
       <div class="price-photo"><img src="images/shop-kite.jpg" alt="Kitesurf"></div>
     </div>
     <p class="brand-note">* Board or kite only 40€/day, 195€/6 days</p>
+    <div class="avail-box">
+      <div class="avail-title">What's Available</div>
+      <div class="avail-cols">
+        <div class="avail-col">
+          <div class="avail-col-title">Kites</div>
+          <div class="avail-line"><strong>Naish</strong> Pivot · 5–12 m²</div>
+          <div class="avail-line"><strong>Duotone</strong> · 12–14 m²</div>
+        </div>
+        <div class="avail-col">
+          <div class="avail-col-title">Boards</div>
+          <div class="avail-line"><strong>Naish</strong> Twintip · 145 · 155 · 165 cm</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="divider"><div class="divider-line"></div></div>
@@ -396,7 +473,7 @@
   <div class="wrap" id="wing-prices">
     <div class="section-head">
       <div class="section-title"><img src="icons/icon_wingfoil.png" alt=""><h2>Wingfoil</h2></div>
-      <p class="brand-note">Complete set: board, foil, wing · Naish · Duotone · Neilpryde · Dakine</p>
+      <p class="brand-note">Complete set: board, foil, wing</p>
     </div>
     <div class="price-row-layout">
       <div class="pcard pcard-single">
@@ -409,6 +486,25 @@
       <div class="price-photo"><img src="images/shop-wing.jpg" alt="Wingfoil"></div>
     </div>
     <p class="brand-note">* Board or wing only 40€/day, 195€/6 days</p>
+    <div class="avail-box">
+      <div class="avail-title">What's Available</div>
+      <div class="avail-cols avail-cols-3">
+        <div class="avail-col">
+          <div class="avail-col-title">Wings</div>
+          <div class="avail-line"><strong>Neilpryde</strong> Fly · 3.3–5.4 m²</div>
+          <div class="avail-line"><strong>Dakine</strong> Cyclone · 2.5–5 m²</div>
+        </div>
+        <div class="avail-col">
+          <div class="avail-col-title">Boards</div>
+          <div class="avail-line"><strong>Naish</strong> Hover · 115 · 120 L</div>
+          <div class="avail-line"><strong>Duotone</strong> · 75 · 85 · 95 L</div>
+        </div>
+        <div class="avail-col">
+          <div class="avail-col-title">Foils</div>
+          <div class="avail-line">1000 – 2000 cm²</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="divider"><div class="divider-line"></div></div>
@@ -419,14 +515,16 @@
       <div class="section-title"><img src="icons/icon_surf.png" alt=""><h2>Surf</h2></div>
       <p class="brand-note">Board, leash and wax included</p>
     </div>
-    <div class="price-table-wrap">
-      <table class="pt">
-        <thead><tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr></thead>
-        <tbody>
-          <tr><td>Soft</td><td>18 €</td><td>65 €</td><td>100 €</td><td>140 €</td><td>165 €</td></tr>
-          <tr><td>Hard</td><td>23 €</td><td>85 €</td><td>120 €</td><td>165 €</td><td>195 €</td></tr>
-        </tbody>
-      </table>
+    <div class="price-row-layout">
+      <div class="pcard pcard-single">
+        <div class="prow prow-head"><span class="prow-days"></span><span class="prow-twin"><span>Soft</span><span>Hard</span></span></div>
+        <div class="prow prow-feat"><span class="prow-days">1 day</span><span class="prow-twin"><span class="prow-price">18 €</span><span class="prow-price">23 €</span></span></div>
+        <div class="prow"><span class="prow-days">4 days</span><span class="prow-twin"><span class="prow-price">65 €</span><span class="prow-price">85 €</span></span></div>
+        <div class="prow"><span class="prow-days">6 days</span><span class="prow-twin"><span class="prow-price">100 €</span><span class="prow-price">120 €</span></span></div>
+        <div class="prow"><span class="prow-days">9 days</span><span class="prow-twin"><span class="prow-price">140 €</span><span class="prow-price">165 €</span></span></div>
+        <div class="prow"><span class="prow-days">12 days</span><span class="prow-twin"><span class="prow-price">165 €</span><span class="prow-price">195 €</span></span></div>
+      </div>
+      <div class="price-photo"><img src="images/shop-surf.jpg" alt="Surf"></div>
     </div>
   </div>
 
@@ -437,14 +535,15 @@
     <div class="section-head">
       <div class="section-title"><img src="icons/icon_bodyboard.png" alt=""><h2>Bodyboard &amp; Skimboard</h2></div>
     </div>
-    <div class="price-table-wrap">
-      <table class="pt">
-        <thead><tr><th>Days</th><th>1</th><th>4</th><th>6</th><th>9</th><th>12</th></tr></thead>
-        <tbody>
-          <tr><td>Bodyboard</td><td>8 €</td><td>30 €</td><td>40 €</td><td>53 €</td><td>70 €</td></tr>
-          <tr><td>Skimboard</td><td>7 €</td><td>25 €</td><td>35 €</td><td>50 €</td><td>65 €</td></tr>
-        </tbody>
-      </table>
+    <div class="price-row-layout">
+      <div class="pcard pcard-single">
+        <div class="prow prow-feat"><span class="prow-days">1 day</span><span class="prow-price">8 €</span></div>
+        <div class="prow"><span class="prow-days">4 days</span><span class="prow-price">30 €</span></div>
+        <div class="prow"><span class="prow-days">6 days</span><span class="prow-price">40 €</span></div>
+        <div class="prow"><span class="prow-days">9 days</span><span class="prow-price">53 €</span></div>
+        <div class="prow"><span class="prow-days">12 days</span><span class="prow-price">70 €</span></div>
+      </div>
+      <div class="price-photo"><img src="images/shop-bodyboard.jpg" alt="Bodyboard"></div>
     </div>
   </div>
 
@@ -455,11 +554,13 @@
     <div class="section-head">
       <div class="section-title"><img src="icons/icon_skate.png" alt=""><h2>Surf Skate</h2></div>
     </div>
-    <div class="price-table-wrap">
-      <table class="pt">
-        <thead><tr><th>Days</th><th>1</th><th>4</th><th>6</th></tr></thead>
-        <tbody><tr><td>Surf Skate</td><td>11 €</td><td>35 €</td><td>50 €</td></tr></tbody>
-      </table>
+    <div class="price-row-layout">
+      <div class="pcard pcard-single">
+        <div class="prow prow-feat"><span class="prow-days">1 day</span><span class="prow-price">11 €</span></div>
+        <div class="prow"><span class="prow-days">4 days</span><span class="prow-price">35 €</span></div>
+        <div class="prow"><span class="prow-days">6 days</span><span class="prow-price">50 €</span></div>
+      </div>
+      <div class="price-photo"><img src="images/shop-skate.jpg" alt="Surf Skate"></div>
     </div>
   </div>
 
@@ -471,15 +572,14 @@
       <div class="section-title"><img src="icons/icon_bike.png" alt=""><h2>Bike</h2></div>
       <p class="brand-note">ILOVEBIKES rental</p>
     </div>
-    <div class="price-table-wrap">
-      <table class="pt">
-        <thead><tr><th></th><th>1 day</th><th>Extra day</th></tr></thead>
-        <tbody>
-          <tr><td>MTB</td><td>25 €</td><td>22 €</td></tr>
-          <tr><td>Road</td><td>35 €</td><td>33 €</td></tr>
-          <tr><td>E-Bike</td><td>45 €</td><td>42 €</td></tr>
-        </tbody>
-      </table>
+    <div class="price-row-layout">
+      <div class="pcard pcard-single">
+        <div class="prow prow-head"><span class="prow-days"></span><span class="prow-twin"><span>1 day</span><span>Extra</span></span></div>
+        <div class="prow prow-feat"><span class="prow-days">MTB</span><span class="prow-twin"><span class="prow-price">25 €</span><span class="prow-price">22 €</span></span></div>
+        <div class="prow"><span class="prow-days">Road</span><span class="prow-twin"><span class="prow-price">35 €</span><span class="prow-price">33 €</span></span></div>
+        <div class="prow"><span class="prow-days">E-Bike</span><span class="prow-twin"><span class="prow-price">45 €</span><span class="prow-price">42 €</span></span></div>
+      </div>
+      <div class="price-photo"><img src="images/shop-bike.jpg" alt="Bike"></div>
     </div>
   </div>
 
@@ -509,6 +609,77 @@
       </div>
     </div>
   </div>
+
+  <!-- RESERVATION FORM -->
+  <section class="booking" id="reserve">
+    <div class="booking-inner">
+      <p class="booking-eyebrow">Reserve in Advance</p>
+      <h2 class="booking-heading">Reserve Your Gear</h2>
+      <p class="booking-intro">Want to make sure your gear is ready when you arrive? Reserve your equipment in advance, especially in high season when stock runs out. We'll confirm availability via WhatsApp or SMS. Fields marked with * are mandatory.</p>
+
+      <form action="https://api.web3forms.com/submit" method="POST" class="booking-form">
+        <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY">
+        <input type="hidden" name="subject" value="New gear reservation from Shaka website">
+        <input type="checkbox" name="botcheck" style="display:none;">
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="r-name">Full Name *</label>
+            <input type="text" id="r-name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="r-email">Email *</label>
+            <input type="email" id="r-email" name="email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="r-phone">Mobile number (with country code) *</label>
+            <input type="tel" id="r-phone" name="phone" required>
+          </div>
+          <div class="form-group">
+            <label for="r-sport">What sport?</label>
+            <select id="r-sport" name="sport">
+              <option>Windsurf</option>
+              <option>Kitesurf</option>
+              <option>Wingfoil</option>
+              <option>Surf</option>
+              <option>Bodyboard &amp; Skimboard</option>
+              <option>Surf Skate</option>
+              <option>Bike</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="r-days">How many days?</label>
+            <select id="r-days" name="days">
+              <option>1 day</option>
+              <option>4 days</option>
+              <option>6 days</option>
+              <option>9 days</option>
+              <option>12 days</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="r-from">Preferred start date *</label>
+            <input type="date" id="r-from" name="date_from" required>
+          </div>
+        </div>
+
+        <div class="form-group form-full">
+          <label for="r-message">Which equipment do you need?</label>
+          <textarea id="r-message" name="message" rows="5" placeholder="Tell us what gear you'd like: sail / kite / wing sizes, board type (wave, freestyle, freeride), your weight and level, or anything that helps us prepare the right setup."></textarea>
+        </div>
+
+        <label class="form-check">
+          <input type="checkbox" required>
+          <span>* I agree to the <a href="#">Privacy Policy</a></span>
+        </label>
+
+        <button type="submit" class="form-submit">Send Reservation Request</button>
+      </form>
+    </div>
+  </section>
 
   <!-- GALLERY -->
   <div class="gallery">

@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — Shaka Fuerteventura</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; }
+
+    /* TOP BAR */
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 7px 40px; background: #1a1a1a; border-bottom: 1px solid #2a2a2a; }
+    .topbar-social { display: flex; align-items: center; gap: 14px; }
+    .topbar-social a { color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.2s; display: flex; align-items: center; }
+    .topbar-social a:hover { color: #fff; }
+    .topbar-marquee { flex: 1; overflow: hidden; margin: 0 32px; }
+    .topbar-marquee-inner { display: inline-flex; gap: 64px; white-space: nowrap; animation: marquee 30s linear infinite; }
+    .topbar-marquee-inner a, .topbar-marquee-inner span { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.65); text-decoration: none; }
+    .topbar-marquee-inner a { color: rgba(255,255,255,0.9); border-bottom: 1px solid rgba(255,255,255,0.3); }
+    .topbar-marquee-inner a:hover { color: #fff; border-bottom-color: #fff; }
+    .topbar-marquee-inner .sep { color: rgba(255,255,255,0.2); }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .topbar-lang { display: flex; gap: 6px; align-items: center; }
+    .topbar-lang a { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; padding: 2px 5px; }
+    .topbar-lang a:hover, .topbar-lang a.active { color: #fff; }
+    .topbar-lang span { color: rgba(255,255,255,0.15); font-size: 9px; }
+
+    /* NAVBAR */
+    .nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 40px; background: #fff; border-bottom: 1px solid #e0ddd8; position: sticky; top: 0; z-index: 100; }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; }
+    .nav-logo img { height: 115px; width: auto; }
+    .nav-links { display: flex; gap: 32px; position: absolute; left: 50%; transform: translateX(-50%); }
+    .nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #333; text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: #111; }
+    .nav-links a.active { border-bottom: 2px solid #273043; padding-bottom: 2px; }
+
+    /* HERO */
+    .hero { position: relative; height: 520px; overflow: hidden; display: flex; align-items: flex-end; }
+    .hero-bg { position: absolute; inset: 0; background-image: url('images/background6.jpg'); background-size: cover; background-position: center 40%; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,0) 10%, rgba(255,255,255,0.96) 100%); }
+    .hero-content { position: relative; z-index: 2; padding: 0 48px 36px; }
+    .hero-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #111; margin-bottom: 8px; }
+    .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: 88px; letter-spacing: 6px; line-height: 0.95; color: #111; padding-top: 4px; }
+    .cover-line { width: 28px; height: 3px; background: #111; margin: 14px 0 10px; }
+    .hero-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #333; }
+
+    /* INTRO */
+    .intro { background: #fff; text-align: center; padding: 56px 48px 40px; }
+    .intro-inner { max-width: 800px; margin: 0 auto; }
+    .intro-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 8px; }
+    .intro-heading { font-family: 'Bebas Neue', sans-serif; font-size: 44px; letter-spacing: 3px; color: #111; line-height: 1; margin-bottom: 24px; }
+    .intro-text { font-family: 'Barlow', sans-serif; font-size: 16px; color: #555; line-height: 1.5; margin-bottom: 16px; }
+    .intro-text:last-child { margin-bottom: 0; }
+    .intro-text strong { color: #111; font-weight: 600; }
+
+    /* FREEDOM BANNER */
+    .freedom { text-align: center; padding: 40px 48px 64px; }
+    .freedom span { font-family: 'Bebas Neue', sans-serif; font-size: 64px; letter-spacing: 6px; color: #111; line-height: 1; }
+
+    /* TEAM */
+    .team { background: #faf9f6; border-top: 1px solid #e0ddd8; padding: 56px 48px; }
+    .team-head { text-align: center; margin-bottom: 40px; }
+    .team-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 6px; }
+    .team-heading { font-family: 'Bebas Neue', sans-serif; font-size: 44px; letter-spacing: 3px; color: #111; line-height: 1; }
+    .team-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .team-card { background: #fff; border: 1.5px solid #e0ddd8; border-radius: 4px; overflow: hidden; transition: border-color 0.2s, transform 0.2s; }
+    .team-card:hover { border-color: #273043; transform: translateY(-2px); }
+    .team-photo { width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background: #faf9f6; display: flex; align-items: center; justify-content: center; }
+    .team-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .team-photo-ph { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #ccc; }
+    .team-info { padding: 18px 20px 22px; }
+    .team-name { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1.5px; color: #111; line-height: 1; margin-bottom: 4px; }
+    .team-role { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #273043; margin-bottom: 12px; }
+    .team-desc { font-family: 'Barlow', sans-serif; font-size: 13.5px; color: #666; line-height: 1.5; }
+
+    /* LOCATIONS */
+    .locations { background: #fff; padding: 56px 48px 64px; }
+    .loc-head { text-align: center; margin-bottom: 40px; }
+    .loc-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 6px; }
+    .loc-heading { font-family: 'Bebas Neue', sans-serif; font-size: 44px; letter-spacing: 3px; color: #111; line-height: 1; }
+    .loc-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .loc-card { border: 1.5px solid #e0ddd8; border-radius: 4px; overflow: hidden; }
+    .loc-map { width: 100%; height: 280px; }
+    .loc-map iframe { display: block; width: 100%; height: 100%; }
+    .loc-info { padding: 22px 24px 24px; }
+    .loc-name { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 2px; color: #111; line-height: 1; margin-bottom: 16px; }
+    .loc-row { display: flex; align-items: center; gap: 11px; margin-bottom: 10px; }
+    .loc-row:last-child { margin-bottom: 0; }
+    .loc-row svg { flex-shrink: 0; color: #273043; }
+    .loc-row span { font-family: 'Barlow', sans-serif; font-size: 14.5px; color: #555; }
+    .loc-contact { max-width: 1100px; margin: 32px auto 0; display: flex; justify-content: center; align-items: center; gap: 28px; flex-wrap: wrap; }
+    .loc-wa { display: flex; align-items: center; gap: 9px; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #25d366; text-decoration: none; transition: color 0.2s; }
+    .loc-wa:hover { color: #1ebe5d; }
+    .loc-email { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #273043; text-decoration: none; transition: color 0.2s; }
+    .loc-email:hover { color: #111; }
+
+    /* FORM */
+    .loc-form-wrap { max-width: 760px; margin: 40px auto 0; }
+    .booking-form { display: flex; flex-direction: column; gap: 20px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-group { display: flex; flex-direction: column; }
+    .form-group label { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #333; margin-bottom: 7px; }
+    .form-group input, .form-group select, .form-group textarea { font-family: 'Barlow', sans-serif; font-size: 15px; color: #111; padding: 11px 13px; border: 1.5px solid #e0ddd8; border-radius: 3px; background: #fff; transition: border-color 0.2s; resize: vertical; width: 100%; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #273043; }
+    .form-check { display: flex; align-items: center; gap: 10px; font-family: 'Barlow', sans-serif; font-size: 13px; color: #555; cursor: pointer; }
+    .form-check input { width: 16px; height: 16px; accent-color: #273043; }
+    .form-check a { color: #273043; text-decoration: underline; }
+    .form-submit { align-self: center; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: #fff; text-transform: uppercase; padding: 13px 44px; background: #111; border: none; border-radius: 2px; cursor: pointer; transition: background 0.2s; }
+    .form-submit:hover { background: #273043; }
+
+    /* FOOTER */
+    footer { background: #111; padding: 10px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; position: relative; }
+    footer img { height: 80px; width: auto; }
+    .footer-links { display: flex; gap: 24px; position: absolute; left: 50%; transform: translateX(-50%); }
+    .footer-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #666; text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-spacer { width: 80px; }
+
+    /* WA FLOAT */
+    .wa-float { position: fixed; bottom: 24px; right: 24px; z-index: 990; display: flex; align-items: center; gap: 10px; background: #25d366; color: #fff; text-decoration: none; padding: 12px 20px 12px 16px; border-radius: 50px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 1.5px; box-shadow: 0 4px 16px rgba(37,211,102,0.35); transition: background 0.2s; }
+    .wa-float:hover { background: #1ebe5d; }
+
+    /* MOBILE MENU */
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; position: absolute; left: 20px; top: 50%; transform: translateY(-50%); }
+    .nav-hamburger span { display: block; width: 24px; height: 2px; background: #111; transition: all 0.3s; }
+    .nav-drawer { position: fixed; top: 0; left: 0; width: 85%; max-width: 340px; height: 100vh; height: 100dvh; background: #fff; z-index: 999; transform: translateX(-100%); transition: transform 0.3s ease; overflow-y: auto; display: flex; flex-direction: column; padding-bottom: 20px; }
+    .nav-drawer.open { transform: translateX(0); }
+    .nav-drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 998; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    .nav-drawer-overlay.open { opacity: 1; pointer-events: all; }
+    .nav-drawer-close { display: flex; justify-content: flex-end; padding: 20px 20px 0; }
+    .nav-drawer-close button { background: none; border: none; cursor: pointer; font-size: 28px; color: #333; line-height: 1; }
+    .nav-drawer-links { padding: 6px 0; }
+    .nav-drawer-links a { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 3px; color: #111; text-decoration: none; border-bottom: 1px solid #f0ede8; transition: background 0.15s; }
+    .nav-drawer-links a:hover { background: #faf9f6; }
+    .nav-drawer-links a svg { width: 14px; height: 14px; stroke: #aaa; fill: none; stroke-width: 2; }
+    .nav-drawer-divider { height: 1px; background: #e0ddd8; margin: 4px 0; }
+    .nav-drawer-lang { padding: 12px 24px; border-bottom: 1px solid #f0ede8; }
+    .nav-drawer-lang-label { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 10px; }
+    .nav-drawer-lang-links { display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px 18px; }
+    .nav-drawer-lang-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #555; text-decoration: none; padding: 5px 0; display: block; }
+    .nav-drawer-lang-links a.active { color: #111; }
+    .nav-drawer-social { display: flex; gap: 22px; padding: 16px 24px 28px; }
+    .nav-drawer-social a { color: #555; transition: color 0.2s; }
+    .nav-drawer-social a:hover { color: #111; }
+
+    @media (max-width: 768px) {
+      .topbar-social, .topbar-lang { display: none; }
+      .topbar { padding: 7px 20px; }
+      .nav { padding: 8px 20px; justify-content: center; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .hero { height: 380px; }
+      .hero-content { padding: 0 24px 28px; }
+      .hero-title { font-size: 60px; }
+      .intro { padding: 40px 24px 32px; }
+      .freedom { padding: 24px 24px 48px; }
+      .freedom span { font-size: 44px; }
+      .team { padding: 40px 24px; }
+      .team-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+      .team-heading { font-size: 38px; }
+      .locations { padding: 40px 24px; }
+      .loc-grid { grid-template-columns: 1fr; gap: 16px; }
+      .loc-heading { font-size: 38px; }
+      .loc-map { height: 220px; }
+      .loc-contact { flex-direction: column; gap: 14px; }
+      .form-grid { grid-template-columns: 1fr; gap: 16px; }
+      footer { padding: 12px 20px; }
+      footer img { height: 56px; }
+      .footer-links { gap: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-social">
+      <a href="https://www.facebook.com/shakafuerte/" target="_blank" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+      <a href="https://wa.me/34679561225" target="_blank" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+    </div>
+    <div class="topbar-marquee">
+      <div class="topbar-marquee-inner">
+        <a href="school.html">🤙 Book your lesson here!</a><span class="sep">·</span>
+        <span>⭐ 5★ Google</span><span class="sep">·</span>
+        <span>🏄 Top brands · Free roofrack included</span><span class="sep">·</span>
+        <span>📍 C.C. Botánico · Costa Calma · Fuerteventura</span><span class="sep">·</span>
+        <a href="school.html">🤙 Book your lesson here!</a><span class="sep">·</span>
+        <span>⭐ 5★ Google</span><span class="sep">·</span>
+        <span>🏄 Top brands · Free roofrack included</span><span class="sep">·</span>
+        <span>📍 C.C. Botánico · Costa Calma · Fuerteventura</span><span class="sep">·</span>
+      </div>
+    </div>
+    <div class="topbar-lang">
+      <a href="#" class="active">EN</a><span>·</span><a href="#">ES</a><span>·</span><a href="#">IT</a><span>·</span><a href="#">DE</a>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <button class="nav-hamburger" onclick="openDrawer()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <a href="index.html" class="nav-logo"><img src="images/logo-shaka-web.png" alt="Shaka Fuerteventura"></a>
+    <div class="nav-links">
+      <a href="school.html">The School</a>
+      <a href="shop.html">The Shop</a>
+      <a href="about.html" class="active">About Us</a>
+      <a href="about.html#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Who We Are</p>
+      <h1 class="hero-title">About Us</h1>
+      <div class="cover-line"></div>
+      <p class="hero-tagline">School &amp; Shop · Costa Calma</p>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <div class="intro">
+    <div class="intro-inner">
+      <p class="intro-eyebrow">Who We Are</p>
+      <h2 class="intro-heading">Born From a Simple Idea</h2>
+      <p class="intro-text">Shaka Fuerte started five years ago from an idea by <strong>Matteo</strong>: build a shop and a school that give riders a more personal, flexible service, free from the rigid opening and closing hours of a normal rental.</p>
+      <p class="intro-text">The concept is simple. No queues, no fixed slots, no waiting for the rental to open. Just grab your gear, load your car, and ride where you want, when you want.</p>
+      <p class="intro-text">That's what Shaka Fuerte is really about: the <strong>freedom to ride on your own terms</strong>, whether you're here to learn, to rent, or just to feel the wind on the water.</p>
+    </div>
+  </div>
+
+  <!-- FREEDOM BANNER -->
+  <div class="freedom">
+    <span>Shaka is Freedom</span>
+  </div>
+
+  <!-- TEAM -->
+  <div class="team">
+    <div class="team-head">
+      <p class="team-eyebrow">The People</p>
+      <h2 class="team-heading">Meet the Team</h2>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-photo"><span class="team-photo-ph">Matteo</span></div>
+        <div class="team-info">
+          <div class="team-name">Matteo</div>
+          <div class="team-role">Owner &amp; Shop Manager</div>
+          <p class="team-desc">Description coming soon.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo"><span class="team-photo-ph">Giorgio</span></div>
+        <div class="team-info">
+          <div class="team-name">Giorgio</div>
+          <div class="team-role">Instructor</div>
+          <p class="team-desc">Description coming soon.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo"><span class="team-photo-ph">Mitch</span></div>
+        <div class="team-info">
+          <div class="team-name">Mitch</div>
+          <div class="team-role">Instructor</div>
+          <p class="team-desc">Description coming soon.</p>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo"><span class="team-photo-ph">Henri</span></div>
+        <div class="team-info">
+          <div class="team-name">Henri</div>
+          <div class="team-role">Instructor</div>
+          <p class="team-desc">Description coming soon.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOCATIONS -->
+  <div class="locations" id="contact">
+    <div class="loc-head">
+      <p class="loc-eyebrow">Find Us</p>
+      <h2 class="loc-heading">Two Spots, One Crew</h2>
+    </div>
+    <div class="loc-grid">
+
+      <div class="loc-card">
+        <div class="loc-map">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3517.3737443531427!2d-14.221569124728914!3d28.165546975922926!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xc479dc67e51b0c7%3A0x21b527634faa3c61!2sShaka%20Fuerte%20Watersport%20Center%20%26%20School!5e0!3m2!1sit!2ses!4v1780756078523!5m2!1sit!2ses" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="loc-info">
+          <h3 class="loc-name">The School</h3>
+          <div class="loc-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <span>Costa Calma beach, Fuerteventura</span>
+          </div>
+          <div class="loc-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>10:00 – 17:00 · every day</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="loc-card">
+        <div class="loc-map">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14070.683448052896!2d-14.252299812841802!3d28.156506299999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xc479dec6d701b49%3A0xad780ca9e696aa6!2sShaka%20Fuerte%20Surf%20Shop%20%26%20Rental!5e0!3m2!1sit!2ses!4v1780758917537!5m2!1sit!2ses" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="loc-info">
+          <h3 class="loc-name">The Shop</h3>
+          <div class="loc-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <span>C.C. Botánico, Costa Calma</span>
+          </div>
+          <div class="loc-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>9:00 – 15:00 · 18:00 – 20:00</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="loc-form-wrap">
+      <form action="https://api.web3forms.com/submit" method="POST" class="booking-form">
+        <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY">
+        <input type="hidden" name="subject" value="New message from Shaka website">
+        <input type="checkbox" name="botcheck" style="display:none;">
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="c-name">Full Name *</label>
+            <input type="text" id="c-name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="c-email">Email *</label>
+            <input type="email" id="c-email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="c-phone">Phone</label>
+            <input type="tel" id="c-phone" name="phone">
+          </div>
+          <div class="form-group">
+            <label for="c-subject">Subject</label>
+            <input type="text" id="c-subject" name="subject_text" placeholder="What's it about?">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="c-message">Message *</label>
+          <textarea id="c-message" name="message" rows="5" required placeholder="How can we help?"></textarea>
+        </div>
+
+        <label class="form-check">
+          <input type="checkbox" required>
+          <span>* I agree to the <a href="#">Privacy Policy</a></span>
+        </label>
+
+        <button type="submit" class="form-submit">Send Message</button>
+      </form>
+    </div>
+
+    <div class="loc-contact">
+      <a href="https://wa.me/34679561225" class="loc-wa">
+        <svg viewBox="0 0 32 32" fill="currentColor" width="20" height="20"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.492.655 4.83 1.8 6.856L2 30l7.344-1.778A13.94 13.94 0 0 0 16 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.6a11.55 11.55 0 0 1-5.89-1.607l-.422-.252-4.36 1.056 1.084-4.248-.276-.436A11.56 11.56 0 0 1 4.4 16C4.4 9.59 9.59 4.4 16 4.4S27.6 9.59 27.6 16 22.41 27.6 16 27.6zm6.338-8.664c-.347-.174-2.055-1.014-2.374-1.13-.319-.115-.551-.173-.783.174-.232.346-.9 1.13-1.103 1.362-.202.232-.405.26-.752.086-.347-.173-1.465-.54-2.791-1.722-1.031-.92-1.727-2.055-1.929-2.402-.202-.347-.022-.534.152-.707.156-.155.347-.405.52-.607.174-.202.232-.347.347-.578.116-.232.058-.434-.029-.607-.087-.174-.783-1.888-1.073-2.587-.282-.678-.569-.586-.783-.597l-.667-.011a1.28 1.28 0 0 0-.926.434c-.318.347-1.215 1.188-1.215 2.896s1.244 3.358 1.418 3.59c.173.231 2.449 3.738 5.934 5.24.829.358 1.477.572 1.981.732.832.265 1.59.228 2.189.138.668-.1 2.055-.84 2.345-1.652.29-.811.29-1.507.202-1.652-.087-.144-.318-.231-.665-.405z"/></svg>
+        WhatsApp +34 679 561 225
+      </a>
+      <a href="mailto:info@shaka-fuerte.com" class="loc-email">info@shaka-fuerte.com</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <img src="images/logo-shaka-web.png" alt="Shaka Fuerteventura">
+    <div class="footer-links">
+      <a href="school.html">The School</a>
+      <a href="shop.html">The Shop</a>
+      <a href="about.html">About Us</a>
+      <a href="about.html#contact">Contact</a>
+    </div>
+    <div class="footer-spacer"></div>
+  </footer>
+
+  <!-- WA FLOAT -->
+  <a href="https://wa.me/34679561225" target="_blank" class="wa-float" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 32 32" fill="currentColor" width="26" height="26"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.492.655 4.83 1.8 6.856L2 30l7.344-1.778A13.94 13.94 0 0 0 16 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.6a11.55 11.55 0 0 1-5.89-1.607l-.422-.252-4.36 1.056 1.084-4.248-.276-.436A11.56 11.56 0 0 1 4.4 16C4.4 9.59 9.59 4.4 16 4.4S27.6 9.59 27.6 16 22.41 27.6 16 27.6zm6.338-8.664c-.347-.174-2.055-1.014-2.374-1.13-.319-.115-.551-.173-.783.174-.232.346-.9 1.13-1.103 1.362-.202.232-.405.26-.752.086-.347-.173-1.465-.54-2.791-1.722-1.031-.92-1.727-2.055-1.929-2.402-.202-.347-.022-.534.152-.707.156-.155.347-.405.52-.607.174-.202.232-.347.347-.578.116-.232.058-.434-.029-.607-.087-.174-.783-1.888-1.073-2.587-.282-.678-.569-.586-.783-.597l-.667-.011a1.28 1.28 0 0 0-.926.434c-.318.347-1.215 1.188-1.215 2.896s1.244 3.358 1.418 3.59c.173.231 2.449 3.738 5.934 5.24.829.358 1.477.572 1.981.732.832.265 1.59.228 2.189.138.668-.1 2.055-.84 2.345-1.652.29-.811.29-1.507.202-1.652-.087-.144-.318-.231-.665-.405z"/></svg>
+    <span>Chat with us</span>
+  </a>
+
+  <!-- MOBILE DRAWER -->
+  <div class="nav-drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+  <div class="nav-drawer" id="navDrawer">
+    <div class="nav-drawer-close"><button onclick="closeDrawer()" aria-label="Close menu">&#215;</button></div>
+    <div class="nav-drawer-links">
+      <a href="school.html">The School <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a href="shop.html">The Shop <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a href="about.html">About Us <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <a href="about.html#contact">Contact <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+    </div>
+    <div class="nav-drawer-divider"></div>
+    <div class="nav-drawer-lang">
+      <div class="nav-drawer-lang-label">Language</div>
+      <div class="nav-drawer-lang-links">
+        <a href="#" class="active">English</a><a href="#">Español</a><a href="#">Italiano</a><a href="#">Deutsch</a>
+      </div>
+    </div>
+    <div class="nav-drawer-divider"></div>
+    <div class="nav-drawer-social">
+      <a href="https://www.facebook.com/shakafuerte/" target="_blank" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="https://www.instagram.com/shaka_fuerte/" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+      <a href="https://wa.me/34679561225" target="_blank" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+    </div>
+  </div>
+
+  <script>
+    function openDrawer() { document.getElementById('navDrawer').classList.add('open'); document.getElementById('drawerOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeDrawer() { document.getElementById('navDrawer').classList.remove('open'); document.getElementById('drawerOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+  </script>
+</body>
+</html>
