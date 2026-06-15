@@ -45,7 +45,7 @@
     .hero-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #111; margin-bottom: 8px; }
     .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: 88px; letter-spacing: 6px; line-height: 0.95; color: #111; padding-top: 4px; }
     .cover-line { width: 28px; height: 3px; background: #111; margin: 14px 0 10px; }
-    .hero-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #333; }
+    .hero-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #333; }
 
     /* INTRO */
     .intro { background: #fff; text-align: center; padding: 56px 48px 40px; }
@@ -111,7 +111,7 @@
     .booking-form { display: flex; flex-direction: column; gap: 20px; }
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
     .form-group { display: flex; flex-direction: column; }
-    .form-group label { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #333; margin-bottom: 7px; }
+    .form-group label { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #333; margin-bottom: 7px; }
     .form-group input, .form-group select, .form-group textarea { font-family: 'Barlow', sans-serif; font-size: 15px; color: #111; padding: 11px 13px; border: 1.5px solid #e0ddd8; border-radius: 3px; background: #fff; transition: border-color 0.2s; resize: vertical; width: 100%; }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #273043; }
     .form-check { display: flex; align-items: center; gap: 10px; font-family: 'Barlow', sans-serif; font-size: 13px; color: #555; cursor: pointer; }
@@ -153,8 +153,13 @@
     .totop:hover svg { transform: translateY(-3px); }
     .totop svg { transition: transform 0.2s; }
 
+    /* SCROLL REVEAL */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
     /* WA FLOAT */
-    .wa-float { position: fixed; bottom: 24px; right: 24px; z-index: 990; display: flex; align-items: center; gap: 10px; background: #25d366; color: #fff; text-decoration: none; padding: 12px 20px 12px 16px; border-radius: 50px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 1.5px; box-shadow: 0 4px 16px rgba(37,211,102,0.35); transition: background 0.2s; }
+    .wa-float { position: fixed; bottom: 90px; right: 24px; z-index: 990; display: flex; align-items: center; gap: 10px; background: #25d366; color: #fff; text-decoration: none; padding: 12px 20px 12px 16px; border-radius: 50px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 1.5px; box-shadow: 0 4px 16px rgba(37,211,102,0.35); transition: background 0.2s; }
     .wa-float:hover { background: #1ebe5d; }
 
     /* MOBILE MENU */
@@ -176,6 +181,7 @@
     .nav-drawer-lang-links { display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px 18px; }
     .nav-drawer-lang-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #555; text-decoration: none; padding: 5px 0; display: block; }
     .nav-drawer-lang-links a.active { color: #111; }
+    .nav-drawer-lang-links a:hover { color: #111; background: none; }
     .nav-drawer-social { display: flex; gap: 22px; padding: 16px 24px 28px; }
     .nav-drawer-social a { color: #555; transition: color 0.2s; }
     .nav-drawer-social a:hover { color: #111; }
@@ -271,7 +277,7 @@
   </section>
 
   <!-- INTRO -->
-  <div class="intro">
+  <div class="intro reveal">
     <div class="intro-inner">
       <p class="intro-eyebrow">Who We Are</p>
       <h2 class="intro-heading">Born From a Simple Idea</h2>
@@ -282,12 +288,12 @@
   </div>
 
   <!-- ACTION PHOTO -->
-  <div class="action-banner">
+  <div class="action-banner reveal">
     <span class="action-ph">Action photo</span>
   </div>
 
   <!-- TEAM -->
-  <div class="team">
+  <div class="team reveal">
     <div class="team-head">
       <p class="team-eyebrow">The People</p>
       <h2 class="team-heading">Meet the Team</h2>
@@ -330,7 +336,7 @@
   </div>
 
   <!-- LOCATIONS -->
-  <div class="locations" id="contact">
+  <div class="locations reveal" id="contact">
     <div class="loc-head">
       <p class="loc-eyebrow">Find Us</p>
       <h2 class="loc-heading">Two Spots, One Crew</h2>
@@ -527,6 +533,21 @@
       if (window.scrollY > 500) toTopBtn.classList.add('visible');
       else toTopBtn.classList.remove('visible');
     });
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+      const revObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      revealEls.forEach(el => revObserver.observe(el));
+    } else {
+      revealEls.forEach(el => el.classList.add('visible'));
+    }
   </script>
 </body>
 </html>

@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Barlow', sans-serif; background: #f0ede8; color: #111; }
+    body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; }
 
     /* TOP BAR */
     .topbar { display: flex; justify-content: space-between; align-items: center; padding: 7px 40px; background: #1a1a1a; border-bottom: 1px solid #2a2a2a; }
@@ -42,8 +42,16 @@
     .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease; display: flex; align-items: flex-end; }
     .hero-slide.active { opacity: 1; z-index: 1; }
     .hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; }
-    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(240,237,232,0) 25%, rgba(240,237,232,0.95) 100%); }
+    .hero-ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #999; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,0) 10%, rgba(255,255,255,0.96) 100%); }
     .hero-content { position: relative; z-index: 2; padding: 0 48px 44px; }
+    .hero-content > * { opacity: 0; transform: translateY(22px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .hero-slide.active .hero-content > * { opacity: 1; transform: translateY(0); }
+    .hero-slide.active .hero-content > *:nth-child(1) { transition-delay: 0.30s; }
+    .hero-slide.active .hero-content > *:nth-child(2) { transition-delay: 0.60s; }
+    .hero-slide.active .hero-content > *:nth-child(3) { transition-delay: 0.90s; }
+    .hero-slide.active .hero-content > *:nth-child(4) { transition-delay: 1.20s; }
+    @media (prefers-reduced-motion: reduce) { .hero-content > * { opacity: 1; transform: none; transition: none; } }
     .hero-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #111; margin-bottom: 8px; min-height: 14px; }
     .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: 110px; letter-spacing: 8px; line-height: 0.88; color: #111; }
     .hero-title span { display: block; font-size: 34px; letter-spacing: 14px; color: #111; margin-top: 6px; }
@@ -52,6 +60,7 @@
     .cover-line { width: 28px; height: 3px; background: #111; margin: 18px 0 12px; }
     .hero-tagline { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #333; display: inline-flex; align-items: center; min-height: 45px; }
     .hero-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 45px; box-sizing: border-box; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: #fff; text-transform: uppercase; padding: 12px 28px; background: #273043; border-radius: 2px; text-decoration: none; transition: background 0.2s; margin-top: 4px; }
+    .hero-content > .hero-btn { transition: opacity 0.8s ease, transform 0.8s ease, background 0.2s ease; }
     .hero-btn:hover { background: #111; }
     .hero-dots { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; gap: 10px; }
     .hero-dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(17,17,17,0.25); border: none; cursor: pointer; padding: 0; transition: background 0.2s; }
@@ -323,7 +332,7 @@
     <div class="hero-slides" id="heroSlides">
 
       <!-- SLIDE 1: General -->
-      <div class="hero-slide active">
+      <div class="hero-slide">
         <div class="hero-bg" style="background-image: url('images/background6.jpg'); background-position: center 40%;"></div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
@@ -341,9 +350,7 @@
 
       <!-- SLIDE 2: Lessons -->
       <div class="hero-slide">
-        <div class="hero-bg" style="background-color: #e8e4dc; display:flex; align-items:center; justify-content:center;">
-          <span style="font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#999;">Lesson pic</span>
-        </div>
+        <div class="hero-bg" style="background-color: #e8e4dc;"><div class="hero-ph">Lesson pic</div></div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
           <p class="hero-eyebrow">The School</p>
@@ -357,9 +364,7 @@
 
       <!-- SLIDE 3: Rental -->
       <div class="hero-slide">
-        <div class="hero-bg" style="background-color: #dde4e8; display:flex; align-items:center; justify-content:center;">
-          <span style="font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#999;">Rental pic</span>
-        </div>
+        <div class="hero-bg" style="background-color: #dde4e8;"><div class="hero-ph">Rental pic</div></div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
           <p class="hero-eyebrow">The Shop</p>
@@ -753,6 +758,9 @@
     const heroTotal = heroSlides.length;
     let heroTimer;
 
+    // Activate first slide on load so the entrance animation plays
+    setTimeout(() => { heroSlides[0].classList.add('active'); }, 100);
+
     function goSlide(n) {
       heroCurrent = (n + heroTotal) % heroTotal;
       heroSlides.forEach((s, i) => s.classList.toggle('active', i === heroCurrent));
@@ -773,16 +781,13 @@
 
     // Touch swipe (mobile)
     let touchStartX = 0;
-    let touchEndX = 0;
-    const swipeThreshold = 40;
     heroEl.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
       clearInterval(heroTimer);
     }, { passive: true });
     heroEl.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      const diff = touchEndX - touchStartX;
-      if (Math.abs(diff) > swipeThreshold) {
+      const diff = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(diff) > 40) {
         if (diff < 0) goSlide(heroCurrent + 1);
         else goSlide(heroCurrent - 1);
       } else {
