@@ -182,7 +182,7 @@ footer { background: #111; padding: 48px 48px 28px; }
 .page-index .sport-pill { display: flex; align-items: center; gap: 7px; border: 1.5px solid #111; border-radius: 3px; padding: 6px 11px; }
 .page-index .sport-pill img { height: 24px; width: auto; }
 .page-index .sport-pill span { font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 1.5px; color: #111; }
-.page-index .sp-btn { display: inline-flex; align-self: flex-start; align-items: center; gap: 7px; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: #fff; text-transform: uppercase; padding: 12px 28px; background: #111; border: none; border-radius: 2px; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+.page-index .sp-btn { display: inline-flex; align-self: flex-start; align-items: center; gap: 7px; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; white-space: nowrap; color: #fff; text-transform: uppercase; padding: 12px 28px; background: #111; border: none; border-radius: 2px; cursor: pointer; text-decoration: none; transition: background 0.2s; }
 .page-index .sp-btn:hover { background: #273043; }
 .page-index .sp-btn svg { width: 16px; height: 16px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .page-index .sp-inner { padding: 48px 48px 24px; display: flex; flex-direction: column; flex: 1; }
@@ -191,14 +191,19 @@ footer { background: #111; padding: 48px 48px 28px; }
 .page-index .sp-info-box { display: flex; align-items: center; gap: 14px; padding: 14px 48px; background: transparent; transition: background 0.2s; cursor: default; width: 100%; }
 .page-index .sp-info-box:hover { background: #f5f2ed; }
 .page-index .sp-info-box svg { flex-shrink: 0; color: #273043; }
+.sp-info-link { text-decoration: none; cursor: pointer; }
+.sp-info-link:hover { background: #f5f2ed; }
+.sp-info-link:hover .sp-info-val { color: #273043; }
 .page-index .sp-info-label { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 2px; }
 .page-index .sp-info-val { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 1.5px; color: #111; }
 .page-index .reviews { background: #fff; overflow: hidden; }
 .page-index .reviews-title { padding: 16px 56px 0; }
 .page-index .reviews-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 8px; }
 .page-index .reviews-heading { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 3px; color: #111; line-height: 1; }
-.page-index .reviews-inner { display: flex; transition: transform 0.5s ease; }
-.page-index .review-slide { display: grid; grid-template-columns: 1fr 1fr; min-width: 100%; min-height: 420px; }
+.page-index .reviews-inner { position: relative; }
+.page-index .reviews-inner { position: relative; }
+.review-slide { display: grid; grid-template-columns: 1fr 1fr; min-width: 100%; min-height: 420px; opacity: 0; visibility: hidden; transition: opacity 0.6s ease; position: absolute; inset: 0; }
+.review-slide.active { opacity: 1; visibility: visible; position: relative; }
 .page-index .review-text { padding: 48px 56px; display: flex; flex-direction: column; justify-content: center; }
 .page-index .review-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
 .page-index .review-stars { font-size: 20px; color: #111; letter-spacing: 2px; }
@@ -458,13 +463,19 @@ footer { background: #111; padding: 48px 48px 28px; }
   .page-index .split { grid-template-columns: 1fr; border-top: none; }
   .page-index .sp { border-top: none; }
   .page-index .sp:first-child { border-right: none; }
-  .page-index .sp-title { font-size: 72px; }
-  .page-index .sp-info-box { margin: 0 -24px; padding-left: 24px; padding-right: 24px; }
-  .page-index .sp-info-boxes { border-bottom: none; }
-  .page-index .review-slide { grid-template-columns: 1fr; }
-  .page-index .review-text { padding: 32px 24px; }
-  .page-index .review-photo { height: 260px; }
-  .page-index .review-photo img { width: 100%; height: 260px; object-fit: cover; }
+  .page-index .sp-inner { padding: 32px 24px 16px; }
+  .page-index .sp-title { font-size: 64px; }
+  .page-index .sp-desc { margin-bottom: 18px; }
+  .page-index .sp-sports { margin-bottom: 20px; }
+  .page-index .sp-info-boxes { margin-top: 16px; border-bottom: none; }
+  .page-index .sp-info-box { margin: 0; padding: 10px 24px; }
+  .page-index .sp-btn { font-size: 15px; letter-spacing: 2px; padding: 12px 22px; }
+  .page-index .review-slide { grid-template-columns: 1fr; min-height: 0; }
+  .page-index .review-text { padding: 28px 24px 20px; }
+  .page-index .review-header { margin-bottom: 14px; }
+  .page-index .review-quote { font-size: 14.5px; line-height: 1.6; margin-bottom: 14px; }
+  .page-index .review-photo { height: auto; padding: 0 24px 28px; }
+  .page-index .review-photo img { width: 100%; max-width: 300px; height: auto; aspect-ratio: 1; object-fit: cover; margin: 0 auto; }
   .page-index .gallery { grid-template-columns: 1fr; height: auto; padding: 0 20px; }
   .page-index .gallery-img { height: 220px; }
   .page-index .contact-inner { padding: 40px 24px 48px; }
