@@ -27,7 +27,10 @@ body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; }
 .nav-logo img { height: 115px; width: auto; }
 .nav-links { display: flex; gap: 32px; position: absolute; left: 50%; transform: translateX(-50%); }
 .nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #333; text-decoration: none; transition: color 0.2s; }
-.hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,0) 10%, rgba(255,255,255,0.96) 100%); z-index: 2; }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(255,255,255,0) 20%, rgba(255,255,255,1) 100%); z-index: 2; }
+@media (min-width: 769px) {
+  .hero-overlay { background: linear-gradient(to bottom, rgba(255,255,255,0) 30%, rgba(255,255,255,0.85) 100%); }
+}
 .page-index .hero-content > *, .page-school .hero-content > *, .page-shop .hero-content > * { opacity: 0; transform: translateY(22px); transition: opacity 0.8s ease, transform 0.8s ease; }
 .hero-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #111; margin-bottom: 8px; min-height: 14px; }
 .cover-line { width: 28px; height: 3px; background: #111; margin: 14px 0 10px; }
@@ -240,7 +243,9 @@ footer { background: #111; padding: 48px 48px 28px; }
 .page-index .insta-handle { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #273043; text-decoration: none; transition: color 0.2s; }
 .page-index .insta-handle:hover { color: #111; }
 .page-index .insta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 720px; margin: 0 auto; }
-.page-index .insta-cell { aspect-ratio: 1 / 1; background: #faf9f6; border: 1.5px solid #e0ddd8; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; text-decoration: none; transition: background 0.2s, color 0.2s; }
+.page-index .insta-cell { aspect-ratio: 1 / 1; background: #faf9f6; border: 1.5px solid #e0ddd8; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; text-decoration: none; transition: background 0.2s, color 0.2s; overflow: hidden; }
+.page-index .insta-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+.page-index .insta-cell:hover img { transform: scale(1.05); }
 .page-index .insta-cell:hover { background: #f0ede8; color: #273043; }
 
 /* --- school --- */
@@ -501,7 +506,7 @@ footer { background: #111; padding: 48px 48px 28px; }
   .page-school .card-detail br { display: none; }
   .page-school .card-price { font-size: 26px; flex-shrink: 0; }
   .page-school .card-price span { font-size: 13px; }
-  .page-school .badge { display: none; }
+  .page-school .badge { display: inline-block; position: static; top: auto; right: auto; left: auto; font-size: 8px; padding: 2px 6px; margin-top: 5px; }
   .page-school .price-block { display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0; text-align: right; }
   .page-school .price-block .card-price { font-size: 26px; }
   .page-school .price-block .rental-note { margin-top: 2px; font-size: 10px; letter-spacing: 1px; text-align: right; }
