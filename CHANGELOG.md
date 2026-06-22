@@ -154,6 +154,43 @@ Stack: plain HTML + CSS, tested via VS Code Live Server. Future host: Netlify.
   2. about hero text invisible: global .hero-content > * opacity:0 rule affected about (which has no .loaded/.active to reveal it) → scoped to index/school/shop only
   3. Hero background images not loading: url('images/...') in CSS must be url('../images/...') since CSS lives in css/ subfolder. NOTE: only background-image paths in CSS need ../; <img src> in HTML stay as images/
 
+### SESSION 2026-06-20 — Photos, mobile polish, school CTA & FAQ ✓✓
+
+**Real photographer photos inserted (optimized via PIL, all web-sized):**
+- index: hero slide 2 (lesson); reviews 1-4 with real photos + 4th review (rental) added; Instagram 9 real photos. Index 2-photo gallery REMOVED.
+- school: hero carousel all 3 slides (Costa Calma / smiling wing / group + safety boat); gallery 6 photos; sport cards 2 (windsurf + wing, wing cropped to center subjects)
+- shop: hero carousel all 3 slides (shop interior / kite aerial / windsurf wave) — slide 1 is user-cropped interior photo, replaced generic background6; gallery 6 photos (aerial / windsurf / wingfoil / SUP / kite / sunset). NOTE: GAB_7628 + GAB_1351 used in both hero and gallery (intentional)
+- about: action-banner photo placeholder REMOVED entirely (HTML + CSS) per decision
+- Image optimization recipe: PIL convert RGB, resize LANCZOS, quality 82-84. Hero 1600px, gallery 900px, sport-card 1000px, review/insta 600/500px square. CSS bg paths need ../images/, inline HTML & img src use images/
+
+**Mobile fixes:**
+- index split (School/Shop) now stacks (grid 1fr); booking forms compacted; hamburger drawer closes on same-page anchors + animated close before cross-page nav
+- index split compacting + info-box alignment (location/opening icons align with text)
+
+**index Location + SEO buttons:**
+- Location info-boxes now clickable → Google Maps (School + Shop)
+- sp-btn texts: "Windsurf & Wing Lessons" / "Windsurf & Kite Rental" (was generic)
+
+**Reviews carousel → FADE:** changed from horizontal slide to opacity fade; reviews square photo, compacted mobile
+
+**Review/price reveal:** scroll reveal added to all price card sections
+
+**Hero overlay tuning:** mobile fades to full white at bottom; desktop lighter (0.85). All 3 hero carousels
+
+**Footer hours:** Shop hours split to two lines (9:00–15:00 / 18:00–20:00, morning above evening below) in footer of ALL 4 pages. School stays one line. About internal section unchanged. NOTE: footer HTML duplicated per page (static site), only CSS shared — content edits need all 4 files
+
+**school — Best Value badge:**
+- Now visible on mobile (was display:none); desktop +~22% bigger, mobile +25% bigger and moved ABOVE "Full Course" (via order:-1 in flex card-text)
+- Badge moved inside card-text in HTML (both featured cards)
+
+**school — sport-card buttons SEO:** "More info" → "Windsurf Lessons & Prices" / "Wingfoil Lessons & Prices"
+
+**school — CTA buttons (NEW):** "Book Your Windsurf/Wingfoil Lesson" at end of each price section → scrolls to #book form AND pre-selects the matching course in the dropdown (data-course + JS). Navy #273043, centered
+
+**school — FAQ accordion (NEW):** 6-question fisarmonica before booking form (experience / equipment / group size / languages [EN/IT/DE/ES/CZ/SK/PL] / min age [windsurf 8, wing 10, privates for younger] / no-wind [reschedule or 100% refund]). Smooth max-height animation, +/× icon. JSON-LD FAQPage schema in <head> for SEO rich snippets. id="faq" anchor + scroll-margin-top
+
+**school — booking form intro:** now links to WhatsApp (wa.me/34679561225, new tab) and FAQ (#faq anchor). booking-link style navy underline, hover WhatsApp green
+
 ### Decisions made
 - Web3Forms chosen over Formspree (250 vs 50 submissions/month, free)
 - Instagram handle corrected to @shaka_fuerte (with underscore)
@@ -164,6 +201,10 @@ Stack: plain HTML + CSS, tested via VS Code Live Server. Future host: Netlify.
 - Color identity: site stays neutral (navy/white/black); logo carries the color. Tested coral+teal from logo palette across all pages but reverted — felt forced on the clean editorial layout. Navy #273043 matches the logo's SHAKA lettering, so it already ties in.
 - CSS architecture: single css/style.css with .page-* body-class scoping (Strada A). Chosen over per-page CSS files — simplest for a 4-page site, and a clean first step toward Astro if the site grows a lot later.
 - Folder convention: css/ subfolder (matches existing images/ and icons/) — more professional than CSS in root.
+- Instagram grid: all 9 cells link to profile instagram.com/shaka_fuerte (not individual posts — simpler, no broken links if a post is deleted/archived). Considered linking each thumbnail to its specific post/reel but rejected for maintenance simplicity.
+- about action banner: REMOVED for good (HTML + CSS) — decided it's not needed, page flows intro → team directly.
+- school CTA + FAQ: added a conversion layer to the school page (CTA buttons that pre-fill the booking form + FAQ accordion with SEO schema). FAQ schema kept on school page only (where the FAQs live).
+- shop hero slide 1: user-cropped vertical interior photo to 16:9 horizontal — interior shot opens the shop hero (shows all the gear), then action shots follow.
 
 ---
 
@@ -177,15 +218,17 @@ Stack: plain HTML + CSS, tested via VS Code Live Server. Future host: Netlify.
 - **PHASE 1 COMPLETE** (pending only team/action photos)
 
 ### Assets to fill (placeholders)
-- [ ] index hero carousel: lesson photo + rental photo
-- [ ] index Instagram grid: 9 real photos
-- [ ] school gallery: 6 photos
-- [ ] shop gallery: 6 photos
+- [x] index hero carousel: lesson photo (slide 2) ✓ — slide 1 & 3 (rental) still generic
+- [x] index Instagram grid: 9 real photos ✓
+- [x] school gallery: 6 photos ✓
+- [x] shop gallery: 6 photos ✓
 - [ ] about team photos: Giorgio, Mitch, Henri (Matteo done)
-- [ ] about action banner photo (between intro and team)
-- [ ] school hero carousel: photos 2 & 3 (slide 1 done)
-- [ ] shop hero carousel: photos 2 & 3 (slide 1 done)
-- [ ] Review photos already placed (review1-3.jpg)
+- [x] about action banner photo — REMOVED entirely (decision, no longer needed)
+- [x] school hero carousel: all 3 slides ✓
+- [x] shop hero carousel: all 3 slides ✓ (slide 1 = cropped interior photo)
+- [x] Review photos placed (review1-4.jpg) ✓
+- [ ] index hero slide 1 (background6) & slide 3 (rental) — still generic/placeholder
+- [ ] about hero → convert to 3-slide carousel (new requirement from Shaka-Pic.pdf)
 
 ### Content to verify
 - [ ] **Shop "What's Available" — double-check all gear sizes & brands** (windsurf sails/boards, kite, wing wings/boards/foils) — some values may need confirmation

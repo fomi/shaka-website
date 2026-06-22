@@ -139,6 +139,8 @@ footer { background: #111; padding: 48px 48px 28px; }
 .booking-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 6px; }
 .booking-heading { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 3px; color: #111; line-height: 1; margin-bottom: 16px; }
 .booking-intro { font-family: 'Barlow', sans-serif; font-size: 14.5px; color: #666; line-height: 1.6; margin-bottom: 32px; }
+.booking-link { color: #273043; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; transition: color 0.2s; }
+.booking-link:hover { color: #25d366; }
 .booking-form { display: flex; flex-direction: column; gap: 20px; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .form-group input, .form-group select, .form-group textarea { font-family: 'Barlow', sans-serif; font-size: 15px; color: #111; padding: 11px 13px; border: 1.5px solid #e0ddd8; border-radius: 3px; background: #fff; transition: border-color 0.2s; resize: vertical; width: 100%; }
@@ -284,7 +286,38 @@ footer { background: #111; padding: 48px 48px 28px; }
 .page-school .card.featured .card-price { color: #273043; }
 .page-school .price-block { margin-top: auto; }
 .page-school .price-block .card-price { margin-top: 0; }
-.page-school .badge { position: absolute; top: 14px; right: 14px; font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #fff; background: #111; padding: 3px 8px; border-radius: 2px; }
+.page-school .badge { position: absolute; top: 14px; right: 14px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #fff; background: #111; padding: 4px 10px; border-radius: 2px; }
+.page-school .cta-wrap { text-align: center; margin-top: 32px; }
+.page-school .cta-btn { display: inline-block; font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 3px; text-transform: uppercase; color: #fff; background: #273043; padding: 15px 44px; border-radius: 3px; text-decoration: none; transition: background 0.2s, transform 0.2s; }
+.page-school .cta-btn:hover { background: #1a212f; transform: translateY(-2px); }
+.page-shop .cta-wrap { text-align: center; margin-top: 32px; }
+.page-shop .cta-btn { display: inline-block; font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 3px; text-transform: uppercase; color: #fff; background: #273043; padding: 15px 44px; border-radius: 3px; text-decoration: none; transition: background 0.2s, transform 0.2s; }
+.page-shop .cta-btn:hover { background: #1a212f; transform: translateY(-2px); }
+.page-school .faq { max-width: 760px; margin: 0 auto; padding: 80px 32px; scroll-margin-top: 140px; }
+.page-school .faq-inner { text-align: center; }
+.page-school .faq-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #999; margin: 0 0 8px; }
+.page-school .faq-heading { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 1px; color: #111; margin: 0 0 40px; }
+.page-school .faq-list { text-align: left; }
+.page-school .faq-item { border-bottom: 1px solid #e0ddd8; }
+.page-school .faq-item:first-child { border-top: 1px solid #e0ddd8; }
+.page-school .faq-q { width: 100%; background: none; border: none; cursor: pointer; padding: 22px 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; text-align: left; font-family: 'Barlow', sans-serif; font-size: 17px; font-weight: 600; color: #111; transition: color 0.2s; }
+.page-school .faq-q:hover { color: #273043; }
+.page-school .faq-icon { position: relative; width: 16px; height: 16px; flex-shrink: 0; }
+.page-school .faq-icon::before, .page-school .faq-icon::after { content: ''; position: absolute; background: #273043; transition: transform 0.25s; }
+.page-school .faq-icon::before { top: 7px; left: 0; width: 16px; height: 2px; }
+.page-school .faq-icon::after { top: 0; left: 7px; width: 2px; height: 16px; }
+.page-school .faq-q[aria-expanded="true"] .faq-icon::after { transform: rotate(90deg); opacity: 0; }
+.page-school .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.page-school .faq-a p { margin: 0 0 22px; font-family: 'Barlow', sans-serif; font-size: 15px; line-height: 1.6; color: #555; }
+.page-school .howto { background: #faf9f6; border-top: 1px solid #e0ddd8; border-bottom: 1px solid #e0ddd8; padding: 56px 48px; }
+.page-school .howto-head { text-align: center; margin-bottom: 40px; }
+.page-school .howto-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: #999; margin: 0 0 8px; }
+.page-school .howto-heading { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 1px; color: #111; margin: 0; }
+.page-school .howto-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.page-school .howto-step { text-align: center; }
+.page-school .howto-icon { width: 72px; height: 72px; border-radius: 50%; background: #111; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; overflow: hidden; }
+.page-school .howto-icon img { width: 72px; height: 72px; object-fit: cover; }
+.page-school .howto-label { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #333; line-height: 1.2; }
 .page-school .rental-note { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #aaa; font-style: italic; margin-top: 12px; }
 .page-school .rental-card .card-detail { min-height: 40px; }
 .page-school .price-rows { margin-top: auto; padding-top: 14px; }
@@ -387,9 +420,6 @@ footer { background: #111; padding: 48px 48px 28px; }
 .page-about .intro-text { font-family: 'Barlow', sans-serif; font-size: 16px; color: #555; line-height: 1.5; margin-bottom: 16px; }
 .page-about .freedom { text-align: center; padding: 40px 48px 64px; }
 .page-about .freedom span { font-family: 'Bebas Neue', sans-serif; font-size: 64px; letter-spacing: 6px; color: #111; line-height: 1; }
-.page-about .action-banner { width: 100%; height: 420px; background: #e8e4dc; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-.page-about .action-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.page-about .action-ph { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #b5ae9f; }
 .page-about .team { background: #faf9f6; border-top: 1px solid #e0ddd8; padding: 56px 48px; }
 .page-about .team-head { text-align: center; margin-bottom: 40px; }
 .page-about .team-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 6px; }
@@ -500,13 +530,13 @@ footer { background: #111; padding: 48px 48px 28px; }
   .page-school .card:last-child { border-bottom: none; }
   .page-school .card:hover { transform: none; background: #faf9f6; }
   .page-school .card.featured { border-left: 3px solid #273043; }
-  .page-school .card-text { display: flex; flex-direction: column; }
+  .page-school .card-text { display: flex; flex-direction: column; align-items: flex-start; }
   .page-school .card-label { margin-bottom: 2px; font-size: 13px; color: #111; }
   .page-school .card-detail { margin-bottom: 0; min-height: 0; font-size: 11px; line-height: 1.3; }
   .page-school .card-detail br { display: none; }
   .page-school .card-price { font-size: 26px; flex-shrink: 0; }
   .page-school .card-price span { font-size: 13px; }
-  .page-school .badge { display: inline-block; position: static; top: auto; right: auto; left: auto; font-size: 8px; padding: 2px 6px; margin-top: 5px; }
+  .page-school .badge { display: inline-block; position: static; top: auto; right: auto; left: auto; font-size: 10px; padding: 3px 8px; margin: 0 0 5px 0; order: -1; }
   .page-school .price-block { display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0; text-align: right; }
   .page-school .price-block .card-price { font-size: 26px; }
   .page-school .price-block .rental-note { margin-top: 2px; font-size: 10px; letter-spacing: 1px; text-align: right; }
@@ -518,7 +548,12 @@ footer { background: #111; padding: 48px 48px 28px; }
   .page-shop .sports { padding: 16px 24px 24px; }
   .page-shop .sports-grid { grid-template-columns: 1fr; gap: 32px; }
   .page-shop .howto { padding: 40px 24px; }
-  .page-shop .howto-grid { grid-template-columns: 1fr 1fr 1fr; gap: 24px 8px; }
+  .page-shop .howto-grid { grid-template-columns: 1fr 1fr; gap: 24px 8px; }
+  .page-shop .howto-grid .howto-step:last-child { grid-column: 1 / -1; }
+  .page-school .howto { padding: 40px 24px; }
+  .page-school .howto-heading { font-size: 34px; }
+  .page-school .howto-grid { grid-template-columns: 1fr 1fr; gap: 28px 12px; }
+  .page-school .howto-grid .howto-step:last-child { grid-column: 1 / -1; }
   .page-shop .mini-sports { padding: 8px 24px 40px; }
   .page-shop .mini-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
   .page-shop .price-row-layout { flex-direction: column; gap: 0; }
@@ -528,7 +563,6 @@ footer { background: #111; padding: 48px 48px 28px; }
   .page-about .hero-content { padding: 0 24px 28px; }
   .page-about .hero-title { font-size: 60px; }
   .page-about .intro { padding: 40px 24px 32px; }
-  .page-about .action-banner { height: 240px; }
   .page-about .freedom { padding: 24px 24px 48px; }
   .page-about .freedom span { font-size: 44px; }
   .page-about .team { padding: 40px 24px; }

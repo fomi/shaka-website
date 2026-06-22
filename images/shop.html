@@ -122,19 +122,19 @@
         <div class="sport-photo"><img src="images/shop-windsurf.jpg" alt="Windsurf rental"></div>
         <h3 class="sport-name">Windsurf</h3>
         <p class="sport-brands">Flikka · Patrick · Point7 · Neilpryde</p>
-        <a href="#windsurf-prices" class="sport-btn">Windsurf Rental &amp; Prices</a>
+        <a href="#windsurf-prices" class="sport-btn">See prices</a>
       </div>
       <div class="sport-card">
         <div class="sport-photo"><img src="images/shop-kite.jpg" alt="Kitesurf rental"></div>
         <h3 class="sport-name">Kitesurf</h3>
         <p class="sport-brands">Naish</p>
-        <a href="#kite-prices" class="sport-btn">Kitesurf Rental &amp; Prices</a>
+        <a href="#kite-prices" class="sport-btn">See prices</a>
       </div>
       <div class="sport-card">
         <div class="sport-photo"><img src="images/shop-wing.jpg" alt="Wingfoil rental"></div>
         <h3 class="sport-name">Wingfoil</h3>
         <p class="sport-brands">Naish · Duotone · Neilpryde · Dakine</p>
-        <a href="#wing-prices" class="sport-btn">Wingfoil Rental &amp; Prices</a>
+        <a href="#wing-prices" class="sport-btn">See prices</a>
       </div>
     </div>
   </div>
@@ -195,7 +195,6 @@
           <div class="avail-line"><strong>Patrick</strong> Freeride · 83 · 87 · 103 · 113 L</div>
         </div>
       </div>
-      <div class="cta-wrap"><a href="#reserve" class="cta-btn" data-sport="Windsurf">Book Your Windsurf Rental</a></div>
     </div>
   </div>
 
@@ -231,7 +230,6 @@
           <div class="avail-line"><strong>Naish</strong> Twintip · 145 · 155 · 165 cm</div>
         </div>
       </div>
-      <div class="cta-wrap"><a href="#reserve" class="cta-btn" data-sport="Kitesurf">Book Your Kitesurf Rental</a></div>
     </div>
   </div>
 
@@ -272,7 +270,6 @@
           <div class="avail-line">1000 – 2000 cm²</div>
         </div>
       </div>
-      <div class="cta-wrap"><a href="#reserve" class="cta-btn" data-sport="Wingfoil">Book Your Wingfoil Rental</a></div>
     </div>
   </div>
 
@@ -384,7 +381,7 @@
     <div class="booking-inner">
       <p class="booking-eyebrow">Reserve in Advance</p>
       <h2 class="booking-heading">Reserve Your Gear</h2>
-      <p class="booking-intro">Reserve your gear by filling out the form, or message us directly on <a href="https://wa.me/34679561225" target="_blank" rel="noopener" class="booking-link">WhatsApp</a>. Still have questions? Check our <a href="#faq" class="booking-link">FAQ</a>.<br>Reserve in advance, especially in high season when stock runs out. Fields marked with * are mandatory.</p>
+      <p class="booking-intro">Want to make sure your gear is ready when you arrive? Reserve your equipment in advance, especially in high season when stock runs out. We'll confirm availability via WhatsApp or SMS. Fields marked with * are mandatory.</p>
 
       <form action="https://api.web3forms.com/submit" method="POST" class="booking-form">
         <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY">
@@ -643,19 +640,6 @@
     } else {
       revealEls.forEach(el => el.classList.add('visible'));
     }
-
-    // CTA buttons: pre-select sport in reservation form
-    document.querySelectorAll('.cta-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const sport = btn.getAttribute('data-sport');
-        const select = document.getElementById('r-sport');
-        if (select && sport) {
-          for (let i = 0; i < select.options.length; i++) {
-            if (select.options[i].text === sport) { select.selectedIndex = i; break; }
-          }
-        }
-      });
-    });
   </script>
 </body>
 </html>
