@@ -383,9 +383,9 @@ footer { background: #111; padding: 48px 48px 28px; }
 .page-shop .howto-icon img { width: 72px; height: 72px; object-fit: cover; }
 .page-shop .howto-label { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #333; line-height: 1.2; }
 .page-shop .brand-note { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #999; margin: 8px 0 0; }
-.page-shop .price-row-layout { display: flex; gap: 24px; align-items: stretch; margin-top: 4px; }
+.page-shop .price-row-layout { display: flex; gap: 24px; align-items: flex-start; margin-top: 4px; }
 .page-shop .pcard-single { background: #fff; border: 1.5px solid #e0ddd8; border-radius: 4px; padding: 8px 24px; flex: 1; }
-.page-shop .price-photo { flex: 1; border-radius: 4px; overflow: hidden; }
+.page-shop .price-photo { flex: 1; aspect-ratio: 3 / 2; border-radius: 4px; overflow: hidden; }
 .page-shop .price-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .page-shop .pcard-single .prow { display: flex; justify-content: space-between; align-items: baseline; padding: 13px 0; border-bottom: 1px solid #f0ede8; }
 .page-shop .pcard-single .prow:last-child { border-bottom: none; }
@@ -483,6 +483,7 @@ footer { background: #111; padding: 48px 48px 28px; }
   .reveal { opacity: 1; transform: none; transition: none; }
 }
 @media (max-width: 768px) {
+  .hero-dot { pointer-events: none; }
   .topbar-social, .topbar-lang { display: none; }
   .topbar { padding: 7px 20px; }
   .nav { padding: 6px 20px; justify-content: center; }
@@ -511,6 +512,7 @@ footer { background: #111; padding: 48px 48px 28px; }
   .page-index .hero-content { padding: 0 24px 32px; }
   .page-index .hero-title { font-size: 72px; }
   .page-index .hero-title span { font-size: 24px; }
+  .page-index .hero-btn { font-size: 15px; letter-spacing: 1px; padding: 11px 18px; gap: 7px; }
   .page-index .split { grid-template-columns: 1fr; border-top: none; }
   .page-index .sp { border-top: none; }
   .page-index .sp:first-child { border-right: none; }
@@ -574,7 +576,7 @@ footer { background: #111; padding: 48px 48px 28px; }
   .page-school .howto-grid .howto-step:last-child { grid-column: 1 / -1; }
   .page-shop .mini-sports { padding: 8px 24px 40px; }
   .page-shop .mini-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-  .page-shop .price-row-layout { flex-direction: column; gap: 0; }
+  .page-shop .price-row-layout { flex-direction: column; gap: 0; align-items: stretch; }
   .page-shop .price-photo { display: none; }
   .page-shop .avail-cols { grid-template-columns: 1fr; gap: 20px; }
   .page-shop .avail-cols-3 { grid-template-columns: 1fr; }
