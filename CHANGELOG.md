@@ -191,6 +191,38 @@ Stack: plain HTML + CSS, tested via VS Code Live Server. Future host: Netlify.
 
 **school — booking form intro:** now links to WhatsApp (wa.me/34679561225, new tab) and FAQ (#faq anchor). booking-link style navy underline, hover WhatsApp green
 
+### SESSION 2026-06-25 — Image optimization, icons, hero photos, UI consistency ✓✓
+
+**Image optimization & new photos (PIL, web-sized, all + WebP for Phase 2):**
+- shop-windsurf.jpg recompressed 12 MB → 91 KB (1600px)
+- shop-skate.jpg NEW skate card photo (153 KB, 1600px)
+- shop-gallery6.jpg replaced with Costa Calma sunset
+- hero-sunset.jpg NEW for index hero slide 1 (2560px, 222 KB) — replaces background6; legibility tested (black text + white fade) at background-position center 40%
+- shop-interior.jpg NEW real shop interior, used in index slide 3 AND shop slide 1 (2200px, 477 KB, under 500KB hero target); background-position center 50%
+- team-henri.jpg about team photo (600×600, user-cropped square)
+- shop-bike.jpg replaced with new e-bike couple photo (1600px, 144 KB) — updates both mini-card (16/10) and price-photo (3/2)
+- WebP files exported alongside but NOT yet wired via <picture> (deferred to Phase 2 global optimization)
+
+**Icons (black-circle white-art recipe, 4× SS, 512px PNG):**
+- icon_fashion.png NEW (t-shirt) — added "Fashion" pill to index shop section
+- icon_kayak.png NEW — fixes index school Kayak pill that wrongly used icon_bodyboard.png
+- Recipe note: art_scale ~0.51–0.64; optional stroke thickening via distance-transform-calibrated dilation (e.g. fashion icon +20%)
+
+**index hero buttons (SEO, de-duplicated vs slide titles):**
+- Slide 2: "Discover the School" → "Windsurf & Wingfoil Lessons"
+- Slide 3: "Discover the Shop" → "Windsurf, Kitesurf & Wingfoil Rental"
+
+**Terminology standardized "Wing" → "Wingfoil":** index hero + sp-btn, school gallery alt, about 3 team roles. Shop gear categories "Wings"/"Kites" left as-is (equipment names, not disciplines)
+
+**find-us WhatsApp (school + shop):** icon solid-fill → outline (matches clock/pin); value restyled from underlined navy inline-link to navy + chevron, white-space nowrap, hover shifts chevron (clickable, mobile-safe)
+
+**CSS consistency:**
+- shop .price-photo: aspect-ratio 3/2 uniform; .price-row-layout align-items flex-start (desktop, photos stop stretching to table height) / stretch (mobile, fixes half-width card bug)
+- Hero dots pointer-events:none on mobile (swipe handles nav; dots remain as indicator)
+- Hero button mobile: font 15px / letter-spacing 1px / padding 11px 18px (fixes wrap on S24+/360px)
+- CTA buttons unified to navy: sp-btn / sport-btn / form-submit / hero-btn → #273043 base, #1a212f hover (matches cta-btn). Brand black #111 untouched (footer, accent lines, carousel/review dots, badges, icon circles, hamburger, totop)
+- .info-val a: navy + chevron + nowrap
+
 ### Decisions made
 - Web3Forms chosen over Formspree (250 vs 50 submissions/month, free)
 - Instagram handle corrected to @shaka_fuerte (with underscore)
@@ -205,6 +237,9 @@ Stack: plain HTML + CSS, tested via VS Code Live Server. Future host: Netlify.
 - about action banner: REMOVED for good (HTML + CSS) — decided it's not needed, page flows intro → team directly.
 - school CTA + FAQ: added a conversion layer to the school page (CTA buttons that pre-fill the booking form + FAQ accordion with SEO schema). FAQ schema kept on school page only (where the FAQs live).
 - shop hero slide 1: user-cropped vertical interior photo to 16:9 horizontal — interior shot opens the shop hero (shows all the gear), then action shots follow.
+- hero button text (2026-06-25): keep buttons descriptive but distinct from slide titles (titles say "Book Your..."); use full sport terms windsurf/kitesurf/wingfoil over abbreviations for SEO even though slide 3 then duplicates the section anchor below — keyword correctness beats avoiding a low-value duplicate anchor.
+- button color (2026-06-25): unify all CTAs/submits to navy (#273043 → #1a212f hover); black #111 reserved for brand chrome only (footer, dots, badges, icon circles, hamburger, totop). Black was not carrying hierarchy — the main cta-btn was already navy.
+- find-us WhatsApp link (2026-06-25): navy + chevron (footer "Contact ›" language) instead of underlined navy bold, which clashed with the plain info values. nowrap added so it never breaks on mobile.
 
 ---
 
@@ -218,16 +253,16 @@ Stack: plain HTML + CSS, tested via VS Code Live Server. Future host: Netlify.
 - **PHASE 1 COMPLETE** (pending only team/action photos)
 
 ### Assets to fill (placeholders)
-- [x] index hero carousel: lesson photo (slide 2) ✓ — slide 1 & 3 (rental) still generic
+- [x] index hero carousel: all 3 slides done ✓ (slide 1 sunset, slide 2 lesson, slide 3 shop interior)
 - [x] index Instagram grid: 9 real photos ✓
 - [x] school gallery: 6 photos ✓
 - [x] shop gallery: 6 photos ✓
-- [ ] about team photos: Giorgio, Mitch, Henri (Matteo done)
+- [ ] about team photos: Giorgio, Mitch pending (Matteo + Henri done)
 - [x] about action banner photo — REMOVED entirely (decision, no longer needed)
 - [x] school hero carousel: all 3 slides ✓
 - [x] shop hero carousel: all 3 slides ✓ (slide 1 = cropped interior photo)
 - [x] Review photos placed (review1-4.jpg) ✓
-- [ ] index hero slide 1 (background6) & slide 3 (rental) — still generic/placeholder
+- [x] index hero slide 1 (sunset) & slide 3 (shop interior) done ✓
 - [ ] about hero → convert to 3-slide carousel (new requirement from Shaka-Pic.pdf)
 
 ### Content to verify
