@@ -4,7 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The School — Shaka Fuerteventura</title>
+  <meta name="description" content="Windsurf and wingfoil lessons in Costa Calma, Fuerteventura. Private and group courses for every level with full-time instructors. Book your lesson with Shaka.">
+  <link rel="canonical" href="https://shaka-fuerte.com/school.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Shaka Fuerteventura">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:title" content="The School — Windsurf & Wingfoil Lessons | Shaka">
+  <meta property="og:description" content="Windsurf and wingfoil lessons in Costa Calma, Fuerteventura. Private and group courses for every level with full-time instructors. Book your lesson with Shaka.">
+  <meta property="og:url" content="https://shaka-fuerte.com/school.html">
+  <meta property="og:image" content="https://shaka-fuerte.com/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The School — Windsurf & Wingfoil Lessons | Shaka">
+  <meta name="twitter:description" content="Windsurf and wingfoil lessons in Costa Calma, Fuerteventura. Private and group courses for every level with full-time instructors. Book your lesson with Shaka.">
+  <meta name="twitter:image" content="https://shaka-fuerte.com/images/og-image.jpg">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="stylesheet" href="css/style.css">
 <script type="application/ld+json">
 {
@@ -363,7 +382,7 @@
 
         <label class="form-check">
           <input type="checkbox" required>
-          <span>* I agree to the <a href="#">Privacy Policy</a></span>
+          <span>* I agree to the <a href="privacy.html">Privacy Policy</a></span>
         </label>
 
         <button type="submit" class="form-submit">Send Booking Request</button>
@@ -402,7 +421,7 @@
         </div>
       </div>
       <div class="map-side">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3517.3737443531427!2d-14.221569124728914!3d28.165546975922926!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xc479dc67e51b0c7%3A0x21b527634faa3c61!2sShaka%20Fuerte%20Watersport%20Center%20%26%20School!5e0!3m2!1sit!2ses!4v1780756078523!5m2!1sit!2ses" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <button type="button" class="map-load" data-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3517.3737443531427!2d-14.221569124728914!3d28.165546975922926!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xc479dc67e51b0c7%3A0x21b527634faa3c61!2sShaka%20Fuerte%20Watersport%20Center%20%26%20School!5e0!3m2!1sit!2ses!4v1780756078523!5m2!1sit!2ses" style="background-image:url('images/map-school.jpg');" aria-label="Show interactive map (loads Google Maps, may set cookies)"><span class="map-load-inner"><span class="map-load-btn">Show interactive map</span><span class="map-load-note">Loads Google Maps · may set cookies</span></span></button>
       </div>
     </div>
   </div>
@@ -469,8 +488,9 @@
     <div class="footer-bottom">
       <div class="footer-copy">© 2026 Shaka Fuerteventura</div>
       <div class="footer-legal">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Cookie Policy</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms &amp; Conditions</a>
+        <a href="cookie.html">Cookie Policy</a>
       </div>
     </div>
   </footer>
@@ -626,6 +646,19 @@
           q.setAttribute('aria-expanded', 'true');
           answer.style.maxHeight = answer.scrollHeight + 'px';
         }
+      });
+    });
+  </script>
+
+  <script>
+    document.querySelectorAll(".map-load").forEach(function(b){
+      b.addEventListener("click", function(){
+        var f=document.createElement("iframe");
+        f.src=b.getAttribute("data-src");
+        f.width="100%"; f.height="100%"; f.style.border="0";
+        f.setAttribute("allowfullscreen","");
+        f.loading="lazy"; f.referrerPolicy="no-referrer-when-downgrade";
+        b.replaceWith(f);
       });
     });
   </script>

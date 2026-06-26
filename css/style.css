@@ -137,6 +137,15 @@ footer { background: #111; padding: 48px 48px 28px; }
 .info-val a:hover svg { transform: translateX(2px); }
 .map-side { min-height: 320px; border-radius: 6px; overflow: hidden; border: 1.5px solid #e0ddd8; }
 .map-side iframe { display: block; width: 100%; height: 100%; min-height: 320px; }
+/* Click-to-load map (cookie-friendly: no Google cookies until user clicks) */
+.map-load { display: block; width: 100%; height: 100%; min-height: inherit; border: 0; padding: 0; margin: 0; cursor: pointer; position: relative; background-size: cover; background-position: center; background-repeat: no-repeat; }
+.map-side .map-load { min-height: 320px; }
+.map-load::before { content: ''; position: absolute; inset: 0; background: rgba(20,28,40,0.30); transition: background 0.2s; }
+.map-load:hover::before { background: rgba(20,28,40,0.18); }
+.map-load-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 9px; z-index: 1; padding: 12px; text-align: center; }
+.map-load-btn { font-family: 'Bebas Neue', sans-serif; font-size: 19px; letter-spacing: 1.5px; color: #fff; background: #273043; padding: 11px 26px; border-radius: 3px; box-shadow: 0 2px 12px rgba(0,0,0,0.28); transition: background 0.2s; }
+.map-load:hover .map-load-btn { background: #1a212f; }
+.map-load-note { font-family: 'Barlow', sans-serif; font-size: 12px; line-height: 1.35; color: #fff; background: rgba(0,0,0,0.5); padding: 4px 11px; border-radius: 3px; max-width: 280px; }
 .booking { background: #faf9f6; border-top: 1px solid #e0ddd8; padding: 56px 48px; scroll-margin-top: 140px; }
 .booking-inner { max-width: 900px; margin: 0 auto; }
 .booking-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 6px; }
@@ -433,6 +442,25 @@ footer { background: #111; padding: 48px 48px 28px; }
 .page-about .hero-bg { position: absolute; inset: 0; background-image: url('../images/background6.jpg'); background-size: cover; background-position: center 40%; }
 .page-about .hero-content { position: relative; z-index: 2; padding: 0 48px 36px; }
 .page-about .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: 88px; letter-spacing: 6px; line-height: 0.95; color: #111; padding-top: 4px; }
+
+/* ===== LEGAL PAGES (privacy, terms) ===== */
+.page-legal .hero { position: relative; height: 420px; overflow: hidden; display: flex; align-items: flex-end; }
+.page-legal .hero-bg { position: absolute; inset: 0; background-image: url('../images/background6.jpg'); background-size: cover; background-position: center 40%; }
+.page-legal .hero-content { position: relative; z-index: 2; padding: 0 48px 36px; }
+.page-legal .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: 80px; letter-spacing: 5px; line-height: 0.95; color: #111; padding-top: 4px; }
+.legal { max-width: 860px; margin: 0 auto; padding: 64px 48px 80px; }
+.legal-updated { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 18px; }
+.legal-intro { font-family: 'Barlow', sans-serif; font-size: 16px; line-height: 1.55; color: #444; margin-bottom: 6px; }
+.legal h2 { font-family: 'Bebas Neue', sans-serif; font-size: 27px; letter-spacing: 1.5px; color: #111; margin: 26px 0 7px; }
+.legal h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 0.5px; color: #273043; margin: 16px 0 4px; }
+.legal p { font-family: 'Barlow', sans-serif; font-size: 15.5px; line-height: 1.55; color: #333; margin-bottom: 9px; }
+.legal ul { margin: 0 0 10px; padding-left: 22px; }
+.legal li { font-family: 'Barlow', sans-serif; font-size: 15.5px; line-height: 1.5; color: #333; margin-bottom: 3px; }
+.legal a { color: #273043; text-decoration: underline; }
+.legal a:hover { color: #111; }
+.legal strong { color: #111; font-weight: 600; }
+.legal-contact { background: #f6f7f8; border-radius: 6px; padding: 16px 20px; margin: 6px 0 10px; font-family: 'Barlow', sans-serif; font-size: 15.5px; line-height: 1.7; color: #333; }
+.legal-note { font-family: 'Barlow', sans-serif; font-size: 13.5px; line-height: 1.6; color: #999; border-top: 1px solid #eee; margin-top: 48px; padding-top: 20px; }
 .page-about .form-submit { align-self: center; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; color: #fff; text-transform: uppercase; padding: 13px 44px; background: #273043; border: none; border-radius: 2px; cursor: pointer; transition: background 0.2s; }
 .page-about .intro { background: #fff; text-align: center; padding: 56px 48px 40px; }
 .page-about .intro-inner { max-width: 800px; margin: 0 auto; }
@@ -585,6 +613,11 @@ footer { background: #111; padding: 48px 48px 28px; }
   .page-shop .avail-cols-3 { grid-template-columns: 1fr; }
   .page-about .hero-content { padding: 0 24px 28px; }
   .page-about .hero-title { font-size: 60px; }
+  .page-legal .hero { height: 300px; }
+  .page-legal .hero-content { padding: 0 24px 28px; }
+  .page-legal .hero-title { font-size: 52px; letter-spacing: 3px; }
+  .legal { padding: 40px 24px 56px; }
+  .legal h2 { font-size: 24px; }
   .page-about .intro { padding: 40px 24px 32px; }
   .page-about .freedom { padding: 24px 24px 48px; }
   .page-about .freedom span { font-size: 44px; }
