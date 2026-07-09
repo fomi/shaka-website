@@ -223,6 +223,46 @@ Stack: plain HTML + CSS, tested via VS Code Live Server. Future host: Netlify.
 - CTA buttons unified to navy: sp-btn / sport-btn / form-submit / hero-btn → #273043 base, #1a212f hover (matches cta-btn). Brand black #111 untouched (footer, accent lines, carousel/review dots, badges, icon circles, hamburger, totop)
 - .info-val a: navy + chevron + nowrap
 
+### SESSION 2026-06-26 — Legal pages, cookie-safe maps, SEO meta, favicon ✓✓
+
+**Legal pages created (privacy.html, terms.html, cookie.html):**
+- Same chrome as about (topbar/nav/hero/footer/drawer); centered `.legal` content, max-width 860px, readable typography (Bebas h2, navy h3, Barlow body)
+- Content from user's PRIVACY_POLICY.docx + TERMS___CONDITIONS.docx, converted to clean HTML (numbered sections, lists, highlighted company-data box)
+- Real company data filled everywhere: **Shaka Fuerte SL · NIF B72638240 · Calle Alcalde Alonso Patallo, 1, 35600 Puerto Del Rosario, Las Palmas · info@shaka-fuerte.com · +34 679 561 225 · Last Updated 26/06/2026**
+- Footer legal links wired on ALL pages: Privacy Policy → privacy.html, Terms → terms.html, Cookie Policy → cookie.html (replaced old "#" + "Cookie Policy" placeholder)
+- Legal text compacted (tighter h2/p/li margins) per user request; end disclaimer note removed
+- Footer bug fixed: legal pages initially used `.footer-cols` (no CSS) → corrected to `.footer-top` grid (identical to other pages)
+
+**Google Maps → click-to-load (cookie compliance, "Approach B"):**
+- Replaced 4 Maps iframes (about ×2, school, shop) with a static preview image + dark overlay + navy "Show interactive map" button + note "Loads Google Maps · may set cookies"
+- JS swaps in the real iframe only on click → NO Google cookies until user chooses → no consent banner needed (the click IS the consent)
+- Preview images map-school.jpg / map-shop.jpg (723×402, cropped from user screenshots, white border trimmed)
+- CSS `.map-load` fills existing container (same size/position desktop + mobile via cover)
+- Cookie Policy documents this: no first-party cookies, no analytics/marketing, Maps loads only on click. Privacy §11 rewritten to match (was generically claiming analytics/marketing cookies)
+
+**SEO meta on 4 core pages (index, school, shop, about):**
+- Unique keyword-rich meta description (windsurf/wingfoil/kitesurf + Costa Calma/Fuerteventura)
+- Canonical + Open Graph (type/site_name/locale en_GB/title/description/url/image) + Twitter summary_large_image
+- Domain confirmed: **https://shaka-fuerte.com** (non-www) — used in all canonical/og:url/og:image absolute URLs
+- og-image.jpg (1200×630): 4-discipline collage (kite/wing/windsurf/lesson) with SHAKA logo centered, optimized 996 KB → 135 KB. NOTE: OG preview only renders once live on the real domain (absolute URL)
+
+**Favicon (from logo-shaka-web.png, 2480×2480):**
+- Full set: favicon.ico (16/32/48), favicon-16x16.png, favicon-32x32.png, apple-touch-icon.png (180, white bg for iOS), icon-192/512.png
+- Linked in `<head>` of all 7 pages (favicon files go in site root)
+- Note: circular logo text not legible at 16-32px (normal — colour blob is the recognisable cue)
+
+### SESSION 2026-07-09 — Mobile 320px pass & legal reveal fix ✓✓
+
+**320px / small-phone pass (CSS only, no HTML changes):**
+- Added `img { max-width: 100% }` global safety net (prevents horizontal overflow). Deliberately did NOT add `overflow-x:hidden` on body (breaks sticky nav) — fixed root causes instead
+- Fixed latent bug: index CTA hero ("Book Your / Equipment!") rendered at 72px on mobile (should be 56) due to two-class source-order conflict; with 8px letter-spacing "EQUIPMENT!" overflowed at 320px. Fixed via `.hero-title.hero-title-cta` specificity + reduced letter-spacing
+- New `@media (max-width: 380px)` breakpoint: scales down largest display type (hero titles, sp-title, section/booking/howto/team/loc headings, freedom), tightens section padding 24→18px, collapses howto-grid 2-col → 1-col
+- Verified: 768px mobile padding already uniform at 24px (no change needed); desktop 56px paddings are intentional (reviews section inset)
+
+**Legal reveal bug fixed:**
+- privacy/terms text was INVISIBLE at 320px (cookie worked). Cause: `.reveal` fade-in needs IntersectionObserver to see 12% of the element, but the huge `.legal` block on long pages (15-16 sections) is taller than ~8× viewport → 12% never on screen → observer never fires → text stuck at opacity:0. Cookie (8 sections) short enough to fire
+- Fix: removed `reveal` class from `<main class="legal">` on all 3 legal pages → text always visible regardless of length/width (a legal doc doesn't need the animation)
+
 ### Decisions made
 - Web3Forms chosen over Formspree (250 vs 50 submissions/month, free)
 - Instagram handle corrected to @shaka_fuerte (with underscore)
@@ -240,10 +280,46 @@ Stack: plain HTML + CSS, tested via VS Code Live Server. Future host: Netlify.
 - hero button text (2026-06-25): keep buttons descriptive but distinct from slide titles (titles say "Book Your..."); use full sport terms windsurf/kitesurf/wingfoil over abbreviations for SEO even though slide 3 then duplicates the section anchor below — keyword correctness beats avoiding a low-value duplicate anchor.
 - button color (2026-06-25): unify all CTAs/submits to navy (#273043 → #1a212f hover); black #111 reserved for brand chrome only (footer, dots, badges, icon circles, hamburger, totop). Black was not carrying hierarchy — the main cta-btn was already navy.
 - find-us WhatsApp link (2026-06-25): navy + chevron (footer "Contact ›" language) instead of underlined navy bold, which clashed with the plain info values. nowrap added so it never breaks on mobile.
+- Maps cookie strategy (2026-06-26): "Approach B" click-to-load chosen over keeping live embeds (would need a banner) or removing maps (loses interactivity). Static preview + click = consent at the moment it's needed → no banner, keeps interactive map, GDPR-defensible.
+- Domain (2026-06-26): confirmed **shaka-fuerte.com non-www**. Email is info@shaka-fuerte.com WITH hyphen (user briefly wrote it without — confirmed the hyphen version is correct).
+- OG image (2026-06-26): 4-discipline collage + centered logo chosen over single-photo or photo+corner-logo. Logo centered = brand readable even if reshared/screenshotted, and sits in the "safe zone" (edges get cropped by some platforms).
+- Reveal animation (2026-07-09): removed from long legal pages rather than lowering the observer threshold — a legal document doesn't need scroll animation, and always-visible text is the safe default.
+
+### Migration / launch decisions (2026-07)
+- Hosting: **site → Netlify, email stays on SiteGround** (Netlify has NO email hosting). "Move everything to Netlify" literally impossible for mail.
+- Sequence: Scenario 1 first (launch site on Netlify, leave mail on SiteGround, zero email risk) → later Scenario 2 (migrate email to Zoho/Google, then drop SiteGround). Keeping SiteGround only for email long-term is wasteful (~18-30€/mo vs ~0-6€).
+- Deploy method: **GitHub → Netlify continuous deployment** (user already uses VS Code → GitHub). Build command empty (static site), publish directory = folder with the .html files.
+- DNS: keep it simple — repoint web records (A → 75.2.60.5, www CNAME) and **leave MX/SPF/DKIM untouched** so mail keeps working. Apex must use A record, never CNAME (CNAME on apex kills MX).
+- Netlify plan: free tier is enough to launch; €9 Personal only if bandwidth cap (~15GB/mo, image-heavy site) gets close. Cloudflare Pages noted as unlimited-bandwidth alternative.
+- CRITICAL pre-launch: secure the **domain under user's own account** (currently on a friend's SiteGround account he wants to close) — the domain is the top asset. Don't let friend close SiteGround until site AND mail are both migrated and verified.
+- Languages: EN launches first; ES/IT/DE come AFTER launch (freeze stable EN, then translate — avoids doing rework ×4). Probably ES first (local market).
 
 ---
 
 ## TODO
+
+### ⚑ STATUS SNAPSHOT (2026-07-09)
+- Phase 1 (core EN pages): ✅ complete (+ 3 legal pages, not originally scoped)
+- Phase 2 (refinement/consistency): ✅ ~done — chrome consistent, mobile 320px pass done, reveal bug fixed. Only WebP wiring + 2 optional items remain
+- Phase 3 (forms/legal): 🟠 legal ✅ done; **Web3Forms live key ❌ = #1 blocker**
+- Phase 4 (multilanguage): ⬜ not started — deliberately after launch
+- Phase 5 (go-live): ⬜ not started
+- Phase 6 (post-launch incl. email migration): ⬜ not started
+
+### ⚑ MINIMUM TO GO LIVE (EN) — critical path
+1. **Secure the domain** under user's own account (friend closing SiteGround) ← do first
+2. **Web3Forms real key** in all 4 forms (with the boss) — forms don't send until then
+3. **Align files into GitHub repo + push** (today's updated pages, css, images, favicon, og-image, legal)
+4. **GitHub → Netlify**, test on .netlify.app
+5. **Point DNS** (A + www CNAME) leaving MX on SiteGround → live on shaka-fuerte.com
+Everything else (email migration, WebP, team photos, languages) = after launch.
+
+### Still pending — content/polish (non-blocking)
+- [ ] **Team photos: Giorgio + Mitch** (Matteo + Henri done) — last content gap
+- [ ] **Wire WebP** via `<picture>` (perf; do before multilanguage)
+- [ ] Verify shop gear sizes & brands
+- [ ] Optional: OG/Twitter meta on 3 legal pages; "thank you" page after form submit
+
 
 ### Phase 1 — remaining
 - [x] index.html ✓
@@ -276,19 +352,24 @@ Stack: plain HTML + CSS, tested via VS Code Live Server. Future host: Netlify.
 - [x] Footer expanded & unified across all pages — done
 - [x] Separate CSS into external css/style.css — done (big refactor, scoped via .page-* class)
 - [x] Verify navbar/footer/mobile menu identical on all pages — done (realigned before CSS extraction)
-- [ ] Uniform padding (48px) across all pages
-- [ ] Mobile fine-tuning at 320px (shop twin-column price cards: check soft/hard readability)
+- [x] Uniform padding across all pages — verified (mobile already uniform at 24px; desktop 56px insets intentional)
+- [x] Mobile fine-tuning at 320px — done (added `img` overflow guard + `@media (max-width:380px)` type scaling; fixed CTA hero letter-spacing overflow)
+- [x] Legal pages reveal bug — fixed (privacy/terms text was invisible at 320px; removed reveal from long `.legal` block)
 - [ ] Optional: optimize style.css (remove .page-* prefix from rules unique to one page — cosmetic, low priority)
 - [ ] Optional: give about hero the same staggered text entrance as school/shop (currently static)
+- [ ] Optional: add OG/Twitter meta to the 3 legal pages too (currently only meta description)
 
 ### Performance
-- [ ] **Compress shop-windsurf.jpg (12 MB → ~300 KB)** — high priority, hurts mobile load
-- [ ] Optimize all other images for web
+- [x] Compress shop-windsurf.jpg (12 MB → 91 KB) — done
+- [x] Optimize all images for web (JPEG + WebP twin generated for each) — done
+- [ ] **Wire WebP via `<picture>`** — biggest remaining perf win. WebP files exist but pages still serve JPG. Applies cleanly only to `<img>` tags (gallery, cards, team, maps); hero/section CSS `background-image` are a separate case (image-set() or leave as JPG). Do BEFORE multilanguage to avoid ×4 rework
+- [ ] Add loading="lazy" + width/height attrs on below-fold `<img>` (reduces CLS)
 
 ### Phase 3 — booking/contact
-- [ ] Get real Web3Forms access key, replace YOUR_ACCESS_KEY in index + school forms
-- [ ] Create Privacy Policy page (GDPR, for form checkbox link)
-- [ ] Evaluate FareHarbor integration for live booking
+- [ ] **Get real Web3Forms access key** (with the boss, from the company mailbox) → replace `YOUR_ACCESS_KEY` in ALL 4 forms (index, school, shop, about). Forms already have custom subject + honeypot anti-spam built in. #1 blocker before launch — forms currently don't send
+- [x] Create Privacy Policy page — done (+ Terms + Cookie Policy)
+- [ ] Optional: "Thank you" redirect page after form submit
+- [ ] Evaluate FareHarbor integration for live booking (not urgent)
 
 ### Phase 4 — multilanguage
 - [ ] DECIDED: separate static folders /es/ /it/ /de/ (not Astro — site updated rarely)
@@ -298,13 +379,20 @@ Stack: plain HTML + CSS, tested via VS Code Live Server. Future host: Netlify.
 - [ ] hreflang tags
 - [ ] Consider shared prices.json so price changes don't desync across languages
 
-### Phase 5 — go-live
-- [ ] Publish on Netlify
-- [ ] Repoint domain shaka-fuerte.com
-- [ ] `_redirects` file (old WordPress URLs → new pages)
+### Phase 5 — go-live (Netlify)
+- [ ] **SECURE THE DOMAIN under user's own account FIRST** (currently on friend's SiteGround account he wants to close) — top priority, before anything else
+- [ ] Align today's output files into the GitHub repo (updated pages, css, images, favicon, og-image, legal pages) + push
+- [ ] Connect GitHub → Netlify (build command empty, publish dir = folder with .html) → test on `.netlify.app` URL
+- [ ] `_redirects` file (old WordPress URLs → new pages) — need the list of old URLs
+- [ ] robots.txt + sitemap.xml in repo root
+- [ ] Point DNS: apex A → 75.2.60.5, www CNAME → site.netlify.app; **leave MX/SPF/DKIM on SiteGround untouched** (mail keeps working)
+- [ ] Verify: site loads on HTTPS, old URLs 301, test email send/receive on info@shaka-fuerte.com, OG preview, favicon
 - [ ] schema.org LocalBusiness structured data
+- [ ] Ask friend for a deadline to keep the mailbox alive; do NOT let him close SiteGround until site AND mail verified
 
 ### Phase 6 — post-launch
+- [ ] Email migration: move info@shaka-fuerte.com to Zoho/Google, update MX → then friend can close SiteGround
+- [ ] Google Search Console: add site, submit sitemap, check indexing
 - [ ] Refine redirects to specific anchors when content justifies
 - [ ] Monitor SEO ranking
 - [ ] Optional: professional photo/video direction
