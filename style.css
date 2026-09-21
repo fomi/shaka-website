@@ -297,8 +297,6 @@ footer { background: #111; padding: 48px 48px 28px; }
 .page-school .card-detail { font-family: 'Barlow', sans-serif; font-size: 12.5px; font-style: italic; color: #999; margin-bottom: 14px; line-height: 1.4; min-height: 20px; }
 .page-school .card-price { font-family: 'Bebas Neue', sans-serif; font-size: 44px; letter-spacing: 2px; color: #111; line-height: 1; margin-top: auto; }
 .page-school .card-price span { font-size: 18px; color: #aaa; letter-spacing: 1px; }
-/* il numero del prezzo (avvolto per il file dati) resta grande come il prezzo */
-.page-school .card-price [data-sd] { font-size: inherit; color: inherit; letter-spacing: inherit; font-weight: inherit; }
 .page-school .card.featured .card-price { color: #273043; }
 .page-school .price-block { margin-top: auto; }
 .page-school .price-block .card-price { margin-top: 0; }
