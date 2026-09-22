@@ -39,8 +39,30 @@
       rental_wing_note:      "2h 75€ · +10€ each extra hour",
       rental_wing_extra:     "+10€ for wetsuit",
       rental_extra_hour:     "+10€ each extra hour"   // SUP e kayak
+    },
+
+    shop: {
+      // ---- WINDSURF · set completo (per durata) ----
+      windsurf_1d: "65",  windsurf_4d: "243", windsurf_6d: "325", windsurf_9d: "455", windsurf_12d: "535",
+      windsurf_note: "* Extra carbon boom &amp; extension +10€/day · Board or sail only 40€/day, 195€/6 days",
+      // ---- KITESURF ----
+      kite_1d: "85",  kite_4d: "280", kite_6d: "375", kite_9d: "525", kite_12d: "620",
+      kite_note: "* Board or kite only 40€/day, 195€/6 days",
+      // ---- WINGFOIL ----
+      wing_1d: "95",  wing_4d: "320", wing_6d: "445", wing_9d: "620", wing_12d: "735",
+      wing_note: "* Board or wing only 40€/day, 195€/6 days",
+      // ---- SURF · soft / hard ----
+      surf_soft_1d: "18", surf_soft_4d: "65",  surf_soft_6d: "100", surf_soft_9d: "140", surf_soft_12d: "165",
+      surf_hard_1d: "23", surf_hard_4d: "85",  surf_hard_6d: "120", surf_hard_9d: "165", surf_hard_12d: "195",
+      // ---- BODYBOARD & SKIMBOARD ----
+      bboard_1d: "8", bboard_4d: "30", bboard_6d: "40", bboard_9d: "53", bboard_12d: "70",
+      // ---- SURF SKATE ----
+      skate_1d: "11", skate_4d: "35", skate_6d: "50",
+      // ---- BIKE · 1 day / extra day ----
+      bike_mtb_1d: "25",  bike_mtb_extra: "22",
+      bike_road_1d: "35", bike_road_extra: "33",
+      bike_ebike_1d: "45", bike_ebike_extra: "42"
     }
-    // shop: { ... }   <-- i prezzi del negozio li aggiungeremo qui
   };
 
   /* ============================================================

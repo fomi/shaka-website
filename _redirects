@@ -1,0 +1,59 @@
+# ============================================================
+# SHAKA — Redirect 301 dal vecchio sito WordPress al nuovo
+# Formato Netlify:  /vecchio/percorso   /nuovo/percorso   301
+# Regole: solo percorsi ESATTI (niente wildcard), tutti 301.
+# NB: NON toccare /it/ /es/ /de/ "nudi": sono riservati al
+#     futuro sito multilingua. Quando costruirai le lingue,
+#     aggiorna le destinazioni qui sotto (es. /shop.html -> /it/shop.html).
+# ============================================================
+
+# ---------- PAGINE INGLESI (radice) ----------
+/windsurf/        /school.html#windsurf-prices   301
+/wing/            /school.html#wing-prices       301
+/kitesurf/        /shop.html#kite-prices         301
+/surf-sup/        /shop.html#surf-prices         301
+/surfskate/       /shop.html#skate-prices        301
+/center/          /school.html                   301
+/shop/            /shop.html                     301
+/contact/         /about.html#contact            301
+/accommodation/   /                              301
+/spots/           /                              301
+
+# ---------- ITALIANO (vecchio /it/...-it/ -> inglese equivalente, da aggiornare col multilingua) ----------
+/it/home-it/        /                               301
+/it/windsurf-it/    /school.html#windsurf-prices    301
+/it/wing-it/        /school.html#wing-prices        301
+/it/kitesurf-it/    /shop.html#kite-prices          301
+/it/surf-sup-it/    /shop.html#surf-prices          301
+/it/surfskate-it/   /shop.html#skate-prices         301
+/it/center-it/      /school.html                    301
+/it/shop-it/        /shop.html                      301
+/it/contact-it/     /about.html#contact             301
+/it/accommodation-it/ /                             301
+/it/spots-it/       /                               301
+
+# ---------- SPAGNOLO ----------
+/es/home-es/              /                               301
+/es/windsurf-es/          /school.html#windsurf-prices    301
+/es/wing-es/              /school.html#wing-prices        301
+/es/kitesurf-fuerteventura/ /shop.html#kite-prices        301
+/es/surf-sup-es/          /shop.html#surf-prices          301
+/es/surfskate-es/         /shop.html#skate-prices         301
+/es/center-es/            /school.html                    301
+/es/shop-es/              /shop.html                      301
+/es/contact-es/           /about.html#contact             301
+/es/accommodation-es/     /                               301
+/es/spots-es/             /                               301
+
+# ---------- TEDESCO ----------
+/de/home-de/        /                               301
+/de/windsurf-de/    /school.html#windsurf-prices    301
+/de/wing-de/        /school.html#wing-prices        301
+/de/kitesurf-de/    /shop.html#kite-prices          301
+/de/surf-sup-de/    /shop.html#surf-prices          301
+/de/surfskate-de/   /shop.html#skate-prices         301
+/de/center-de/      /school.html                    301
+/de/shop-de/        /shop.html                      301
+/de/contact-de/     /about.html#contact             301
+/de/accommodation-de/ /                             301
+/de/spots-de/       /                               301
