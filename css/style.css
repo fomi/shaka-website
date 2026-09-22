@@ -20,7 +20,7 @@ body { font-family: 'Barlow', sans-serif; background: #fff; color: #111; }
 .topbar-marquee-inner a:hover { color: #fff; border-bottom-color: #fff; }
 .topbar-marquee-inner .sep { color: rgba(255,255,255,0.2); }
 .topbar-lang { display: flex; gap: 6px; align-items: center; }
-.topbar-lang a { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; padding: 2px 5px; }
+.topbar-lang a { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; padding: 2px 5px; }
 .topbar-lang a:hover, .topbar-lang a.active { color: #fff; }
 .topbar-lang span { color: rgba(255,255,255,0.15); font-size: 9px; }
 .nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 40px; background: #fff; border-bottom: 1px solid #e0ddd8; position: sticky; top: 0; z-index: 100; }
@@ -43,7 +43,7 @@ footer { background: #111; padding: 48px 48px 28px; }
 .footer-top { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 36px; border-bottom: 1px solid #2a2a2a; }
 .footer-col-logo img { height: 80px; width: auto; margin-bottom: 16px; }
 .footer-tagline { font-family: 'Barlow', sans-serif; font-size: 13px; color: #888; line-height: 1.6; max-width: 280px; }
-.footer-col h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #fff; margin-bottom: 16px; }
+.footer-col h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #fff; margin-bottom: 16px; }
 .footer-col a, .footer-col p { font-family: 'Barlow', sans-serif; font-size: 14px; color: #999; text-decoration: none; line-height: 1.5; display: block; margin-bottom: 9px; transition: color 0.2s; }
 .footer-col a:hover { color: #fff; }
 .footer-col .fc-row { display: flex; align-items: flex-start; gap: 9px; margin-bottom: 11px; }
@@ -59,9 +59,9 @@ footer { background: #111; padding: 48px 48px 28px; }
 .fc-place-info { font-family: 'Barlow', sans-serif; font-size: 13px; color: #888; display: flex; align-items: center; gap: 6px; }
 .fc-place-info svg { flex-shrink: 0; color: #666; }
 .footer-bottom { max-width: 1100px; margin: 0 auto; padding-top: 22px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-.footer-copy { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #666; }
+.footer-copy { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #909090; }
 .footer-legal { display: flex; gap: 20px; }
-.footer-legal a { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #666; text-decoration: none; transition: color 0.2s; }
+.footer-legal a { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #909090; text-decoration: none; transition: color 0.2s; }
 .footer-legal a:hover { color: #fff; }
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -108,7 +108,7 @@ footer { background: #111; padding: 48px 48px 28px; }
 .hero-content.loaded > *:nth-child(3) { transition-delay: 0.90s; }
 .hero-content.loaded > *:nth-child(4) { transition-delay: 1.20s; }
 .wrap { max-width: 1100px; margin: 0 auto; padding: 56px 48px 0; scroll-margin-top: 140px; }
-.intro-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #aaa; margin-bottom: 8px; }
+.intro-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #6e6e6e; margin-bottom: 8px; }
 .intro-heading { font-family: 'Bebas Neue', sans-serif; font-size: 44px; letter-spacing: 3px; color: #111; line-height: 1; margin-bottom: 24px; }
 .intro-text:last-child { margin-bottom: 0; }
 .intro-text strong { color: #111; font-weight: 600; }
@@ -194,7 +194,7 @@ footer { background: #111; padding: 48px 48px 28px; }
 .page-index .sp { background: #fff; border-top: 1px solid #e0ddd8; position: relative; transition: background 0.25s; display: flex; flex-direction: column; }
 .page-index .sp:first-child {  }
 .page-index .sp:hover { background: #faf9f6; }
-.page-index .sp-tag { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #aaa; margin-bottom: 10px; }
+.page-index .sp-tag { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #6e6e6e; margin-bottom: 10px; }
 .page-index .sp-title { font-family: 'Bebas Neue', sans-serif; font-size: 88px; letter-spacing: 6px; line-height: 0.95; color: #111; padding-top: 4px; }
 .page-index .sp-line { width: 28px; height: 3px; background: #111; margin: 18px 0 16px; }
 .page-index .sp-desc { font-family: 'Barlow', sans-serif; font-size: 13.5px; font-style: italic; color: #555; line-height: 1.6; max-width: 340px; margin-bottom: 24px; }
@@ -214,7 +214,7 @@ footer { background: #111; padding: 48px 48px 28px; }
 .sp-info-link { text-decoration: none; cursor: pointer; }
 .sp-info-link:hover { background: #f5f2ed; }
 .sp-info-link:hover .sp-info-val { color: #273043; }
-.page-index .sp-info-label { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #aaa; margin-bottom: 2px; }
+.page-index .sp-info-label { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #6e6e6e; margin-bottom: 2px; }
 .page-index .sp-info-val { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 1.5px; color: #111; }
 .page-index .reviews { background: #fff; overflow: hidden; }
 .page-index .reviews-title { padding: 16px 56px 0; }
