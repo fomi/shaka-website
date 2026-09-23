@@ -1,0 +1,4 @@
+*.md
+wrangler.jsonc
+.assetsignore
+Shaka-Pic.pdf
