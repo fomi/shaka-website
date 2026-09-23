@@ -65,6 +65,17 @@
     }
   };
 
+  /* ---------- BARRA PROMO (sotto il menu, su index/shop/school) ----------
+     active: false = barra nascosta ovunque.  Per accenderla: active: true.
+     Cambi testo, CTA, link e data qui — si aggiorna su tutte le pagine. */
+  var PROMO = {
+    active: true,                                       // true = mostra la barra
+    text:  "Winter Special: -15% on lessons & rental",   // il messaggio (corto!)
+    cta:   "Book now",                                   // testo call-to-action (la freccia si aggiunge da sola)
+    link:  "school.html#book",                           // dove porta il clic
+    until: ""                                            // es. "31 Aug" per l'urgenza · "" = niente data
+  };
+
   /* ============================================================
      Da qui in giù è il motore: non serve toccarlo.
      ============================================================ */
@@ -91,6 +102,21 @@
       if (val != null) els[i].innerHTML = val;
     }
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fill);
-  else fill();
+  function promoBar() {
+    var bar = document.getElementById('promoBar');
+    if (!bar) return;
+    if (!PROMO.active) { bar.style.display = 'none'; return; }
+    bar.style.display = 'flex';
+    if (PROMO.link) bar.setAttribute('href', PROMO.link);
+    var t = bar.querySelector('.promo-text');  if (t) t.textContent = PROMO.text || '';
+    var c = bar.querySelector('.promo-cta');   if (c) c.textContent = PROMO.cta  || '';
+    var u = bar.querySelector('.promo-until');
+    if (u) {
+      if (PROMO.until) { u.textContent = '· ends ' + PROMO.until; u.style.display = ''; }
+      else { u.textContent = ''; u.style.display = 'none'; }
+    }
+  }
+  function run() { fill(); promoBar(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+  else run();
 })();

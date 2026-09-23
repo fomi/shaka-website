@@ -68,6 +68,36 @@
   ]
 }
 </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SportingGoodsStore",
+    "name": "Shaka Fuerte Surf Shop & Rental: Windsurf, Kite, Wingfoil, Surf, SUP, Skate & more!",
+    "image": "https://shaka-fuerte.com/images/og-image.jpg",
+    "url": "https://shaka-fuerte.com/shop.html",
+    "telephone": "+34679561225",
+    "email": "info@shaka-fuerte.com",
+    "priceRange": "€€",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "C.C. Botánico Av. Jahn Reisen s/n",
+      "addressLocality": "Costa Calma",
+      "postalCode": "35627",
+      "addressRegion": "Las Palmas",
+      "addressCountry": "ES"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 28.1565063,
+      "longitude": -14.2332454
+    },
+    "hasMap": "https://www.google.com/maps/place/Shaka+Fuerte+Surf+Shop+%26+Rental:+Windsurf,+Kite,+Wingfoil,+Surf,+SUP,+Skate+%26+more!/@28.1568231,-14.232237,16z/data=!4m6!3m5!1s0xc479dec6d701b49:0xad780ca9e696aa6!8m2!3d28.1565063!4d-14.2332454!16s%2Fg%2F11sgwr91zh",
+    "sameAs": [
+      "https://www.facebook.com/shakafuerte/",
+      "https://www.instagram.com/shaka_fuerte/"
+    ]
+  }
+  </script>
 </head>
 <body class="page-shop">
 
@@ -115,6 +145,13 @@
     </div>
   </nav>
 
+  <!-- PROMO BAR — testo/link/data in js/site-data.js (active:false = nascosta) -->
+  <a class="promo-bar" id="promoBar" href="#">
+    <span class="promo-text"></span>
+    <span class="promo-cta"></span>
+    <span class="promo-until"></span>
+  </a>
+
   <main>
 
   <!-- HERO -->
@@ -146,6 +183,7 @@
       <p class="intro-text">Whether you're chasing wind or waves, our shop has you covered. We rent <strong>top-brand equipment</strong> for every wind and water sport, with gear you can <strong>swap anytime</strong> to match the conditions.</p>
       <p class="intro-text">Based at <strong>C.C. Botánico in Costa Calma</strong>, with easy car access for loading and unloading. Every rental includes a <strong>free universal roofrack</strong>, and our team is always on hand to help you pick the right setup.</p>
       <p class="intro-text">Not just rental: step inside for <strong>streetwear, beachwear and accessories</strong>, plus <strong>ILOVEBIKES</strong> bike rental and the <strong>Beach House</strong> pizzeria to refuel after your session.</p>
+      <a href="#apparel" class="sport-btn">Discover our apparel &amp; gear →</a>
     </div>
   </div>
 
@@ -414,6 +452,31 @@
       </div>
       <div class="price-photo"><img src="images/shop-bike.jpg" alt="Bikes for rent at Shaka Fuerteventura"></div>
     </div>
+  </div>
+
+  <div class="divider"><div class="divider-line"></div></div>
+
+  <!-- TAKE SHAKA HOME (apparel & gear) -->
+  <div class="intro reveal" id="apparel">
+    <div class="intro-inner">
+      <p class="intro-eyebrow">Not Just Rental</p>
+      <h2 class="intro-heading">Take Shaka Home</h2>
+      <p class="intro-text">Shaka isn't only about rental. Alongside the gear, you'll find our own <strong>Shaka streetwear</strong> — tees, hoodies and caps — plus <strong>beachwear</strong>, bikinis and flip-flops, and everything you need on the water: harness lines, leashes, wax, wetsuit boots and more.</p>
+      <p class="sport-brands">Streetwear · Beachwear · Caps &amp; Accessories · Bikinis &amp; Flip-Flops · Wax &amp; Hardware · Shaka Merch · Surf Skate</p>
+    </div>
+  </div>
+
+  <!-- APPAREL GALLERY -->
+  <div class="gallery reveal">
+    <div class="gallery-grid">
+      <div class="gallery-cell"><img loading="lazy" decoding="async" width="1000" height="667" src="images/store-gallery1.jpg" alt="Hawaiian gifts and souvenirs at the Shaka shop"></div>
+      <div class="gallery-cell"><img loading="lazy" decoding="async" width="1000" height="667" src="images/store-gallery2.jpg" alt="Shaka-branded hoodies on display"></div>
+      <div class="gallery-cell"><img loading="lazy" decoding="async" width="1000" height="667" src="images/store-gallery3.jpg" alt="Windsurf harness lines, leashes and accessories for sale"></div>
+      <div class="gallery-cell"><img loading="lazy" decoding="async" width="1000" height="667" src="images/store-gallery4.jpg" alt="Shaka surf-print t-shirts on display"></div>
+      <div class="gallery-cell"><img loading="lazy" decoding="async" width="1000" height="667" src="images/store-gallery5.jpg" alt="Shaka Fuerteventura branded t-shirt"></div>
+      <div class="gallery-cell"><img loading="lazy" decoding="async" width="1000" height="667" src="images/store-gallery6.jpg" alt="Inside the Shaka shop — apparel, boardshorts and boards"></div>
+    </div>
+    <div class="cta-wrap"><a href="#contact" class="cta-btn">Come find us in Costa Calma</a></div>
   </div>
 
   <!-- FAQ -->
