@@ -1,14 +1,13 @@
 // Cloudflare Worker entry for the "shaka-website" project.
 //
 // Routing is asset-first: any request that matches a static file (index.html,
-// school.html, checkin.html -> /checkin, admin.html -> /admin, ...) is served
-// directly by Cloudflare and NEVER runs this Worker. This Worker is invoked
-// ONLY for requests with no matching file — here we handle the two API routes
-// and let everything else fall through to the static assets.
+// checkin-school.html -> /checkin-school, checkin-shop.html -> /checkin-shop,
+// admin.html -> /admin, ...) is served directly and NEVER runs this Worker.
+// This Worker is invoked ONLY for /api/checkin and /api/clients.
 //
-// Bindings/secrets required (declared in wrangler.jsonc + project secrets):
-//   ASSETS            -> static assets binding (wrangler.jsonc)
-//   DB                -> D1 database binding    (wrangler.jsonc) -> shaka-clients
+// Bindings/secrets (wrangler.jsonc + project secrets):
+//   ASSETS            -> static assets binding
+//   DB                -> D1 database binding -> shaka-clients
 //   TURNSTILE_SECRET  -> secret (Turnstile secret key)
 //   ADMIN_PASSWORD    -> secret (password for /admin)
 
@@ -19,9 +18,12 @@ function json(obj, status) {
   });
 }
 
+// Union of school + shop activities (canonical English values stored in DB).
 const ALLOWED_ACTIVITIES = [
-  'Windsurf lesson', 'Wingfoil lesson', 'Windsurf rental', 'Wing / Kite rental', 'SUP / Kayak'
+  'Windsurf lesson', 'Wingfoil lesson', 'Windsurf rental', 'Wingfoil rental', 'SUP / Kayak rental',
+  'Kite rental', 'Kite lesson', 'Surf rental', 'Bodyboard / Skimboard rental', 'Skate rental'
 ];
+const ALLOWED_POINTS = ['school', 'shop'];
 
 // ---- POST /api/checkin ------------------------------------------------------
 async function handleCheckin(request, env) {
@@ -53,20 +55,22 @@ async function handleCheckin(request, env) {
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return json({ error: 'email' }, 400);
   if (!data.waiver_consent || !data.privacy_consent) return json({ error: 'consent' }, 400);
   const activity = ALLOWED_ACTIVITIES.indexOf(data.activity) >= 0 ? data.activity : 'Other';
+  const point = ALLOWED_POINTS.indexOf(data.point) >= 0 ? data.point : null;
 
   // 3) Insert
   await env.DB.prepare(
     `INSERT INTO clients
-       (first_name, last_name, email, phone, activity,
+       (first_name, last_name, email, phone, activity, point,
         marketing_consent, waiver_consent, privacy_consent, review_sent,
         lang, ip, created_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)`
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)`
   ).bind(
     String(data.first_name).trim().slice(0, 80),
     String(data.last_name).trim().slice(0, 80),
     email.slice(0, 120),
     String(data.phone).trim().slice(0, 40),
     activity,
+    point,
     data.marketing_consent ? 1 : 0,
     1, 1,
     (data.lang || 'en').slice(0, 5),
@@ -86,9 +90,9 @@ async function handleClients(request, env) {
   const url = new URL(request.url);
   const q = (url.searchParams.get('q') || '').trim();
 
-  let stmt;
-  const cols = `id, first_name, last_name, email, phone, activity,
+  const cols = `id, first_name, last_name, email, phone, activity, point,
                 marketing_consent, review_sent, lang, created_at`;
+  let stmt;
   if (q) {
     const like = '%' + q + '%';
     stmt = env.DB.prepare(
@@ -108,9 +112,6 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const p = url.pathname;
-
-    // API routes only. Any unexpected error here returns JSON and can never
-    // affect static page delivery (static pages don't run this Worker).
     try {
       if (p === '/api/checkin') {
         if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
@@ -123,8 +124,6 @@ export default {
     } catch (e) {
       return json({ error: 'server' }, 500);
     }
-
-    // Not an API route → hand back to static assets (404 handling included).
     return env.ASSETS.fetch(request);
   }
 };

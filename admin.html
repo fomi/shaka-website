@@ -75,6 +75,11 @@
 
     <div class="bar">
       <input type="search" id="search" class="grow" placeholder="Search name or email…">
+      <select id="pointFilter" class="btn ghost" style="min-width:120px">
+        <option value="">All points</option>
+        <option value="school">School</option>
+        <option value="shop">Shop</option>
+      </select>
       <button class="btn ghost" id="refreshBtn">Refresh</button>
       <button class="btn" id="csvBtn">Export CSV</button>
     </div>
@@ -82,7 +87,7 @@
     <div class="tablewrap">
       <table>
         <thead>
-          <tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Activity</th><th>Marketing</th><th>Lang</th></tr>
+          <tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Point</th><th>Activity</th><th>Marketing</th><th>Lang</th></tr>
         </thead>
         <tbody id="rows"></tbody>
       </table>
@@ -137,27 +142,44 @@
     catch(e){ return iso; }
   }
 
+  function visible(){
+    var pf = document.getElementById('pointFilter').value;
+    return pf ? current.filter(function(c){ return c.point===pf; }) : current;
+  }
+
+  function pointPill(p){
+    if(p==='school') return '<span class="pill yes">School</span>';
+    if(p==='shop')   return '<span class="pill" style="background:color-mix(in srgb,#c07a1a 18%,transparent);color:#a86814">Shop</span>';
+    return '<span class="pill">—</span>';
+  }
+
   function render(){
+    var list = visible();
     var rows = document.getElementById('rows');
-    if(!current.length){
-      rows.innerHTML = '<tr><td colspan="7"><div class="empty">No check-ins yet.</div></td></tr>';
+    if(!list.length){
+      rows.innerHTML = '<tr><td colspan="8"><div class="empty">No check-ins yet.</div></td></tr>';
     } else {
-      rows.innerHTML = current.map(function(c){
+      rows.innerHTML = list.map(function(c){
         var mk = c.marketing_consent ? '<span class="pill yes">Yes</span>' : '<span class="pill">No</span>';
         return '<tr>'+
           '<td>'+esc(fmtDate(c.created_at))+'</td>'+
           '<td>'+esc(c.first_name)+' '+esc(c.last_name)+'</td>'+
           '<td>'+esc(c.email)+'</td>'+
           '<td>'+esc(c.phone)+'</td>'+
+          '<td>'+pointPill(c.point)+'</td>'+
           '<td>'+esc(c.activity)+'</td>'+
           '<td>'+mk+'</td>'+
           '<td>'+esc(c.lang)+'</td>'+
         '</tr>';
       }).join('');
     }
-    var optin = current.filter(function(c){return c.marketing_consent;}).length;
+    var optin  = list.filter(function(c){return c.marketing_consent;}).length;
+    var school = current.filter(function(c){return c.point==='school';}).length;
+    var shop   = current.filter(function(c){return c.point==='shop';}).length;
     document.getElementById('stats').innerHTML =
-      '<div class="stat"><div class="n">'+current.length+'</div><div class="l">Records shown</div></div>'+
+      '<div class="stat"><div class="n">'+list.length+'</div><div class="l">Records shown</div></div>'+
+      '<div class="stat"><div class="n">'+school+'</div><div class="l">School</div></div>'+
+      '<div class="stat"><div class="n">'+shop+'</div><div class="l">Shop</div></div>'+
       '<div class="stat"><div class="n">'+optin+'</div><div class="l">Marketing opt-in</div></div>';
   }
 
@@ -166,13 +188,14 @@
   document.getElementById('search').addEventListener('input', function(){
     clearTimeout(t); t=setTimeout(function(){ load().catch(function(){}); }, 300);
   });
+  document.getElementById('pointFilter').addEventListener('change', render);
   document.getElementById('refreshBtn').addEventListener('click', function(){ load().catch(function(){}); });
 
   // CSV export of what is currently loaded
   document.getElementById('csvBtn').addEventListener('click', function(){
-    var cols = ['id','first_name','last_name','email','phone','activity','marketing_consent','review_sent','lang','created_at'];
+    var cols = ['id','first_name','last_name','email','phone','point','activity','marketing_consent','review_sent','lang','created_at'];
     var head = cols.join(',');
-    var body = current.map(function(c){
+    var body = visible().map(function(c){
       return cols.map(function(k){
         var v = c[k]==null?'':String(c[k]);
         if(/[",\n]/.test(v)) v = '"'+v.replace(/"/g,'""')+'"';

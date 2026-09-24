@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Shaka Check-in — Shop</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --ground:#dbe3ea; --surface:#ffffff; --surface-2:#eef3f7;
+    --ink:#0d141c; --ink-soft:#2c3a49; --muted:#465767;
+    --line:#9fb0bf; --line-strong:#6f8393;
+    --cta:#1d2635; --cta-ink:#ffffff;
+    --accent:#0a6a72; --accent-soft:#dff0f0;
+    --danger:#a5301c; --req:#a5301c; --radius:16px; --gutter:18px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--ground);color:var(--ink);
+    font-family:"Atkinson Hyperlegible", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size:18px;line-height:1.45;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:600px;margin:0 auto;padding-inline:var(--gutter);padding-block:24px 40px}
+  .langbar{display:flex;gap:8px;justify-content:flex-end;margin-bottom:14px}
+  .lang{border:2px solid var(--line-strong);background:var(--surface);color:var(--muted);
+    font-family:inherit;font-size:16px;font-weight:700;letter-spacing:.03em;
+    padding:8px 12px;border-radius:10px;cursor:pointer;min-width:52px}
+  .lang.active{background:var(--cta);color:var(--cta-ink);border-color:var(--cta)}
+  .head{margin-bottom:8px}
+  .logo{font-weight:700;font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .logo .pt{color:var(--accent)}
+  h1{font-weight:700;font-size:clamp(36px,9vw,50px);line-height:1.0;margin:0;letter-spacing:-.01em;text-wrap:balance}
+  .subtitle{color:var(--ink-soft);font-size:19px;margin-top:12px}
+  form{margin-top:22px;display:flex;flex-direction:column;gap:18px}
+  .card{background:var(--surface);border:2px solid var(--line);border-radius:var(--radius);padding:22px 20px 24px}
+  .sec-t{font-weight:700;font-size:24px;letter-spacing:-.01em;margin:0 0 18px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .full{grid-column:1/-1}
+  @media (max-width:480px){ .grid{grid-template-columns:1fr} }
+  label.field{display:flex;flex-direction:column;gap:8px}
+  .lab{font-size:18px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px}
+  .req{color:var(--req);font-weight:700}
+  input[type=text], input[type=email], input[type=tel], select{
+    font-family:inherit;font-size:20px;color:var(--ink);background:var(--surface);
+    border:2px solid var(--line-strong);border-radius:12px;padding:15px 16px;width:100%;min-height:60px;
+    transition:border-color .1s, box-shadow .1s;}
+  input::placeholder{color:#8595a4}
+  input:focus, select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 30%, transparent)}
+  select{appearance:none;
+    background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);
+    background-position:calc(100% - 22px) 55%, calc(100% - 15px) 55%;background-size:7px 7px,7px 7px;background-repeat:no-repeat;padding-right:44px}
+  .consent{display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-bottom:2px solid var(--surface-2)}
+  .consent:last-of-type{border-bottom:none;padding-bottom:2px}
+  .consent input[type=checkbox]{appearance:none;flex:none;width:34px;height:34px;margin-top:1px;
+    border:2.5px solid var(--line-strong);border-radius:8px;background:var(--surface);cursor:pointer;position:relative;transition:.1s}
+  .consent input[type=checkbox]:checked{background:var(--accent);border-color:var(--accent)}
+  .consent input[type=checkbox]:checked::after{content:"";position:absolute;left:11px;top:5px;width:8px;height:15px;border:solid #fff;border-width:0 4px 4px 0;transform:rotate(43deg)}
+  .consent input:focus-visible{outline:none;box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 35%, transparent)}
+  .consent .c-body{font-size:18px;color:var(--ink);line-height:1.4}
+  .consent .c-body .meta{display:block;font-size:15.5px;color:var(--muted);margin-top:5px}
+  .consent a{color:var(--accent);font-weight:700;text-decoration:underline;text-underline-offset:2px}
+  .tag{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:6px;margin-left:8px;vertical-align:2px;white-space:nowrap}
+  .tag-req{background:var(--req);color:#fff}
+  .tag-opt{background:var(--surface-2);color:var(--muted);border:2px solid var(--line)}
+  .cf-turnstile{margin-top:6px}
+  .submit{font-family:inherit;font-weight:700;font-size:23px;background:var(--cta);color:var(--cta-ink);border:none;border-radius:14px;padding:20px;cursor:pointer;width:100%;min-height:70px;transition:.1s}
+  .submit:active{transform:translateY(1px)}
+  .submit:hover{filter:brightness(1.12)}
+  .submit:disabled{opacity:.5;cursor:progress}
+  .err{color:var(--danger);font-size:17px;font-weight:700;margin-top:14px;text-align:center;min-height:1px}
+  .done{text-align:center;padding:34px 20px}
+  .done .check{width:70px;height:70px;border-radius:50%;background:var(--accent-soft);border:3px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+  .done h2{margin:0 0 10px;font-size:30px;font-weight:700}
+  .done p{color:var(--ink-soft);font-size:19px;margin:0 auto 24px;max-width:34ch}
+  .foot{text-align:center;color:var(--muted);font-size:14px;margin-top:24px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap" id="root">
+
+  <div class="langbar" role="group" aria-label="Language">
+    <button type="button" class="lang" data-lang="en">EN</button>
+    <button type="button" class="lang" data-lang="es">ES</button>
+    <button type="button" class="lang" data-lang="it">IT</button>
+    <button type="button" class="lang" data-lang="de">DE</button>
+  </div>
+
+  <div class="head">
+    <div class="logo">Shaka Fuerte · <span class="pt">Shop</span></div>
+    <h1>Check-in</h1>
+    <p class="subtitle" data-i18n="subtitle"></p>
+  </div>
+
+  <form id="form" novalidate>
+    <section class="card">
+      <h2 class="sec-t" data-i18n="details"></h2>
+      <div class="grid">
+        <label class="field">
+          <span class="lab"><span data-i18n="first"></span> <span class="req">*</span></span>
+          <input id="first_name" type="text" required placeholder="Marco" autocomplete="given-name">
+        </label>
+        <label class="field">
+          <span class="lab"><span data-i18n="last"></span> <span class="req">*</span></span>
+          <input id="last_name" type="text" required placeholder="Rossi" autocomplete="family-name">
+        </label>
+        <label class="field full">
+          <span class="lab"><span data-i18n="email"></span> <span class="req">*</span></span>
+          <input id="email" type="email" required placeholder="marco@email.com" autocomplete="email" inputmode="email">
+        </label>
+        <label class="field full">
+          <span class="lab"><span data-i18n="phone"></span> <span class="req">*</span></span>
+          <input id="phone" type="tel" required placeholder="+34 600 000 000" autocomplete="tel" inputmode="tel">
+        </label>
+        <label class="field full">
+          <span class="lab"><span data-i18n="activity"></span> <span class="req">*</span></span>
+          <select id="activity" required>
+            <option value="" data-i18n="choose" selected disabled></option>
+            <option value="Windsurf rental" data-i18n="a_wr"></option>
+            <option value="Kite rental" data-i18n="a_kr"></option>
+            <option value="Kite lesson" data-i18n="a_kl"></option>
+            <option value="Wingfoil rental" data-i18n="a_wfr"></option>
+            <option value="Surf rental" data-i18n="a_sr"></option>
+            <option value="Bodyboard / Skimboard rental" data-i18n="a_bb"></option>
+            <option value="Skate rental" data-i18n="a_sk"></option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="sec-t" data-i18n="agreements"></h2>
+      <label class="consent">
+        <input type="checkbox" id="waiver">
+        <span class="c-body"><span data-i18n-html="waiver"></span><span class="tag tag-req" data-i18n="required"></span></span>
+      </label>
+      <label class="consent">
+        <input type="checkbox" id="privacy">
+        <span class="c-body"><span data-i18n-html="privacy"></span><span class="tag tag-req" data-i18n="required"></span></span>
+      </label>
+      <label class="consent">
+        <input type="checkbox" id="marketing">
+        <span class="c-body"><span data-i18n="marketing"></span>
+          <span class="meta" data-i18n="marketingMeta"></span>
+          <span class="tag tag-opt" data-i18n="optional"></span>
+        </span>
+      </label>
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAAFCNhoeKfqR9Ap6H__lx8NkI51g" data-theme="light" data-size="flexible"></div>
+    </section>
+
+    <button type="submit" class="submit" id="submitBtn" data-i18n="submit"></button>
+    <div class="err" id="err"></div>
+  </form>
+
+  <p class="foot">Shaka Fuerte SL · Costa Calma, Fuerteventura</p>
+</div>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script>
+(function(){
+  var POINT = "shop";
+  var T = {
+    en: {
+      subtitle:"Fill this in before your lesson or rental. Takes under a minute.",
+      details:"Your details", first:"First name", last:"Last name", email:"Email", phone:"Phone", activity:"Activity",
+      choose:"Choose\u2026",
+      a_wl:"Windsurf lesson", a_wfl:"Wingfoil lesson", a_wr:"Windsurf rental", a_wfr:"Wingfoil rental", a_supk:"SUP / Kayak rental",
+      a_kr:"Kite rental", a_kl:"Kite lesson", a_sr:"Surf rental", a_bb:"Bodyboard / Skimboard rental", a_sk:"Skate rental",
+      agreements:"Agreements",
+      waiver:'I accept the <a href="/terms" target="_blank" rel="noopener">liability waiver &amp; terms</a> and understand the risks of water sports.',
+      privacy:'I have read the <a href="/privacy" target="_blank" rel="noopener">privacy policy</a> and agree to Shaka processing my data for the service.',
+      marketing:"Send me news, offers and a review request by email.", marketingMeta:"Optional \u2014 unsubscribe any time.",
+      required:"Required", optional:"Optional",
+      submit:"Complete check-in", saving:"Saving\u2026",
+      err_fields:"Please complete all fields.", err_email:"Please enter a valid email address.",
+      err_consent:"Please accept the waiver and the privacy policy.",
+      err_captcha_missing:"Please complete the anti-spam check and try again.",
+      err_captcha_fail:"Anti-spam check failed. Please try again.",
+      err_generic:"Could not save. Please check the connection and try again.",
+      done_title:"Check-in complete", done_sub:"Enjoy your session on the water!", done_btn:"Start next check-in"
+    },
+    es: {
+      subtitle:"Rellena esto antes de tu clase o alquiler. Menos de un minuto.",
+      details:"Tus datos", first:"Nombre", last:"Apellidos", email:"Email", phone:"Tel\u00e9fono", activity:"Actividad",
+      choose:"Elige\u2026",
+      a_wl:"Clase de windsurf", a_wfl:"Clase de wingfoil", a_wr:"Alquiler de windsurf", a_wfr:"Alquiler de wingfoil", a_supk:"Alquiler de SUP / kayak",
+      a_kr:"Alquiler de kite", a_kl:"Clase de kite", a_sr:"Alquiler de surf", a_bb:"Alquiler de bodyboard / skimboard", a_sk:"Alquiler de skate",
+      agreements:"Consentimientos",
+      waiver:'Acepto la <a href="/terms" target="_blank" rel="noopener">exenci\u00f3n de responsabilidad y las condiciones</a> y entiendo los riesgos de los deportes acu\u00e1ticos.',
+      privacy:'He le\u00eddo la <a href="/privacy" target="_blank" rel="noopener">pol\u00edtica de privacidad</a> y acepto que Shaka trate mis datos para prestar el servicio.',
+      marketing:"Quiero recibir novedades, ofertas y una solicitud de rese\u00f1a por email.", marketingMeta:"Opcional \u2014 puedes darte de baja cuando quieras.",
+      required:"Obligatorio", optional:"Opcional",
+      submit:"Completar check-in", saving:"Guardando\u2026",
+      err_fields:"Por favor, completa todos los campos.", err_email:"Introduce un email v\u00e1lido.",
+      err_consent:"Acepta la exenci\u00f3n y la pol\u00edtica de privacidad.",
+      err_captcha_missing:"Completa la verificaci\u00f3n antispam e int\u00e9ntalo de nuevo.",
+      err_captcha_fail:"La verificaci\u00f3n antispam ha fallado. Int\u00e9ntalo de nuevo.",
+      err_generic:"No se pudo guardar. Comprueba la conexi\u00f3n e int\u00e9ntalo de nuevo.",
+      done_title:"Check-in completado", done_sub:"\u00a1Disfruta de tu sesi\u00f3n en el agua!", done_btn:"Nuevo check-in"
+    },
+    it: {
+      subtitle:"Compila prima della lezione o del noleggio. Meno di un minuto.",
+      details:"I tuoi dati", first:"Nome", last:"Cognome", email:"Email", phone:"Telefono", activity:"Attivit\u00e0",
+      choose:"Scegli\u2026",
+      a_wl:"Lezione di windsurf", a_wfl:"Lezione di wingfoil", a_wr:"Noleggio windsurf", a_wfr:"Noleggio wingfoil", a_supk:"Noleggio SUP / kayak",
+      a_kr:"Noleggio kite", a_kl:"Lezione di kite", a_sr:"Noleggio surf", a_bb:"Noleggio bodyboard / skimboard", a_sk:"Noleggio skate",
+      agreements:"Consensi",
+      waiver:'Accetto la <a href="/terms" target="_blank" rel="noopener">liberatoria e le condizioni</a> e comprendo i rischi degli sport acquatici.',
+      privacy:'Ho letto la <a href="/privacy" target="_blank" rel="noopener">privacy policy</a> e acconsento al trattamento dei miei dati da parte di Shaka per il servizio.',
+      marketing:"Voglio ricevere novit\u00e0, offerte e una richiesta di recensione via email.", marketingMeta:"Facoltativo \u2014 puoi disiscriverti quando vuoi.",
+      required:"Obbligatorio", optional:"Facoltativo",
+      submit:"Completa il check-in", saving:"Salvataggio\u2026",
+      err_fields:"Compila tutti i campi.", err_email:"Inserisci un'email valida.",
+      err_consent:"Accetta la liberatoria e la privacy policy.",
+      err_captcha_missing:"Completa la verifica antispam e riprova.",
+      err_captcha_fail:"Verifica antispam fallita. Riprova.",
+      err_generic:"Impossibile salvare. Controlla la connessione e riprova.",
+      done_title:"Check-in completato", done_sub:"Buona sessione in acqua!", done_btn:"Nuovo check-in"
+    },
+    de: {
+      subtitle:"Bitte vor deiner Stunde oder Miete ausf\u00fcllen. Dauert unter einer Minute.",
+      details:"Deine Daten", first:"Vorname", last:"Nachname", email:"E-Mail", phone:"Telefon", activity:"Aktivit\u00e4t",
+      choose:"Ausw\u00e4hlen\u2026",
+      a_wl:"Windsurf-Kurs", a_wfl:"Wingfoil-Kurs", a_wr:"Windsurf-Verleih", a_wfr:"Wingfoil-Verleih", a_supk:"SUP-/Kajak-Verleih",
+      a_kr:"Kite-Verleih", a_kl:"Kite-Kurs", a_sr:"Surf-Verleih", a_bb:"Bodyboard-/Skimboard-Verleih", a_sk:"Skate-Verleih",
+      agreements:"Einwilligungen",
+      waiver:'Ich akzeptiere den <a href="/terms" target="_blank" rel="noopener">Haftungsausschluss und die Bedingungen</a> und verstehe die Risiken des Wassersports.',
+      privacy:'Ich habe die <a href="/privacy" target="_blank" rel="noopener">Datenschutzerkl\u00e4rung</a> gelesen und stimme zu, dass Shaka meine Daten f\u00fcr den Service verarbeitet.',
+      marketing:"Schickt mir Neuigkeiten, Angebote und eine Bewertungsanfrage per E-Mail.", marketingMeta:"Optional \u2014 jederzeit abbestellbar.",
+      required:"Erforderlich", optional:"Optional",
+      submit:"Check-in abschlie\u00dfen", saving:"Speichern\u2026",
+      err_fields:"Bitte f\u00fclle alle Felder aus.", err_email:"Bitte gib eine g\u00fcltige E-Mail-Adresse ein.",
+      err_consent:"Bitte akzeptiere den Haftungsausschluss und die Datenschutzerkl\u00e4rung.",
+      err_captcha_missing:"Bitte schlie\u00dfe die Spam-Pr\u00fcfung ab und versuche es erneut.",
+      err_captcha_fail:"Spam-Pr\u00fcfung fehlgeschlagen. Bitte versuche es erneut.",
+      err_generic:"Konnte nicht gespeichert werden. Pr\u00fcfe die Verbindung und versuche es erneut.",
+      done_title:"Check-in abgeschlossen", done_sub:"Viel Spa\u00df auf dem Wasser!", done_btn:"N\u00e4chster Check-in"
+    }
+  };
+
+  var curLang = 'en';
+  function applyLang(lang){
+    var t = T[lang] || T.en; curLang = T[lang] ? lang : 'en';
+    document.documentElement.lang = curLang;
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var k = el.getAttribute('data-i18n'); if(t[k]!=null) el.textContent = t[k];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+      var k = el.getAttribute('data-i18n-html'); if(t[k]!=null) el.innerHTML = t[k];
+    });
+    document.querySelectorAll('.lang').forEach(function(b){
+      b.classList.toggle('active', b.getAttribute('data-lang')===curLang);
+    });
+  }
+  document.querySelectorAll('.lang').forEach(function(b){
+    b.addEventListener('click', function(){ applyLang(b.getAttribute('data-lang')); });
+  });
+  applyLang('en');
+
+  var form = document.getElementById('form');
+  var btn  = document.getElementById('submitBtn');
+  var err  = document.getElementById('err');
+  function val(id){ return (document.getElementById(id).value||'').trim(); }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var t = T[curLang]; err.textContent='';
+    var required = ['first_name','last_name','email','phone','activity'];
+    for (var i=0;i<required.length;i++){ if(!val(required[i])){ err.textContent=t.err_fields; return; } }
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val('email'))){ err.textContent=t.err_email; return; }
+    if(!document.getElementById('waiver').checked || !document.getElementById('privacy').checked){ err.textContent=t.err_consent; return; }
+    var token=''; var tf=document.querySelector('input[name="cf-turnstile-response"]'); if(tf) token=tf.value;
+    if(!token){ err.textContent=t.err_captcha_missing; return; }
+
+    var payload = {
+      first_name: val('first_name'), last_name: val('last_name'), email: val('email'),
+      phone: val('phone'), activity: document.getElementById('activity').value, point: POINT,
+      marketing_consent: document.getElementById('marketing').checked,
+      waiver_consent: true, privacy_consent: true, lang: curLang, turnstileToken: token
+    };
+    btn.disabled = true; btn.textContent = t.saving;
+    fetch('/api/checkin', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(payload) })
+      .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, j:j}; }); })
+      .then(function(res){ if(res.ok && res.j && res.j.ok){ success(); } else { fail(res.j && res.j.error); } })
+      .catch(function(){ fail('network'); });
+  });
+
+  function fail(code){
+    var t = T[curLang];
+    btn.disabled=false; btn.textContent=t.submit;
+    if(code==='captcha') err.textContent=t.err_captcha_fail;
+    else if(code==='email') err.textContent=t.err_email;
+    else if(code==='consent') err.textContent=t.err_consent;
+    else err.textContent=t.err_generic;
+    if(window.turnstile){ try{ window.turnstile.reset(); }catch(e){} }
+  }
+  function success(){
+    var t = T[curLang];
+    document.getElementById('root').innerHTML =
+      '<div class="card done">'+
+        '<div class="check"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>'+
+        '<h2>'+t.done_title+'</h2>'+
+        '<p>'+t.done_sub+'</p>'+
+        '<button class="submit" onclick="location.reload()">'+t.done_btn+'</button>'+
+      '</div>'+
+      '<p class="foot">Shaka Fuerte SL \u00b7 Costa Calma, Fuerteventura</p>';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+})();
+</script>
+</body>
+</html>

@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS clients (
   email             TEXT    NOT NULL,
   phone             TEXT    NOT NULL,
   activity          TEXT    NOT NULL,
+  point             TEXT,                          -- 'school' or 'shop' (registration desk)
   marketing_consent INTEGER NOT NULL DEFAULT 0,   -- 1 = opted in to email
   waiver_consent    INTEGER NOT NULL DEFAULT 0,   -- 1 = accepted liability waiver
   privacy_consent   INTEGER NOT NULL DEFAULT 0,   -- 1 = read privacy policy
@@ -21,3 +22,4 @@ CREATE TABLE IF NOT EXISTS clients (
 CREATE INDEX IF NOT EXISTS idx_clients_email     ON clients(email);
 CREATE INDEX IF NOT EXISTS idx_clients_created   ON clients(created_at);
 CREATE INDEX IF NOT EXISTS idx_clients_marketing ON clients(marketing_consent);
+CREATE INDEX IF NOT EXISTS idx_clients_point     ON clients(point);
