@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Shaka Clients</title>
+<style>
+  :root{
+    color-scheme: light dark;
+    --bg:#f4f6f8; --surface:#ffffff; --ink:#141b24; --muted:#5b6675;
+    --line:#dde3ea; --accent:#0a6a72; --cta:#1d2635; --cta-ink:#fff; --danger:#a5301c;
+    --chip:#eef3f7;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0f141b; --surface:#171e28; --ink:#eef2f6; --muted:#93a0af; --line:#2a3441; --accent:#2dd4bf; --cta:#e9eef4; --cta-ink:#171e28; --danger:#e07a63; --chip:#1e2732; }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.45}
+  .wrap{max-width:1000px;margin:0 auto;padding:24px 18px 60px}
+  h1{font-size:24px;margin:0 0 4px}
+  .sub{color:var(--muted);font-size:14px;margin:0 0 20px}
+
+  /* login */
+  .login{max-width:360px;margin:60px auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px}
+  .login h1{font-size:20px}
+  label{display:block;font-weight:600;font-size:14px;margin:14px 0 6px}
+  input[type=password], input[type=search]{
+    width:100%;font:inherit;color:var(--ink);background:var(--surface);
+    border:1px solid var(--line);border-radius:10px;padding:11px 12px}
+  input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+  .btn{font:inherit;font-weight:700;background:var(--cta);color:var(--cta-ink);border:none;border-radius:10px;padding:11px 16px;cursor:pointer}
+  .btn:hover{filter:brightness(1.08)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .err{color:var(--danger);font-weight:600;font-size:14px;margin-top:12px;min-height:1px}
+
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
+  .bar .grow{flex:1;min-width:200px}
+  .stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+  .stat .n{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+  .stat .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+
+  .tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+  table{border-collapse:collapse;width:100%;font-size:14px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);position:sticky;top:0;background:var(--surface)}
+  tr:last-child td{border-bottom:none}
+  .pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--chip);color:var(--muted)}
+  .pill.yes{background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--accent)}
+  .empty{padding:40px;text-align:center;color:var(--muted)}
+  .foot{color:var(--muted);font-size:12px;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap" id="root">
+
+  <!-- Login gate -->
+  <div class="login" id="login">
+    <h1>Shaka Clients</h1>
+    <p class="sub">Enter the admin password.</p>
+    <label for="pw">Password</label>
+    <input type="password" id="pw" autocomplete="current-password">
+    <div style="margin-top:16px"><button class="btn" id="loginBtn" style="width:100%">Open</button></div>
+    <div class="err" id="loginErr"></div>
+  </div>
+
+  <!-- App (hidden until logged in) -->
+  <div id="app" hidden>
+    <h1>Client check-ins</h1>
+    <p class="sub">Newest first. Data lives in your Cloudflare D1 database.</p>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="bar">
+      <input type="search" id="search" class="grow" placeholder="Search name or email…">
+      <button class="btn ghost" id="refreshBtn">Refresh</button>
+      <button class="btn" id="csvBtn">Export CSV</button>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Activity</th><th>Marketing</th><th>Lang</th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <p class="foot">Showing up to 2000 most recent records. Export CSV for the full working copy / backup.</p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  var pw = '';
+  var current = [];
+
+  var loginBtn = document.getElementById('loginBtn');
+  var pwInput  = document.getElementById('pw');
+  var loginErr = document.getElementById('loginErr');
+
+  function doLogin(){
+    pw = pwInput.value;
+    if(!pw){ loginErr.textContent='Enter the password.'; return; }
+    loginErr.textContent='Checking…';
+    load().then(function(){
+      document.getElementById('login').hidden = true;
+      document.getElementById('app').hidden = false;
+    }).catch(function(){
+      loginErr.textContent='Wrong password or connection problem.';
+      pw='';
+    });
+  }
+  loginBtn.addEventListener('click', doLogin);
+  pwInput.addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
+
+  function fetchClients(q){
+    var url = '/api/clients' + (q ? ('?q='+encodeURIComponent(q)) : '');
+    return fetch(url, { headers:{ 'Authorization':'Bearer '+pw } })
+      .then(function(r){ if(!r.ok) throw new Error('auth'); return r.json(); });
+  }
+
+  function load(){
+    var q = document.getElementById('search') ? document.getElementById('search').value.trim() : '';
+    return fetchClients(q).then(function(data){
+      current = (data && data.clients) || [];
+      render();
+    });
+  }
+
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+  function fmtDate(iso){
+    try{ var d=new Date(iso); return d.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'2-digit',hour:'2-digit',minute:'2-digit'}); }
+    catch(e){ return iso; }
+  }
+
+  function render(){
+    var rows = document.getElementById('rows');
+    if(!current.length){
+      rows.innerHTML = '<tr><td colspan="7"><div class="empty">No check-ins yet.</div></td></tr>';
+    } else {
+      rows.innerHTML = current.map(function(c){
+        var mk = c.marketing_consent ? '<span class="pill yes">Yes</span>' : '<span class="pill">No</span>';
+        return '<tr>'+
+          '<td>'+esc(fmtDate(c.created_at))+'</td>'+
+          '<td>'+esc(c.first_name)+' '+esc(c.last_name)+'</td>'+
+          '<td>'+esc(c.email)+'</td>'+
+          '<td>'+esc(c.phone)+'</td>'+
+          '<td>'+esc(c.activity)+'</td>'+
+          '<td>'+mk+'</td>'+
+          '<td>'+esc(c.lang)+'</td>'+
+        '</tr>';
+      }).join('');
+    }
+    var optin = current.filter(function(c){return c.marketing_consent;}).length;
+    document.getElementById('stats').innerHTML =
+      '<div class="stat"><div class="n">'+current.length+'</div><div class="l">Records shown</div></div>'+
+      '<div class="stat"><div class="n">'+optin+'</div><div class="l">Marketing opt-in</div></div>';
+  }
+
+  // search (debounced) — re-query server so it works beyond the loaded page
+  var t;
+  document.getElementById('search').addEventListener('input', function(){
+    clearTimeout(t); t=setTimeout(function(){ load().catch(function(){}); }, 300);
+  });
+  document.getElementById('refreshBtn').addEventListener('click', function(){ load().catch(function(){}); });
+
+  // CSV export of what is currently loaded
+  document.getElementById('csvBtn').addEventListener('click', function(){
+    var cols = ['id','first_name','last_name','email','phone','activity','marketing_consent','review_sent','lang','created_at'];
+    var head = cols.join(',');
+    var body = current.map(function(c){
+      return cols.map(function(k){
+        var v = c[k]==null?'':String(c[k]);
+        if(/[",\n]/.test(v)) v = '"'+v.replace(/"/g,'""')+'"';
+        return v;
+      }).join(',');
+    }).join('\n');
+    var csv = head+'\n'+body;
+    var blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'shaka-clients-'+new Date().toISOString().slice(0,10)+'.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  });
+})();
+</script>
+</body>
+</html>
