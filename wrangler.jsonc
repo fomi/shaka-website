@@ -1,7 +1,24 @@
 {
+  // Existing settings kept as-is:
   "name": "shaka-website",
   "compatibility_date": "2026-09-23",
+
+  // NEW: the Worker entry that handles /api/checkin and /api/clients.
+  "main": "./worker.js",
+
+  // Static site served asset-first; "binding" lets worker.js fall back to assets.
   "assets": {
-    "directory": "./"
-  }
+    "directory": "./",
+    "binding": "ASSETS"
+  },
+
+  // NEW: D1 binding. Replace database_id with the real id of shaka-clients
+  // (dashboard D1 -> open shaka-clients, or: npx wrangler d1 list).
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "shaka-clients",
+      "database_id": "f5fc77ac-e5cf-484e-87b2-629be9039cc3"
+    }
+  ]
 }
