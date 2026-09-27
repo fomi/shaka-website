@@ -41,12 +41,13 @@
   label.field{display:flex;flex-direction:column;gap:8px}
   .lab{font-size:18px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px}
   .req{color:var(--req);font-weight:700}
-  input[type=text], input[type=email], input[type=tel], select{
+  input[type=text], input[type=email], input[type=tel], select, textarea{
     font-family:inherit;font-size:20px;color:var(--ink);background:var(--surface);
     border:2px solid var(--line-strong);border-radius:12px;padding:15px 16px;width:100%;min-height:60px;
     transition:border-color .1s, box-shadow .1s;}
-  input::placeholder{color:#8595a4}
-  input:focus, select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 30%, transparent)}
+  textarea{min-height:90px;line-height:1.4;resize:vertical}
+  input::placeholder, textarea::placeholder{color:#8595a4}
+  input:focus, select:focus, textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 30%, transparent)}
   select{appearance:none;
     background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);
     background-position:calc(100% - 22px) 55%, calc(100% - 15px) 55%;background-size:7px 7px,7px 7px;background-repeat:no-repeat;padding-right:44px}
@@ -123,6 +124,10 @@
             <option value="SUP / Kayak rental" data-i18n="a_supk"></option>
           </select>
         </label>
+        <label class="field full">
+          <span class="lab"><span data-i18n="participants"></span></span>
+          <textarea id="participants" rows="3" data-i18n-ph="participantsHint"></textarea>
+        </label>
       </div>
     </section>
 
@@ -161,6 +166,7 @@
     en: {
       subtitle:"Fill this in before your lesson or rental. Takes under a minute.",
       details:"Your details", first:"First name", last:"Last name", email:"Email", phone:"Phone", activity:"Activity",
+      participants:"Other participants", participantsHint:"If booking for a family or group — one name per line",
       choose:"Choose\u2026",
       a_wl:"Windsurf lesson", a_wfl:"Wingfoil lesson", a_wr:"Windsurf rental", a_wfr:"Wingfoil rental", a_supk:"SUP / Kayak rental",
       a_kr:"Kite rental", a_kl:"Kite lesson", a_sr:"Surf rental", a_bb:"Bodyboard / Skimboard rental", a_sk:"Skate rental",
@@ -180,6 +186,7 @@
     es: {
       subtitle:"Rellena esto antes de tu clase o alquiler. Menos de un minuto.",
       details:"Tus datos", first:"Nombre", last:"Apellidos", email:"Email", phone:"Tel\u00e9fono", activity:"Actividad",
+      participants:"Otros participantes", participantsHint:"Si reservas para una familia o grupo \u2014 un nombre por l\u00ednea",
       choose:"Elige\u2026",
       a_wl:"Clase de windsurf", a_wfl:"Clase de wingfoil", a_wr:"Alquiler de windsurf", a_wfr:"Alquiler de wingfoil", a_supk:"Alquiler de SUP / kayak",
       a_kr:"Alquiler de kite", a_kl:"Clase de kite", a_sr:"Alquiler de surf", a_bb:"Alquiler de bodyboard / skimboard", a_sk:"Alquiler de skate",
@@ -199,6 +206,7 @@
     it: {
       subtitle:"Compila prima della lezione o del noleggio. Meno di un minuto.",
       details:"I tuoi dati", first:"Nome", last:"Cognome", email:"Email", phone:"Telefono", activity:"Attivit\u00e0",
+      participants:"Altri partecipanti", participantsHint:"Se prenoti per una famiglia o gruppo \u2014 un nome per riga",
       choose:"Scegli\u2026",
       a_wl:"Lezione di windsurf", a_wfl:"Lezione di wingfoil", a_wr:"Noleggio windsurf", a_wfr:"Noleggio wingfoil", a_supk:"Noleggio SUP / kayak",
       a_kr:"Noleggio kite", a_kl:"Lezione di kite", a_sr:"Noleggio surf", a_bb:"Noleggio bodyboard / skimboard", a_sk:"Noleggio skate",
@@ -218,6 +226,7 @@
     de: {
       subtitle:"Bitte vor deiner Stunde oder Miete ausf\u00fcllen. Dauert unter einer Minute.",
       details:"Deine Daten", first:"Vorname", last:"Nachname", email:"E-Mail", phone:"Telefon", activity:"Aktivit\u00e4t",
+      participants:"Weitere Teilnehmer", participantsHint:"Bei Familie oder Gruppe \u2014 ein Name pro Zeile",
       choose:"Ausw\u00e4hlen\u2026",
       a_wl:"Windsurf-Kurs", a_wfl:"Wingfoil-Kurs", a_wr:"Windsurf-Verleih", a_wfr:"Wingfoil-Verleih", a_supk:"SUP-/Kajak-Verleih",
       a_kr:"Kite-Verleih", a_kl:"Kite-Kurs", a_sr:"Surf-Verleih", a_bb:"Bodyboard-/Skimboard-Verleih", a_sk:"Skate-Verleih",
@@ -246,6 +255,9 @@
     document.querySelectorAll('[data-i18n-html]').forEach(function(el){
       var k = el.getAttribute('data-i18n-html'); if(t[k]!=null) el.innerHTML = t[k];
     });
+    document.querySelectorAll('[data-i18n-ph]').forEach(function(el){
+      var k = el.getAttribute('data-i18n-ph'); if(t[k]!=null) el.setAttribute('placeholder', t[k]);
+    });
     document.querySelectorAll('.lang').forEach(function(b){
       b.classList.toggle('active', b.getAttribute('data-lang')===curLang);
     });
@@ -273,6 +285,7 @@
     var payload = {
       first_name: val('first_name'), last_name: val('last_name'), email: val('email'),
       phone: val('phone'), activity: document.getElementById('activity').value, point: POINT,
+      participants: val('participants'),
       marketing_consent: document.getElementById('marketing').checked,
       waiver_consent: true, privacy_consent: true, lang: curLang, turnstileToken: token
     };

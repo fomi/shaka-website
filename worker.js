@@ -56,14 +56,15 @@ async function handleCheckin(request, env) {
   if (!data.waiver_consent || !data.privacy_consent) return json({ error: 'consent' }, 400);
   const activity = ALLOWED_ACTIVITIES.indexOf(data.activity) >= 0 ? data.activity : 'Other';
   const point = ALLOWED_POINTS.indexOf(data.point) >= 0 ? data.point : null;
+  const participants = data.participants ? String(data.participants).trim().slice(0, 500) : null;
 
   // 3) Insert
   await env.DB.prepare(
     `INSERT INTO clients
-       (first_name, last_name, email, phone, activity, point,
+       (first_name, last_name, email, phone, activity, point, participants,
         marketing_consent, waiver_consent, privacy_consent, review_sent,
         lang, ip, created_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)`
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?)`
   ).bind(
     String(data.first_name).trim().slice(0, 80),
     String(data.last_name).trim().slice(0, 80),
@@ -71,6 +72,7 @@ async function handleCheckin(request, env) {
     String(data.phone).trim().slice(0, 40),
     activity,
     point,
+    participants,
     data.marketing_consent ? 1 : 0,
     1, 1,
     (data.lang || 'en').slice(0, 5),
@@ -90,16 +92,16 @@ async function handleClients(request, env) {
   const url = new URL(request.url);
   const q = (url.searchParams.get('q') || '').trim();
 
-  const cols = `id, first_name, last_name, email, phone, activity, point,
+  const cols = `id, first_name, last_name, email, phone, activity, point, participants,
                 marketing_consent, review_sent, lang, created_at`;
   let stmt;
   if (q) {
     const like = '%' + q + '%';
     stmt = env.DB.prepare(
       `SELECT ${cols} FROM clients
-        WHERE first_name LIKE ? OR last_name LIKE ? OR email LIKE ?
+        WHERE first_name LIKE ? OR last_name LIKE ? OR email LIKE ? OR participants LIKE ?
         ORDER BY created_at DESC LIMIT 2000`
-    ).bind(like, like, like);
+    ).bind(like, like, like, like);
   } else {
     stmt = env.DB.prepare(`SELECT ${cols} FROM clients ORDER BY created_at DESC LIMIT 2000`);
   }

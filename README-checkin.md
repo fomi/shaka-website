@@ -1,56 +1,52 @@
-# Shaka — Client check-in (B, integrato) — versione a 2 postazioni
+# Shaka — Client check-in (B, integrato) — 2 postazioni + partecipanti
 
-Due pagine di check-in con liste attività diverse, stesso backend e database.
+Due pagine di check-in, stesso backend e database.
 Routing asset-first: le pagine statiche NON eseguono il Worker; il Worker gira
 solo su `/api/checkin` e `/api/clients`.
 
-## URL finali
-- `/checkin-school` → postazione scuola (spiaggia)
-- `/checkin-shop`   → postazione shop
-- `/admin`          → lista clienti (password), con colonna Point e filtro School/Shop
+## URL
+- `/checkin-school` → scuola (spiaggia) — ha il campo "Altri partecipanti"
+- `/checkin-shop`   → shop — form invariato (niente partecipanti)
+- `/admin`          → lista clienti (password): colonne Point + Participants, filtri Point e Activity
 
-## File del pacchetto → repo del sito (root)
+## File → repo del sito (root)
 ```
-worker.js               -> SOSTITUISCE il precedente (accetta `point` + attività ampliate)
-wrangler.jsonc          -> invariato rispetto a prima (main + binding ASSETS + D1)
-.assetsignore           -> invariato
-checkin-school.html     -> NUOVO (attività scuola)
-checkin-shop.html       -> NUOVO (attività shop)
-admin.html              -> SOSTITUISCE il precedente (colonna Point + filtro + conteggi)
-schema.sql              -> per installazioni NUOVE (include già `point`)
-migrate-add-point.sql   -> per il DB ESISTENTE: aggiunge la colonna `point`
-```
-
-### Rimuovi il vecchio `checkin.html`
-La singola pagina `/checkin` è sostituita dalle due `checkin-school` / `checkin-shop`.
-Cancella `checkin.html` dal repo (o lascialo, ma non serve più).
-
-## ORDINE dei passi (importante)
-
-**1. Aggiungi la colonna al database ESISTENTE — PRIMA del deploy.**
-Se il worker nuovo va online prima della colonna, l'INSERT fallisce.
-```
-npx wrangler d1 execute shaka-clients --remote --file=./migrate-add-point.sql
+worker.js                    -> SOSTITUISCE (accetta point + participants; ricerca anche nei partecipanti)
+checkin-school.html          -> SOSTITUISCE (campo "Altri partecipanti", Site Key già dentro)
+checkin-shop.html            -> invariato rispetto alla versione a 2 postazioni
+admin.html                   -> SOSTITUISCE (colonna Participants + filtro Activity)
+wrangler.jsonc / .assetsignore -> invariati
+schema.sql                   -> per installazioni NUOVE (include point + participants)
+migrate-add-point.sql        -> (già eseguito da te in precedenza)
+migrate-add-participants.sql -> NUOVO: aggiunge la colonna participants al DB esistente
 ```
 
-**2. Rimetti la Site Key Turnstile** in ENTRAMBE le pagine:
-`checkin-school.html` e `checkin-shop.html`, al posto di `TURNSTILE_SITE_KEY_HERE`.
+## ORDINE per questa modifica
+
+**1. Aggiungi la colonna `participants` al DB — PRIMA del deploy:**
+```
+npx wrangler d1 execute shaka-clients --remote --file=./migrate-add-participants.sql
+```
+(La colonna `point` l'avevi già aggiunta con migrate-add-point.sql.)
+
+**2. Sostituisci i file** nel repo (`worker.js`, `checkin-school.html`, `admin.html`).
 
 **3. Deploy** (commit + push, oppure `npx wrangler deploy`).
 
 **4. Test:**
-- `…/checkin-school` → check-in di prova → in `/admin` deve risultare Point = School
-- `…/checkin-shop`   → check-in di prova → Point = Shop
-- In `/admin`, prova il filtro School/Shop e l'Export CSV (ora include la colonna `point`).
+- `…/checkin-school`: compila "Altri partecipanti" con più nomi (uno per riga) → invia.
+- In `/admin`: la colonna Participants mostra i nomi; il filtro Activity funziona;
+  cerca il nome di un **partecipante** (non il registrante) → il record compare.
+- `…/checkin-shop`: invariato, nessun campo partecipanti.
 
-## Attività per postazione
-- **School:** Windsurf lesson · Wingfoil lesson · Windsurf rental · Wingfoil rental · SUP / Kayak rental
-- **Shop:** Windsurf rental · Kite rental · Kite lesson · Wingfoil rental · Surf rental · Bodyboard / Skimboard rental · Skate rental
-
-I valori si salvano in inglese nel DB (colonna `activity`), mostrati tradotti nel form (EN/ES/IT/DE).
-La postazione si salva nella colonna `point` ('school'/'shop'), impostata in automatico da ciascuna pagina.
+## Come risolve il tuo problema
+- Il **contatto** resta chi compila (nome/cognome/email/telefono).
+- Gli **altri partecipanti** (figli, partner) vanno nel campo libero, salvati in `participants`.
+- La **ricerca in /admin cerca anche tra i partecipanti**: dal nome sul plan corsi
+  risali sempre al contatto, anche se quel nome è solo un partecipante.
 
 ## Note
-- Il record di prova precedente (fatto prima di questa modifica) avrà `point` vuoto → in /admin appare come "—". Normale.
-- Backup: Export CSV da /admin (nessun backup automatico sul free).
+- Campo partecipanti solo nella scuola; lo shop non ne ha bisogno.
+- Multilingua EN/ES/IT/DE anche per il nuovo campo.
+- Backup: Export CSV da /admin (ora include `participants`).
 - Testo waiver: da validare legalmente prima del lancio.

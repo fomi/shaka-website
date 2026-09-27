@@ -75,10 +75,13 @@
 
     <div class="bar">
       <input type="search" id="search" class="grow" placeholder="Search name or email…">
-      <select id="pointFilter" class="btn ghost" style="min-width:120px">
+      <select id="pointFilter" class="btn ghost" style="min-width:110px">
         <option value="">All points</option>
         <option value="school">School</option>
         <option value="shop">Shop</option>
+      </select>
+      <select id="activityFilter" class="btn ghost" style="min-width:150px">
+        <option value="">All activities</option>
       </select>
       <button class="btn ghost" id="refreshBtn">Refresh</button>
       <button class="btn" id="csvBtn">Export CSV</button>
@@ -87,7 +90,7 @@
     <div class="tablewrap">
       <table>
         <thead>
-          <tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Point</th><th>Activity</th><th>Marketing</th><th>Lang</th></tr>
+          <tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Point</th><th>Activity</th><th>Participants</th><th>Marketing</th><th>Lang</th></tr>
         </thead>
         <tbody id="rows"></tbody>
       </table>
@@ -144,7 +147,23 @@
 
   function visible(){
     var pf = document.getElementById('pointFilter').value;
-    return pf ? current.filter(function(c){ return c.point===pf; }) : current;
+    var af = document.getElementById('activityFilter').value;
+    return current.filter(function(c){
+      if(pf && c.point!==pf) return false;
+      if(af && c.activity!==af) return false;
+      return true;
+    });
+  }
+
+  function syncActivityFilter(){
+    var sel = document.getElementById('activityFilter');
+    var chosen = sel.value;
+    var acts = {};
+    current.forEach(function(c){ if(c.activity) acts[c.activity]=1; });
+    var list = Object.keys(acts).sort();
+    sel.innerHTML = '<option value="">All activities</option>' +
+      list.map(function(a){ return '<option value="'+esc(a)+'">'+esc(a)+'</option>'; }).join('');
+    if(list.indexOf(chosen)>=0) sel.value = chosen;
   }
 
   function pointPill(p){
@@ -154,13 +173,15 @@
   }
 
   function render(){
+    syncActivityFilter();
     var list = visible();
     var rows = document.getElementById('rows');
     if(!list.length){
-      rows.innerHTML = '<tr><td colspan="8"><div class="empty">No check-ins yet.</div></td></tr>';
+      rows.innerHTML = '<tr><td colspan="9"><div class="empty">No check-ins yet.</div></td></tr>';
     } else {
       rows.innerHTML = list.map(function(c){
         var mk = c.marketing_consent ? '<span class="pill yes">Yes</span>' : '<span class="pill">No</span>';
+        var parts = c.participants ? esc(c.participants).replace(/\n/g,'<br>') : '<span style="color:var(--muted)">—</span>';
         return '<tr>'+
           '<td>'+esc(fmtDate(c.created_at))+'</td>'+
           '<td>'+esc(c.first_name)+' '+esc(c.last_name)+'</td>'+
@@ -168,6 +189,7 @@
           '<td>'+esc(c.phone)+'</td>'+
           '<td>'+pointPill(c.point)+'</td>'+
           '<td>'+esc(c.activity)+'</td>'+
+          '<td style="white-space:normal;min-width:160px">'+parts+'</td>'+
           '<td>'+mk+'</td>'+
           '<td>'+esc(c.lang)+'</td>'+
         '</tr>';
@@ -189,11 +211,12 @@
     clearTimeout(t); t=setTimeout(function(){ load().catch(function(){}); }, 300);
   });
   document.getElementById('pointFilter').addEventListener('change', render);
+  document.getElementById('activityFilter').addEventListener('change', render);
   document.getElementById('refreshBtn').addEventListener('click', function(){ load().catch(function(){}); });
 
   // CSV export of what is currently loaded
   document.getElementById('csvBtn').addEventListener('click', function(){
-    var cols = ['id','first_name','last_name','email','phone','point','activity','marketing_consent','review_sent','lang','created_at'];
+    var cols = ['id','first_name','last_name','email','phone','point','activity','participants','marketing_consent','review_sent','lang','created_at'];
     var head = cols.join(',');
     var body = visible().map(function(c){
       return cols.map(function(k){

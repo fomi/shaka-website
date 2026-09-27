@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS clients (
   phone             TEXT    NOT NULL,
   activity          TEXT    NOT NULL,
   point             TEXT,                          -- 'school' or 'shop' (registration desk)
+  participants      TEXT,                          -- other participants (school form only), free text
   marketing_consent INTEGER NOT NULL DEFAULT 0,   -- 1 = opted in to email
   waiver_consent    INTEGER NOT NULL DEFAULT 0,   -- 1 = accepted liability waiver
   privacy_consent   INTEGER NOT NULL DEFAULT 0,   -- 1 = read privacy policy
