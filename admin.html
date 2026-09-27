@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Shaka Clients</title>
+<title>Shaka Admin</title>
 <style>
   :root{
     color-scheme: light dark;
@@ -59,17 +59,23 @@
 
   <!-- Login gate -->
   <div class="login" id="login">
-    <h1>Shaka Clients</h1>
+    <h1>Shaka Admin</h1>
     <p class="sub">Enter the admin password.</p>
     <label for="pw">Password</label>
     <input type="password" id="pw" autocomplete="current-password">
+    <label style="display:flex;align-items:center;gap:10px;margin-top:12px;font-weight:400;font-size:14px">
+      <input type="checkbox" id="remember" style="width:20px;height:20px;accent-color:var(--accent)"> Ricorda su questo dispositivo
+    </label>
     <div style="margin-top:16px"><button class="btn" id="loginBtn" style="width:100%">Open</button></div>
     <div class="err" id="loginErr"></div>
   </div>
 
   <!-- App (hidden until logged in) -->
   <div id="app" hidden>
-    <h1>Noleggi</h1>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <h1>Noleggio Shop</h1>
+      <a class="btn ghost" href="/rental" style="text-decoration:none">Apri /rental ›</a>
+    </div>
     <p class="sub">Materiale ancora fuori e pagamenti aperti.</p>
     <div class="stats" id="rstats"></div>
     <div class="bar">
@@ -131,20 +137,23 @@
   var pwInput  = document.getElementById('pw');
   var loginErr = document.getElementById('loginErr');
 
-  function doLogin(){
-    pw = pwInput.value;
+  var LS_KEY = 'shaka_admin_pw';
+  function doLogin(remembered){
+    if(!remembered){ pw = pwInput.value; }
     if(!pw){ loginErr.textContent='Enter the password.'; return; }
     loginErr.textContent='Checking…';
     load().then(function(){
+      if(!remembered && document.getElementById('remember').checked){ try{ localStorage.setItem(LS_KEY, pw); }catch(e){} }
       document.getElementById('login').hidden = true;
       document.getElementById('app').hidden = false;
     }).catch(function(){
       loginErr.textContent='Wrong password or connection problem.';
-      pw='';
+      pw=''; try{ localStorage.removeItem(LS_KEY); }catch(e){}
     });
   }
-  loginBtn.addEventListener('click', doLogin);
-  pwInput.addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
+  loginBtn.addEventListener('click', function(){ doLogin(false); });
+  pwInput.addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(false); });
+  (function tryRemembered(){ try{ var s=localStorage.getItem(LS_KEY); if(s){ pw=s; doLogin(true); } }catch(e){} })();
 
   var rentalsData = [];
   var clientsById = {};

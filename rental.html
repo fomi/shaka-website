@@ -25,6 +25,11 @@
   .wrap{max-width:700px;margin:0 auto;padding-inline:var(--gutter);padding-block:20px 44px}
   h1{font-weight:700;font-size:30px;margin:0 0 2px}
   .sub{color:var(--muted);font-size:15px;margin:0 0 18px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .topact{display:flex;gap:8px}
+  .tbtn{font:inherit;font-size:14px;font-weight:700;text-decoration:none;color:var(--ink);
+    background:var(--surface);border:2px solid var(--line-strong);border-radius:10px;padding:9px 13px;cursor:pointer}
+  .tbtn:hover{border-color:var(--accent)}
   .card{background:var(--surface);border:2px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:16px}
   /* login */
   .login{max-width:380px;margin:50px auto}
@@ -168,12 +173,21 @@
     selId=null; editing=null;
     var todayShop = clients.filter(function(c){ return c.point==='shop' && isToday(c.created_at); });
     document.getElementById('app').innerHTML =
-      '<h1>Rental</h1><p class="sub">Check-in shop di oggi. Tocca un cliente per gestire il noleggio.</p>'+
+      '<div class="topbar"><h1>Rental</h1><div class="topact">'+
+        '<button class="tbtn" onclick="refreshData()">↻ Aggiorna</button>'+
+        '<a class="tbtn" href="/admin">Admin ›</a></div></div>'+
+      '<p class="sub">Check-in shop di oggi. Tocca un cliente per gestire il noleggio.</p>'+
       '<div class="card"><input class="search" id="search" type="search" placeholder="Cerca cliente (anche di giorni fa)…">'+
       '<div class="clist" id="clist"></div></div><div id="panel"></div>';
     document.getElementById('search').addEventListener('input', renderList);
     renderList(todayShop);
   }
+  window.renderApp = renderApp;
+  window.refreshData = function(){
+    loadAll().then(function(){ if(selId!=null){ renderPanel(); } else { renderList(); } toast('Aggiornato'); })
+      .catch(function(){ toast('Errore aggiornamento'); });
+  };
+  window.closePanel = function(){ selId=null; editing=null; renderPanel(); window.scrollTo({top:0,behavior:'smooth'}); };
   function renderList(defaultList){
     var q=(document.getElementById('search')?document.getElementById('search').value:'').trim().toLowerCase();
     var list;
@@ -211,7 +225,7 @@
         '</div></div>';
     }).join('') : '<div class="empty">Nessun noleggio ancora.</div>';
 
-    p.innerHTML='<div class="card"><button class="backbtn" onclick="renderApp()">‹ Lista</button>'+
+    p.innerHTML='<div class="card"><button class="backbtn" onclick="closePanel()">✕ Chiudi scheda</button>'+
       '<div class="cli-head"><div><div class="nm">'+esc(c.first_name)+' '+esc(c.last_name)+'</div>'+
         '<div class="contact">'+esc(c.email||'')+' · '+esc(c.phone||'')+'</div></div>'+
         '<div class="totbox"><div class="lab">Saldo cliente</div><div class="val '+(b>0?'open':'')+'">'+eur(b)+'</div></div></div>'+
