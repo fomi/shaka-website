@@ -1,52 +1,52 @@
-# Shaka — Client check-in (B, integrato) — 2 postazioni + partecipanti
+# Shaka — Check-in + Noleggi (B, integrato)
 
-Due pagine di check-in, stesso backend e database.
-Routing asset-first: le pagine statiche NON eseguono il Worker; il Worker gira
-solo su `/api/checkin` e `/api/clients`.
+Tutto nel progetto Worker `shaka-website`. Routing asset-first: le pagine statiche
+non eseguono il Worker; il Worker gira solo su `/api/*`.
 
-## URL
-- `/checkin-school` → scuola (spiaggia) — ha il campo "Altri partecipanti"
-- `/checkin-shop`   → shop — form invariato (niente partecipanti)
-- `/admin`          → lista clienti (password): colonne Point + Participants, filtri Point e Activity
+## Pagine
+- `/checkin-school` · `/checkin-shop` → check-in clienti (invariati)
+- `/admin` → vista completa: **Noleggi** (in alto) + **Check-ins**
+- `/rental` → **NUOVO** back-office noleggi per il banco shop (protetto, come admin)
+
+## Modello dati
+- `clients` = i check-in (contatto + consensi). Invariata.
+- `rentals` = **NUOVA** tabella, righe di noleggio. Un cliente → molte righe.
+  Campi: `item, extras, start_at (data+ORA, 24h), days, price, paid, notes, returned, returned_at`.
+  Saldo e data riconsegna si **calcolano** (start_at + days×24h).
 
 ## File → repo del sito (root)
 ```
-worker.js                    -> SOSTITUISCE (accetta point + participants; ricerca anche nei partecipanti)
-checkin-school.html          -> SOSTITUISCE (campo "Altri partecipanti", Site Key già dentro)
-checkin-shop.html            -> invariato rispetto alla versione a 2 postazioni
-admin.html                   -> SOSTITUISCE (colonna Participants + filtro Activity)
-wrangler.jsonc / .assetsignore -> invariati
-schema.sql                   -> per installazioni NUOVE (include point + participants)
-migrate-add-point.sql        -> (già eseguito da te in precedenza)
-migrate-add-participants.sql -> NUOVO: aggiunge la colonna participants al DB esistente
+worker.js                    -> SOSTITUISCE (endpoint /api/rentals e /api/rental)
+rental.html                  -> NUOVO (pagina /rental)
+admin.html                   -> SOSTITUISCE (sezione Noleggi + fix ricerca client-side)
+schema.sql                   -> installazioni nuove (include rentals)
+migrate-add-rentals.sql      -> NUOVO: crea la tabella rentals sul DB esistente
+checkin-school.html / checkin-shop.html / wrangler.jsonc / .assetsignore -> invariati
 ```
 
-## ORDINE per questa modifica
+## ORDINE (la tabella PRIMA del deploy)
+1. **Copia i file** nella cartella del progetto (incluso `migrate-add-rentals.sql`). Non fare ancora push.
+2. **Crea la tabella** rentals:
+   ```
+   npx wrangler d1 execute shaka-clients --remote --file=./migrate-add-rentals.sql
+   ```
+3. **Commit + push** (deploy).
 
-**1. Aggiungi la colonna `participants` al DB — PRIMA del deploy:**
-```
-npx wrangler d1 execute shaka-clients --remote --file=./migrate-add-participants.sql
-```
-(La colonna `point` l'avevi già aggiunta con migrate-add-point.sql.)
-
-**2. Sostituisci i file** nel repo (`worker.js`, `checkin-school.html`, `admin.html`).
-
-**3. Deploy** (commit + push, oppure `npx wrangler deploy`).
-
-**4. Test:**
-- `…/checkin-school`: compila "Altri partecipanti" con più nomi (uno per riga) → invia.
-- In `/admin`: la colonna Participants mostra i nomi; il filtro Activity funziona;
-  cerca il nome di un **partecipante** (non il registrante) → il record compare.
-- `…/checkin-shop`: invariato, nessun campo partecipanti.
-
-## Come risolve il tuo problema
-- Il **contatto** resta chi compila (nome/cognome/email/telefono).
-- Gli **altri partecipanti** (figli, partner) vanno nel campo libero, salvati in `participants`.
-- La **ricerca in /admin cerca anche tra i partecipanti**: dal nome sul plan corsi
-  risali sempre al contatto, anche se quel nome è solo un partecipante.
+## Uso
+- **Capo, al banco** → apre `/rental` (password = quella admin; può spuntare "Ricorda su questo tablet").
+  Lista dei check-in shop di oggi → tocca il cliente → **+ Aggiungi attrezzatura**:
+  oggetto, extra, giorni (24h), **ora di inizio = adesso** (modificabile), prezzo, pagato, note → Salva.
+  Aggiunge più righe (es. tavola surf aggiunta dopo). Riapre una riga per estendere giorni,
+  aggiornare il pagato, o **Segna reso**.
+- **Tu, in `/admin`** → in cima la sezione **Noleggi**:
+  - riquadri **Da incassare (€)** e **Da riconsegnare oggi/scaduti**
+  - filtro: Riconsegne attese · Saldo aperto · In corso · Tutti
+  - per ogni riga puoi aggiornare il **pagato** e segnare **Reso** al volo.
 
 ## Note
-- Campo partecipanti solo nella scuola; lo shop non ne ha bisogno.
-- Multilingua EN/ES/IT/DE anche per il nuovo campo.
-- Backup: Export CSV da /admin (ora include `participants`).
-- Testo waiver: da validare legalmente prima del lancio.
+- `/rental` e le API rentals usano la **password admin**. Se la dai al capo, ha accesso anche a /admin.
+  (Se in futuro vuoi separarli, si aggiunge una seconda password — dimmelo.)
+- Regola: **nuovo noleggio in una nuova visita = nuovo check-in** (un record = i suoi noleggi;
+  righe multiple = più attrezzature dello stesso soggiorno).
+- Backup: Export CSV dei check-in da /admin. (I noleggi non sono ancora nell'export CSV — se lo vuoi, lo aggiungo.)
+- Testo waiver/privacy: da validare legalmente prima del lancio.

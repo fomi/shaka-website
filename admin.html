@@ -45,6 +45,7 @@
   .tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px}
   table{border-collapse:collapse;width:100%;font-size:14px}
   th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+  th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
   th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);position:sticky;top:0;background:var(--surface)}
   tr:last-child td{border-bottom:none}
   .pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--chip);color:var(--muted)}
@@ -68,7 +69,28 @@
 
   <!-- App (hidden until logged in) -->
   <div id="app" hidden>
-    <h1>Client check-ins</h1>
+    <h1>Noleggi</h1>
+    <p class="sub">Materiale ancora fuori e pagamenti aperti.</p>
+    <div class="stats" id="rstats"></div>
+    <div class="bar">
+      <select id="rentalFilter" class="btn ghost" style="min-width:190px">
+        <option value="due">Riconsegne attese (oggi/scaduti)</option>
+        <option value="open">Saldo aperto</option>
+        <option value="active">In corso</option>
+        <option value="all">Tutti</option>
+      </select>
+      <button class="btn ghost" id="rRefreshBtn">Refresh</button>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Cliente</th><th>Attrezzatura</th><th>Inizio</th><th>Riconsegna</th><th class="num">Prezzo</th><th class="num">Pagato</th><th class="num">Saldo</th><th>Azioni</th></tr>
+        </thead>
+        <tbody id="rrows"></tbody>
+      </table>
+    </div>
+
+    <h1 style="margin-top:34px">Check-ins</h1>
     <p class="sub">Newest first. Data lives in your Cloudflare D1 database.</p>
 
     <div class="stats" id="stats"></div>
@@ -124,19 +146,83 @@
   loginBtn.addEventListener('click', doLogin);
   pwInput.addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
 
-  function fetchClients(q){
-    var url = '/api/clients' + (q ? ('?q='+encodeURIComponent(q)) : '');
-    return fetch(url, { headers:{ 'Authorization':'Bearer '+pw } })
-      .then(function(r){ if(!r.ok) throw new Error('auth'); return r.json(); });
-  }
+  var rentalsData = [];
+  var clientsById = {};
 
   function load(){
-    var q = document.getElementById('search') ? document.getElementById('search').value.trim() : '';
-    return fetchClients(q).then(function(data){
-      current = (data && data.clients) || [];
+    return Promise.all([
+      fetch('/api/clients', { headers:{ 'Authorization':'Bearer '+pw } }).then(function(r){ if(!r.ok) throw new Error('auth'); return r.json(); }),
+      fetch('/api/rentals', { headers:{ 'Authorization':'Bearer '+pw } }).then(function(r){ if(!r.ok) throw new Error('auth'); return r.json(); })
+    ]).then(function(res){
+      current = (res[0] && res[0].clients) || [];
+      rentalsData = (res[1] && res[1].rentals) || [];
+      clientsById = {}; current.forEach(function(c){ clientsById[c.id]=c; });
       render();
+      renderRentals();
     });
   }
+
+  // ---- rentals ----
+  function pad(n){ return ('0'+n).slice(-2); }
+  function fmtDT(iso){ try{ var d=new Date(iso); return pad(d.getDate())+'/'+pad(d.getMonth()+1)+' '+pad(d.getHours())+':'+pad(d.getMinutes()); }catch(e){ return iso; } }
+  function retIso(iso,days){ var d=new Date(iso); d.setHours(d.getHours()+days*24); return d; }
+  function eur(n){ return '€'+(Math.round(n*100)/100).toFixed(0); }
+  function cliName(cid){ var c=clientsById[cid]; return c?(c.first_name+' '+c.last_name):('#'+cid); }
+  function cliPhone(cid){ var c=clientsById[cid]; return c?c.phone:''; }
+
+  function renderRentals(){
+    var f = document.getElementById('rentalFilter').value;
+    var now = new Date();
+    var endToday = new Date(); endToday.setHours(23,59,59,999);
+    var open=0, due=0;
+    rentalsData.forEach(function(r){
+      if((r.price-r.paid)>0) open += (r.price-r.paid);
+      if(!r.returned && retIso(r.start_at,r.days) <= endToday) due++;
+    });
+    document.getElementById('rstats').innerHTML =
+      '<div class="stat"><div class="n">'+eur(open)+'</div><div class="l">Da incassare</div></div>'+
+      '<div class="stat"><div class="n">'+due+'</div><div class="l">Da riconsegnare oggi/scaduti</div></div>';
+
+    var list = rentalsData.filter(function(r){
+      var rd = retIso(r.start_at,r.days), bal=r.price-r.paid;
+      if(f==='due')    return !r.returned && rd <= endToday;
+      if(f==='open')   return bal>0;
+      if(f==='active') return !r.returned && rd > now;
+      return true;
+    }).sort(function(a,b){ return retIso(a.start_at,a.days)-retIso(b.start_at,b.days); });
+
+    var rows=document.getElementById('rrows');
+    if(!list.length){ rows.innerHTML='<tr><td colspan="8"><div class="empty">Niente qui.</div></td></tr>'; return; }
+    rows.innerHTML = list.map(function(r){
+      var bal=r.price-r.paid, rd=retIso(r.start_at,r.days), overdue=(!r.returned && rd<now);
+      return '<tr'+(r.returned?' style="opacity:.55"':'')+'>'+
+        '<td>'+esc(cliName(r.client_id))+'<br><span style="font-size:12px;color:var(--muted)">'+esc(cliPhone(r.client_id))+'</span></td>'+
+        '<td>'+esc(r.item)+(r.extras?'<br><span style="font-size:12px;color:var(--muted)">'+esc(r.extras)+'</span>':'')+'</td>'+
+        '<td>'+fmtDT(r.start_at)+'</td>'+
+        '<td>'+(r.returned?'<span class="pill yes">Reso</span>':(fmtDT(rd.toISOString())+(overdue?' <span class="pill" style="background:var(--danger);color:#fff">scaduto</span>':'')))+'</td>'+
+        '<td class="num">'+eur(r.price)+'</td>'+
+        '<td class="num">'+eur(r.paid)+'</td>'+
+        '<td class="num" style="'+(bal>0?'color:var(--danger);font-weight:700':'')+'">'+eur(bal)+'</td>'+
+        '<td>'+(r.returned?'—':
+          '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">'+
+          '<input type="number" id="pay_'+r.id+'" value="'+r.paid+'" style="width:80px;min-height:38px;padding:6px 8px;font-size:14px" title="Pagato €">'+
+          '<button class="btn ghost" style="padding:6px 10px;font-size:13px" onclick="savePaid('+r.id+')">Salva</button>'+
+          '<button class="btn" style="padding:6px 10px;font-size:13px" onclick="markReturned('+r.id+')">Reso</button>'+
+          '</div>')+'</td>'+
+      '</tr>';
+    }).join('');
+  }
+
+  function postRental(payload){
+    return fetch('/api/rental',{ method:'POST', headers:{'Authorization':'Bearer '+pw,'content-type':'application/json'}, body:JSON.stringify(payload) })
+      .then(function(r){ return r.json(); }).then(function(res){ if(!res||!res.ok) throw new Error('save'); return load(); });
+  }
+  function rentalById(id){ return rentalsData.filter(function(r){return r.id===id;})[0]; }
+  function basePayload(r){ return { id:r.id, client_id:r.client_id, item:r.item, extras:(r.extras?r.extras.split(',').map(function(s){return s.trim();}):[]), start_at:r.start_at, days:r.days, price:r.price, paid:r.paid, notes:r.notes, returned:!!r.returned }; }
+  window.savePaid=function(id){ var r=rentalById(id); if(!r) return; var v=parseFloat(document.getElementById('pay_'+id).value)||0; var p=basePayload(r); p.paid=v; postRental(p).catch(function(){ alert('Errore'); }); };
+  window.markReturned=function(id){ var r=rentalById(id); if(!r) return; var p=basePayload(r); p.returned=true; postRental(p).catch(function(){ alert('Errore'); }); };
+  document.getElementById('rentalFilter').addEventListener('change', renderRentals);
+  document.getElementById('rRefreshBtn').addEventListener('click', function(){ load().catch(function(){}); });
 
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
 
@@ -148,9 +234,14 @@
   function visible(){
     var pf = document.getElementById('pointFilter').value;
     var af = document.getElementById('activityFilter').value;
+    var q  = (document.getElementById('search').value||'').trim().toLowerCase();
     return current.filter(function(c){
       if(pf && c.point!==pf) return false;
       if(af && c.activity!==af) return false;
+      if(q){
+        var hay = ((c.first_name||'')+' '+(c.last_name||'')+' '+(c.email||'')+' '+(c.participants||'')).toLowerCase();
+        if(hay.indexOf(q)<0) return false;
+      }
       return true;
     });
   }
@@ -208,7 +299,7 @@
   // search (debounced) — re-query server so it works beyond the loaded page
   var t;
   document.getElementById('search').addEventListener('input', function(){
-    clearTimeout(t); t=setTimeout(function(){ load().catch(function(){}); }, 300);
+    clearTimeout(t); t=setTimeout(function(){ render(); }, 150);
   });
   document.getElementById('pointFilter').addEventListener('change', render);
   document.getElementById('activityFilter').addEventListener('change', render);

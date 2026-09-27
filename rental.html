@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Shaka Rental</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --ground:#dbe3ea; --surface:#ffffff; --surface-2:#eef3f7;
+    --ink:#0d141c; --ink-soft:#2c3a49; --muted:#465767;
+    --line:#9fb0bf; --line-strong:#6f8393;
+    --cta:#1d2635; --cta-ink:#ffffff;
+    --accent:#0a6a72; --accent-soft:#dff0f0;
+    --warn:#a86814; --warn-soft:#f6ecd8;
+    --danger:#a5301c; --danger-soft:#f6dfd9; --radius:16px; --gutter:18px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--ground);color:var(--ink);
+    font-family:"Atkinson Hyperlegible", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size:17px;line-height:1.45;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:700px;margin:0 auto;padding-inline:var(--gutter);padding-block:20px 44px}
+  h1{font-weight:700;font-size:30px;margin:0 0 2px}
+  .sub{color:var(--muted);font-size:15px;margin:0 0 18px}
+  .card{background:var(--surface);border:2px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:16px}
+  /* login */
+  .login{max-width:380px;margin:50px auto}
+  label.lg{display:block;font-weight:700;font-size:15px;margin:14px 0 6px}
+  input[type=password],input[type=search],select,input[type=text],input[type=number],input[type=datetime-local],textarea{
+    font:inherit;font-size:18px;color:var(--ink);background:var(--surface);
+    border:2px solid var(--line-strong);border-radius:11px;padding:12px 13px;width:100%;min-height:54px}
+  textarea{min-height:70px;resize:vertical}
+  select:focus,input:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 30%,transparent)}
+  .rowck{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:15px}
+  .rowck input{width:22px;height:22px;accent-color:var(--accent)}
+  .btn{font:inherit;font-weight:700;font-size:18px;background:var(--cta);color:var(--cta-ink);border:none;border-radius:12px;padding:14px 16px;cursor:pointer;width:100%;min-height:56px}
+  .btn:hover{filter:brightness(1.1)}
+  .err{color:var(--danger);font-weight:700;font-size:15px;margin-top:12px;min-height:1px}
+
+  .search{margin-bottom:14px}
+  .clist{display:flex;flex-direction:column;gap:10px}
+  .crow{display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;
+    font:inherit;background:var(--surface-2);border:2px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;width:100%}
+  .crow:hover{border-color:var(--accent)}
+  .crow .nm{font-weight:700;font-size:18px}
+  .crow .meta{font-size:14px;color:var(--muted)}
+  .pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap}
+  .pill.todo{background:var(--warn-soft);color:var(--warn)}
+  .pill.done{background:var(--accent-soft);color:var(--accent)}
+  .pill.open{background:var(--danger-soft);color:var(--danger)}
+  .backbtn{font:inherit;font-weight:600;color:var(--muted);background:none;border:none;cursor:pointer;padding:6px 0;margin-bottom:8px}
+
+  .cli-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .cli-head .nm{font-weight:700;font-size:22px}
+  .cli-head .contact{font-size:14px;color:var(--muted)}
+  .totbox{text-align:right}
+  .totbox .lab{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  .totbox .val{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+  .totbox .val.open{color:var(--danger)}
+
+  .line{border:2px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+  .line.ret{opacity:.6}
+  .line-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+  .line .it{font-weight:700;font-size:17px}
+  .line .ex{font-size:13px;color:var(--muted)}
+  .line .when{font-size:13.5px;color:var(--muted);margin-top:3px}
+  .line .money{font-size:14px;margin-top:4px;font-variant-numeric:tabular-nums}
+  .bal-open{color:var(--danger);font-weight:700}
+  .bal-ok{color:var(--accent);font-weight:700}
+  .line-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .mini{font:inherit;font-size:14px;font-weight:700;border-radius:9px;padding:8px 12px;cursor:pointer;border:2px solid var(--line)}
+  .mini.edit{background:var(--surface-2);color:var(--ink)}
+  .mini.ret{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+  .empty{color:var(--muted);font-size:14px;padding:8px 0 14px}
+  .addbtn{font:inherit;font-weight:700;font-size:17px;background:var(--accent-soft);color:var(--accent);
+    border:2px solid var(--accent);border-radius:12px;padding:12px 16px;cursor:pointer;width:100%;margin-top:8px}
+
+  .addform{margin-top:14px;padding-top:14px;border-top:2px dashed var(--line)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .full{grid-column:1/-1}
+  @media (max-width:520px){ .grid{grid-template-columns:1fr} }
+  label.f{display:flex;flex-direction:column;gap:6px}
+  .flab{font-size:14px;font-weight:700}
+  .extras{display:flex;flex-wrap:wrap;gap:10px}
+  .extras label{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;
+    border:2px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer;background:var(--surface-2)}
+  .extras input{width:22px;height:22px;accent-color:var(--accent)}
+  .save{margin-top:8px}
+  .cancel{font:inherit;font-weight:600;color:var(--muted);background:none;border:none;cursor:pointer;padding:10px;width:100%}
+  .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--cta);color:#fff;padding:12px 18px;border-radius:12px;font-weight:700;opacity:0;transition:opacity .2s;pointer-events:none}
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap" id="root">
+  <!-- Login -->
+  <div class="card login" id="login">
+    <h1>Shaka Rental</h1>
+    <p class="sub">Back-office noleggi. Inserisci la password.</p>
+    <label class="lg" for="pw">Password</label>
+    <input type="password" id="pw" autocomplete="current-password">
+    <div class="rowck"><input type="checkbox" id="remember"><label for="remember">Ricorda su questo tablet</label></div>
+    <div style="margin-top:16px"><button class="btn" id="loginBtn">Entra</button></div>
+    <div class="err" id="loginErr"></div>
+  </div>
+
+  <!-- App -->
+  <div id="app" hidden></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var ITEMS = ["Windsurf rental","Kite rental","Kite lesson","Wingfoil rental","Surf rental","Bodyboard / Skimboard rental","Skate rental","Altro"];
+  var EXTRAS = ["Muta","Casco","Trapezio","Boma carbonio"];
+  var LS_KEY = 'shaka_rental_pw';
+
+  var pw = '';
+  var clients = [], rentals = [], selId = null, editing = null; // editing: rental id or 'new'
+
+  function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(function(){t.classList.remove('show');},1600); }
+  function eur(n){ return "€"+(Math.round(n*100)/100).toFixed(0); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function pad(n){ return ("0"+n).slice(-2); }
+  function fmtDT(iso){ var d=new Date(iso); return pad(d.getDate())+"/"+pad(d.getMonth()+1)+" "+pad(d.getHours())+":"+pad(d.getMinutes()); }
+  function retDate(iso,days){ var d=new Date(iso); d.setHours(d.getHours()+days*24); return d; }
+  function nowLocalInput(){ var d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,16); }
+  function isoFromLocal(v){ return v ? new Date(v).toISOString() : new Date().toISOString(); }
+  function localFromIso(iso){ var d=new Date(iso); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,16); }
+
+  function rentalsOf(cid){ return rentals.filter(function(r){ return r.client_id===cid; }); }
+  function balOf(cid){ var b=0; rentalsOf(cid).forEach(function(r){ b += (r.price-r.paid); }); return b; }
+  function isToday(iso){ var d=new Date(iso), n=new Date(); return d.getFullYear()===n.getFullYear()&&d.getMonth()===n.getMonth()&&d.getDate()===n.getDate(); }
+
+  // ---- data ----
+  function api(path, opts){ opts=opts||{}; opts.headers=Object.assign({'Authorization':'Bearer '+pw}, opts.headers||{}); return fetch(path,opts).then(function(r){ if(r.status===401) throw new Error('auth'); return r.json(); }); }
+  function loadAll(){
+    return Promise.all([ api('/api/clients'), api('/api/rentals') ]).then(function(res){
+      clients = (res[0]&&res[0].clients)||[];
+      rentals = (res[1]&&res[1].rentals)||[];
+    });
+  }
+
+  // ---- login ----
+  function doLogin(remembered){
+    if(!remembered){ pw = document.getElementById('pw').value; }
+    if(!pw){ document.getElementById('loginErr').textContent='Inserisci la password.'; return; }
+    document.getElementById('loginErr').textContent='Controllo…';
+    loadAll().then(function(){
+      if(!remembered && document.getElementById('remember').checked){ try{ localStorage.setItem(LS_KEY, pw); }catch(e){} }
+      document.getElementById('login').hidden = true;
+      document.getElementById('app').hidden = false;
+      renderApp();
+    }).catch(function(){
+      document.getElementById('loginErr').textContent='Password errata o problema di connessione.';
+      pw=''; try{ localStorage.removeItem(LS_KEY); }catch(e){}
+    });
+  }
+  document.getElementById('loginBtn').addEventListener('click', function(){ doLogin(false); });
+  document.getElementById('pw').addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(false); });
+  (function tryRemembered(){ try{ var s=localStorage.getItem(LS_KEY); if(s){ pw=s; doLogin(true); } }catch(e){} })();
+
+  // ---- render list ----
+  function renderApp(){
+    selId=null; editing=null;
+    var todayShop = clients.filter(function(c){ return c.point==='shop' && isToday(c.created_at); });
+    document.getElementById('app').innerHTML =
+      '<h1>Rental</h1><p class="sub">Check-in shop di oggi. Tocca un cliente per gestire il noleggio.</p>'+
+      '<div class="card"><input class="search" id="search" type="search" placeholder="Cerca cliente (anche di giorni fa)…">'+
+      '<div class="clist" id="clist"></div></div><div id="panel"></div>';
+    document.getElementById('search').addEventListener('input', renderList);
+    renderList(todayShop);
+  }
+  function renderList(defaultList){
+    var q=(document.getElementById('search')?document.getElementById('search').value:'').trim().toLowerCase();
+    var list;
+    if(q){ list = clients.filter(function(c){ return (c.first_name+' '+c.last_name).toLowerCase().indexOf(q)>=0 || (c.email||'').toLowerCase().indexOf(q)>=0; }); }
+    else { list = Array.isArray(defaultList)?defaultList:clients.filter(function(c){ return c.point==='shop' && isToday(c.created_at); }); }
+    var box=document.getElementById('clist');
+    if(!list.length){ box.innerHTML='<div class="empty">Nessun check-in shop oggi. Usa la ricerca per clienti precedenti.</div>'; return; }
+    box.innerHTML = list.map(function(c){
+      var rs=rentalsOf(c.id), b=balOf(c.id);
+      var status = rs.length ? (b>0?'<span class="pill open">Saldo '+eur(b)+'</span>':'<span class="pill done">Fatto</span>') : '<span class="pill todo">Da fare</span>';
+      return '<button class="crow" onclick="pick('+c.id+')"><span><span class="nm">'+esc(c.first_name)+' '+esc(c.last_name)+'</span><br>'+
+        '<span class="meta">'+esc(c.activity||'')+' · '+esc(c.phone||'')+'</span></span>'+status+'</button>';
+    }).join('');
+  }
+
+  window.pick=function(id){ selId=id; editing=null; renderPanel(); document.getElementById('panel').scrollIntoView({behavior:'smooth'}); };
+
+  function renderPanel(){
+    var p=document.getElementById('panel');
+    if(selId==null){ p.innerHTML=''; return; }
+    var c=clients.filter(function(x){return x.id===selId;})[0]; if(!c){ p.innerHTML=''; return; }
+    var rs=rentalsOf(selId), b=balOf(selId);
+    var lines = rs.length ? rs.map(function(r){
+      var bl=r.price-r.paid, rd=retDate(r.start_at,r.days);
+      return '<div class="line'+(r.returned?' ret':'')+'">'+
+        '<div class="line-top"><span class="it">'+esc(r.item)+(r.returned?' · RESO':'')+'</span>'+
+          '<span class="'+(bl>0?'bal-open':'bal-ok')+'">'+(bl>0?'Saldo '+eur(bl):'Saldato')+'</span></div>'+
+        (r.extras?'<div class="ex">'+esc(r.extras)+'</div>':'')+
+        (r.notes?'<div class="ex">'+esc(r.notes)+'</div>':'')+
+        '<div class="when">Inizio '+fmtDT(r.start_at)+' · '+r.days+'gg → Riconsegna '+fmtDT(rd.toISOString())+'</div>'+
+        '<div class="money">Prezzo '+eur(r.price)+' · Pagato '+eur(r.paid)+'</div>'+
+        '<div class="line-actions">'+
+          '<button class="mini edit" onclick="editLine('+r.id+')">Modifica / Saldo</button>'+
+          (r.returned?'':'<button class="mini ret" onclick="markReturned('+r.id+')">Segna reso</button>')+
+        '</div></div>';
+    }).join('') : '<div class="empty">Nessun noleggio ancora.</div>';
+
+    p.innerHTML='<div class="card"><button class="backbtn" onclick="renderApp()">‹ Lista</button>'+
+      '<div class="cli-head"><div><div class="nm">'+esc(c.first_name)+' '+esc(c.last_name)+'</div>'+
+        '<div class="contact">'+esc(c.email||'')+' · '+esc(c.phone||'')+'</div></div>'+
+        '<div class="totbox"><div class="lab">Saldo cliente</div><div class="val '+(b>0?'open':'')+'">'+eur(b)+'</div></div></div>'+
+      lines+
+      (editing?formHtml():'<button class="addbtn" onclick="startAdd()">+ Aggiungi attrezzatura / servizio</button>')+
+      '</div>';
+  }
+
+  function formHtml(){
+    var e = (editing!=='new') ? rentals.filter(function(r){return r.id===editing;})[0] : null;
+    var exArr = e && e.extras ? e.extras.split(',').map(function(s){return s.trim();}) : [];
+    return '<div class="addform"><div class="grid">'+
+      '<label class="f full"><span class="flab">Attrezzatura / servizio</span><select id="f_item">'+
+        ITEMS.map(function(o){return '<option'+(e&&e.item===o?' selected':'')+'>'+o+'</option>';}).join('')+'</select></label>'+
+      '<label class="f full"><span class="flab">Extra</span><div class="extras">'+
+        EXTRAS.map(function(x,i){return '<label><input type="checkbox" id="f_ex'+i+'" value="'+x+'"'+(exArr.indexOf(x)>=0?' checked':'')+'> '+x+'</label>';}).join('')+'</div></label>'+
+      '<label class="f"><span class="flab">Giorni (24h)</span><select id="f_days">'+
+        Array.from({length:30},function(_,i){var v=i+1;return '<option'+(e&&e.days===v?' selected':'')+'>'+v+'</option>';}).join('')+'</select></label>'+
+      '<label class="f"><span class="flab">Inizio (data + ora)</span><input type="datetime-local" id="f_start" value="'+(e?localFromIso(e.start_at):nowLocalInput())+'"></label>'+
+      '<label class="f"><span class="flab">Prezzo €</span><input type="number" id="f_price" inputmode="decimal" value="'+(e?e.price:'')+'" placeholder="0"></label>'+
+      '<label class="f"><span class="flab">Pagato €</span><input type="number" id="f_paid" inputmode="decimal" value="'+(e?e.paid:'')+'" placeholder="0"></label>'+
+      '<label class="f full"><span class="flab">Note</span><textarea id="f_notes" placeholder="Taglia tavola/vela, numero di serie, dettaglio se Altro">'+(e&&e.notes?esc(e.notes):'')+'</textarea></label>'+
+      (e?'<label class="f full rowck" style="margin:0"><input type="checkbox" id="f_ret"'+(e.returned?' checked':'')+'> <span class="flab">Materiale reso</span></label>':'')+
+      '</div>'+
+      '<button class="btn save" id="f_save">Salva</button>'+
+      '<button class="cancel" onclick="cancelForm()">Annulla</button></div>';
+  }
+
+  window.startAdd=function(){ editing='new'; renderPanel(); bindSave(); };
+  window.editLine=function(id){ editing=id; renderPanel(); bindSave(); };
+  window.cancelForm=function(){ editing=null; renderPanel(); };
+  function bindSave(){ var b=document.getElementById('f_save'); if(b) b.addEventListener('click', saveLine); }
+
+  window.markReturned=function(id){
+    var r=rentals.filter(function(x){return x.id===id;})[0]; if(!r) return;
+    save({ id:id, client_id:r.client_id, item:r.item, extras:(r.extras?r.extras.split(',').map(function(s){return s.trim();}):[]),
+           start_at:r.start_at, days:r.days, price:r.price, paid:r.paid, notes:r.notes, returned:true });
+  };
+
+  function saveLine(){
+    var ex=[]; EXTRAS.forEach(function(x,i){ if(document.getElementById('f_ex'+i).checked) ex.push(x); });
+    var payload={
+      client_id: selId,
+      item: document.getElementById('f_item').value,
+      extras: ex,
+      start_at: isoFromLocal(document.getElementById('f_start').value),
+      days: parseInt(document.getElementById('f_days').value,10)||1,
+      price: parseFloat(document.getElementById('f_price').value)||0,
+      paid: parseFloat(document.getElementById('f_paid').value)||0,
+      notes: document.getElementById('f_notes').value.trim(),
+      returned: document.getElementById('f_ret') ? document.getElementById('f_ret').checked : false
+    };
+    if(editing!=='new') payload.id = editing;
+    save(payload);
+  }
+
+  function save(payload){
+    api('/api/rental', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(payload) })
+      .then(function(res){ if(res&&res.ok){ return loadAll(); } throw new Error('save'); })
+      .then(function(){ editing=null; toast('Salvato'); renderPanel(); })
+      .catch(function(){ toast('Errore nel salvataggio'); });
+  }
+})();
+</script>
+</body>
+</html>

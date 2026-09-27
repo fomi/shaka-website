@@ -109,6 +109,66 @@ async function handleClients(request, env) {
   return json({ ok: true, count: results.length, clients: results });
 }
 
+// ---- Rentals (admin-authenticated) -----------------------------------------
+function checkAdmin(request, env) {
+  const auth = request.headers.get('Authorization') || '';
+  const pw = auth.replace(/^Bearer\s+/i, '');
+  return env.ADMIN_PASSWORD && pw === env.ADMIN_PASSWORD;
+}
+
+const RENTAL_ITEMS = [
+  'Windsurf rental', 'Kite rental', 'Kite lesson', 'Wingfoil rental',
+  'Surf rental', 'Bodyboard / Skimboard rental', 'Skate rental', 'Altro'
+];
+
+// GET /api/rentals — all rental lines (for /admin and /rental page)
+async function handleRentalsGet(request, env) {
+  if (!checkAdmin(request, env)) return json({ error: 'unauthorized' }, 401);
+  const { results } = await env.DB.prepare(
+    `SELECT id, client_id, item, extras, start_at, days, price, paid, notes, returned, returned_at, created_at
+       FROM rentals ORDER BY created_at DESC LIMIT 5000`
+  ).all();
+  return json({ ok: true, rentals: results });
+}
+
+// POST /api/rental — insert (no id) or update (id present) one rental line
+async function handleRentalSave(request, env) {
+  if (!checkAdmin(request, env)) return json({ error: 'unauthorized' }, 401);
+  let d;
+  try { d = await request.json(); } catch (e) { return json({ error: 'bad_request' }, 400); }
+
+  const item = RENTAL_ITEMS.indexOf(d.item) >= 0 ? d.item : 'Altro';
+  const extras = Array.isArray(d.extras) ? d.extras.join(', ') : (d.extras ? String(d.extras) : null);
+  const days = Math.min(30, Math.max(1, parseInt(d.days, 10) || 1));
+  const price = Math.max(0, parseFloat(d.price) || 0);
+  const paid = Math.max(0, parseFloat(d.paid) || 0);
+  const notes = d.notes ? String(d.notes).trim().slice(0, 500) : null;
+  const returned = d.returned ? 1 : 0;
+  const now = new Date().toISOString();
+  const start_at = d.start_at ? String(d.start_at) : now;
+  const returned_at = returned ? (d.returned_at || now) : null;
+
+  try {
+    if (d.id) {
+      await env.DB.prepare(
+        `UPDATE rentals SET item=?, extras=?, start_at=?, days=?, price=?, paid=?, notes=?, returned=?, returned_at=?
+           WHERE id=?`
+      ).bind(item, extras, start_at, days, price, paid, notes, returned, returned_at, parseInt(d.id, 10)).run();
+      return json({ ok: true, id: parseInt(d.id, 10) });
+    } else {
+      const client_id = parseInt(d.client_id, 10);
+      if (!client_id) return json({ error: 'missing_client' }, 400);
+      const res = await env.DB.prepare(
+        `INSERT INTO rentals (client_id, item, extras, start_at, days, price, paid, notes, returned, returned_at, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      ).bind(client_id, item, extras, start_at, days, price, paid, notes, returned, returned_at, now).run();
+      return json({ ok: true, id: res.meta && res.meta.last_row_id });
+    }
+  } catch (e) {
+    return json({ error: 'server' }, 500);
+  }
+}
+
 // ---- Entry ------------------------------------------------------------------
 export default {
   async fetch(request, env) {
@@ -122,6 +182,14 @@ export default {
       if (p === '/api/clients') {
         if (request.method !== 'GET') return json({ error: 'method_not_allowed' }, 405);
         return await handleClients(request, env);
+      }
+      if (p === '/api/rentals') {
+        if (request.method !== 'GET') return json({ error: 'method_not_allowed' }, 405);
+        return await handleRentalsGet(request, env);
+      }
+      if (p === '/api/rental') {
+        if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
+        return await handleRentalSave(request, env);
       }
     } catch (e) {
       return json({ error: 'server' }, 500);
