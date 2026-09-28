@@ -41,6 +41,21 @@
   .stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
   .stat .n{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
   .stat .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  td a{color:var(--accent);text-decoration:none}
+  td a:hover{text-decoration:underline}
+  .chip{display:inline-block;font:inherit;font-size:12px;font-weight:600;text-decoration:none;cursor:pointer;
+    color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:4px 9px;white-space:nowrap}
+  .chip:hover{border-color:var(--accent)}
+  .chip.danger{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 40%,var(--line))}
+  .modal-bg{position:fixed;inset:0;background:rgba(10,15,22,.55);display:flex;align-items:center;justify-content:center;padding:18px;z-index:50}
+  .modal{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;max-width:440px;width:100%}
+  .modal h3{margin:0 0 14px;font-size:19px}
+  .modal label{display:block;font-weight:600;font-size:14px;margin:12px 0 6px}
+  .modal select,.modal textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--surface);
+    border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .modal textarea{min-height:80px;resize:vertical}
+  .modal-actions{display:flex;gap:10px;margin-top:20px}
+  .modal .warn{background:color-mix(in srgb,var(--danger) 12%,transparent);border:1px solid color-mix(in srgb,var(--danger) 35%,var(--line));border-radius:10px;padding:11px 13px;font-size:14px;color:var(--ink)}
 
   .tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px}
   table{border-collapse:collapse;width:100%;font-size:14px}
@@ -118,7 +133,7 @@
     <div class="tablewrap">
       <table>
         <thead>
-          <tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Point</th><th>Activity</th><th>Participants</th><th>Marketing</th><th>Lang</th></tr>
+          <tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Point</th><th>Activity</th><th>Participants</th><th>Marketing</th><th>Lang</th><th>Azioni</th></tr>
         </thead>
         <tbody id="rows"></tbody>
       </table>
@@ -230,6 +245,57 @@
   function basePayload(r){ return { id:r.id, client_id:r.client_id, item:r.item, extras:(r.extras?r.extras.split(',').map(function(s){return s.trim();}):[]), start_at:r.start_at, days:r.days, price:r.price, paid:r.paid, notes:r.notes, returned:!!r.returned }; }
   window.savePaid=function(id){ var r=rentalById(id); if(!r) return; var v=parseFloat(document.getElementById('pay_'+id).value)||0; var p=basePayload(r); p.paid=v; postRental(p).catch(function(){ alert('Errore'); }); };
   window.markReturned=function(id){ var r=rentalById(id); if(!r) return; var p=basePayload(r); p.returned=true; postRental(p).catch(function(){ alert('Errore'); }); };
+
+  // ---- client edit / delete ----
+  var ACTS = ["Windsurf lesson","Wingfoil lesson","Windsurf rental","Wingfoil rental","SUP / Kayak rental","Kite rental","Kite lesson","Surf rental","Bodyboard / Skimboard rental","Skate rental"];
+  function clientById(id){ return current.filter(function(c){return c.id===id;})[0]; }
+  function rentalCount(cid){ return rentalsData.filter(function(r){return r.client_id===cid;}).length; }
+  window.closeModal = function(){ var m=document.getElementById('modalRoot'); if(m) m.remove(); };
+
+  window.editClient = function(id){
+    var c = clientById(id); if(!c) return;
+    var actOpts = ACTS.map(function(a){return '<option'+(c.activity===a?' selected':'')+'>'+esc(a)+'</option>';}).join('') +
+      ((ACTS.indexOf(c.activity)<0 && c.activity) ? '<option selected>'+esc(c.activity)+'</option>' : '');
+    var html='<div class="modal-bg" id="modalRoot"><div class="modal">'+
+      '<h3>Modifica cliente</h3>'+
+      '<div style="font-size:14px;color:var(--muted)">'+esc(c.first_name)+' '+esc(c.last_name)+'</div>'+
+      '<label>Point</label><select id="m_point">'+
+        '<option value="school"'+(c.point==='school'?' selected':'')+'>School</option>'+
+        '<option value="shop"'+(c.point==='shop'?' selected':'')+'>Shop</option>'+
+        '<option value=""'+(!c.point?' selected':'')+'>—</option></select>'+
+      '<label>Activity</label><select id="m_activity">'+actOpts+'</select>'+
+      '<label>Participants</label><textarea id="m_participants">'+(c.participants?esc(c.participants):'')+'</textarea>'+
+      '<div class="modal-actions">'+
+        '<button class="btn" style="flex:1" onclick="saveClient('+id+')">Salva</button>'+
+        '<button class="btn ghost" style="flex:1" onclick="closeModal()">Annulla</button>'+
+      '</div></div></div>';
+    document.body.insertAdjacentHTML('beforeend', html);
+  };
+  window.saveClient = function(id){
+    var payload={ id:id, point:document.getElementById('m_point').value, activity:document.getElementById('m_activity').value, participants:document.getElementById('m_participants').value.trim() };
+    fetch('/api/client-update',{method:'POST',headers:{'Authorization':'Bearer '+pw,'content-type':'application/json'},body:JSON.stringify(payload)})
+      .then(function(r){return r.json();}).then(function(res){ if(!res||!res.ok) throw 0; window.closeModal(); return load(); })
+      .catch(function(){ alert('Errore nel salvataggio'); });
+  };
+  window.delClient = function(id){
+    var c = clientById(id); if(!c) return;
+    var n = rentalCount(id);
+    var warn = n>0 ? '<div class="warn">Attenzione: questo cliente ha '+n+' noleggio/i collegati. Verranno eliminati anche quelli.</div>' : '';
+    var html='<div class="modal-bg" id="modalRoot"><div class="modal">'+
+      '<h3>Eliminare il cliente?</h3>'+
+      '<div style="font-size:15px;margin-bottom:6px">'+esc(c.first_name)+' '+esc(c.last_name)+' · '+esc(c.email||'')+'</div>'+warn+
+      '<div class="modal-actions">'+
+        '<button class="btn" style="flex:1;background:var(--danger)" onclick="confirmDel('+id+')">Elimina definitivamente</button>'+
+        '<button class="btn ghost" style="flex:1" onclick="closeModal()">Annulla</button>'+
+      '</div></div></div>';
+    document.body.insertAdjacentHTML('beforeend', html);
+  };
+  window.confirmDel = function(id){
+    fetch('/api/client-delete',{method:'POST',headers:{'Authorization':'Bearer '+pw,'content-type':'application/json'},body:JSON.stringify({id:id})})
+      .then(function(r){return r.json();}).then(function(res){ if(!res||!res.ok) throw 0; window.closeModal(); return load(); })
+      .catch(function(){ alert('Errore eliminazione'); });
+  };
+
   document.getElementById('rentalFilter').addEventListener('change', renderRentals);
   document.getElementById('rRefreshBtn').addEventListener('click', function(){ load().catch(function(){}); });
 
@@ -272,26 +338,39 @@
     return '<span class="pill">—</span>';
   }
 
+  function telHref(p){ return 'tel:'+String(p||'').replace(/[^\d+]/g,''); }
+  function waHref(p){ return 'https://wa.me/'+String(p||'').replace(/[^\d]/g,''); }
+
   function render(){
     syncActivityFilter();
     var list = visible();
     var rows = document.getElementById('rows');
     if(!list.length){
-      rows.innerHTML = '<tr><td colspan="9"><div class="empty">No check-ins yet.</div></td></tr>';
+      rows.innerHTML = '<tr><td colspan="10"><div class="empty">No check-ins yet.</div></td></tr>';
     } else {
       rows.innerHTML = list.map(function(c){
         var mk = c.marketing_consent ? '<span class="pill yes">Yes</span>' : '<span class="pill">No</span>';
         var parts = c.participants ? esc(c.participants).replace(/\n/g,'<br>') : '<span style="color:var(--muted)">—</span>';
+        var email = c.email ? '<a href="mailto:'+esc(c.email)+'">'+esc(c.email)+'</a>' : '';
+        var phone = esc(c.phone||'')+
+          '<div style="display:flex;gap:6px;margin-top:4px">'+
+            '<a class="chip" href="'+telHref(c.phone)+'">Chiama</a>'+
+            '<a class="chip" href="'+waHref(c.phone)+'" target="_blank" rel="noopener">WhatsApp</a>'+
+          '</div>';
         return '<tr>'+
           '<td>'+esc(fmtDate(c.created_at))+'</td>'+
           '<td>'+esc(c.first_name)+' '+esc(c.last_name)+'</td>'+
-          '<td>'+esc(c.email)+'</td>'+
-          '<td>'+esc(c.phone)+'</td>'+
+          '<td>'+email+'</td>'+
+          '<td style="white-space:normal">'+phone+'</td>'+
           '<td>'+pointPill(c.point)+'</td>'+
           '<td>'+esc(c.activity)+'</td>'+
           '<td style="white-space:normal;min-width:160px">'+parts+'</td>'+
           '<td>'+mk+'</td>'+
           '<td>'+esc(c.lang)+'</td>'+
+          '<td style="white-space:normal"><div style="display:flex;gap:6px">'+
+            '<button class="chip" onclick="editClient('+c.id+')">Modifica</button>'+
+            '<button class="chip danger" onclick="delClient('+c.id+')">Elimina</button>'+
+          '</div></td>'+
         '</tr>';
       }).join('');
     }

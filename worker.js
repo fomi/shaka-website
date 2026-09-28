@@ -169,6 +169,38 @@ async function handleRentalSave(request, env) {
   }
 }
 
+// POST /api/client-update — edit point / activity / participants of a check-in
+async function handleClientUpdate(request, env) {
+  if (!checkAdmin(request, env)) return json({ error: 'unauthorized' }, 401);
+  let d;
+  try { d = await request.json(); } catch (e) { return json({ error: 'bad_request' }, 400); }
+  const id = parseInt(d.id, 10);
+  if (!id) return json({ error: 'missing_id' }, 400);
+  const point = (d.point === 'school' || d.point === 'shop') ? d.point : null;
+  const activity = String(d.activity || '').trim().slice(0, 60);
+  if (!activity) return json({ error: 'missing_activity' }, 400);
+  const participants = d.participants ? String(d.participants).trim().slice(0, 500) : null;
+  try {
+    await env.DB.prepare('UPDATE clients SET point=?, activity=?, participants=? WHERE id=?')
+      .bind(point, activity, participants, id).run();
+    return json({ ok: true });
+  } catch (e) { return json({ error: 'server' }, 500); }
+}
+
+// POST /api/client-delete — delete a check-in AND its rentals (cascade)
+async function handleClientDelete(request, env) {
+  if (!checkAdmin(request, env)) return json({ error: 'unauthorized' }, 401);
+  let d;
+  try { d = await request.json(); } catch (e) { return json({ error: 'bad_request' }, 400); }
+  const id = parseInt(d.id, 10);
+  if (!id) return json({ error: 'missing_id' }, 400);
+  try {
+    await env.DB.prepare('DELETE FROM rentals WHERE client_id=?').bind(id).run();
+    await env.DB.prepare('DELETE FROM clients WHERE id=?').bind(id).run();
+    return json({ ok: true });
+  } catch (e) { return json({ error: 'server' }, 500); }
+}
+
 // ---- Entry ------------------------------------------------------------------
 export default {
   async fetch(request, env) {
@@ -190,6 +222,14 @@ export default {
       if (p === '/api/rental') {
         if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
         return await handleRentalSave(request, env);
+      }
+      if (p === '/api/client-update') {
+        if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
+        return await handleClientUpdate(request, env);
+      }
+      if (p === '/api/client-delete') {
+        if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
+        return await handleClientDelete(request, env);
       }
     } catch (e) {
       return json({ error: 'server' }, 500);
