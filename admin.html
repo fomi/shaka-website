@@ -351,7 +351,8 @@
       rows.innerHTML = list.map(function(c){
         var mk = c.marketing_consent ? '<span class="pill yes">Yes</span>' : '<span class="pill">No</span>';
         var parts = c.participants ? esc(c.participants).replace(/\n/g,'<br>') : '<span style="color:var(--muted)">—</span>';
-        var email = c.email ? '<a href="mailto:'+esc(c.email)+'">'+esc(c.email)+'</a>' : '';
+        var email = c.email ? '<a href="mailto:'+esc(c.email)+'">'+esc(c.email)+'</a>'+
+          '<div style="margin-top:4px"><a class="chip" href="https://mail.google.com/mail/?view=cm&fs=1&to='+encodeURIComponent(c.email)+'" target="_blank" rel="noopener">Gmail</a></div>' : '';
         var phone = esc(c.phone||'')+
           '<div style="display:flex;gap:6px;margin-top:4px">'+
             '<a class="chip" href="'+telHref(c.phone)+'">Chiama</a>'+
