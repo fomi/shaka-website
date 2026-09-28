@@ -53,9 +53,12 @@
   .crow .nm{font-weight:700;font-size:18px}
   .crow .meta{font-size:14px;color:var(--muted)}
   .pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap}
-  .pill.todo{background:var(--warn-soft);color:var(--warn)}
+  .pill.todo{background:var(--surface);color:var(--muted);border:2px solid var(--line)}
+  .pill.due{background:var(--warn-soft);color:var(--warn)}
+  .pill.active{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}
   .pill.done{background:var(--accent-soft);color:var(--accent)}
   .pill.open{background:var(--danger-soft);color:var(--danger)}
+  .pills{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;flex:0 0 auto}
   .backbtn{font:inherit;font-weight:600;color:var(--muted);background:none;border:none;cursor:pointer;padding:6px 0;margin-bottom:8px}
 
   .cli-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
@@ -178,30 +181,66 @@
       '<div class="topbar"><h1>Rental</h1><div class="topact">'+
         '<button class="tbtn" onclick="refreshData()">↻ Aggiorna</button>'+
         '<a class="tbtn" href="/admin">Admin ›</a></div></div>'+
-      '<p class="sub">Tutti i check-in shop. Tocca un cliente per gestire il noleggio.</p>'+
-      '<div class="card"><input class="search" id="search" type="search" placeholder="Cerca cliente…">'+
-      '<div class="clist" id="clist"></div></div><div id="panel"></div>';
+      '<p class="sub">Check-in shop. Tocca un cliente per gestire il noleggio.</p>'+
+      '<div class="card">'+
+        '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">'+
+          '<input class="search" id="search" type="search" placeholder="Cerca cliente…" style="flex:1;min-width:150px">'+
+          '<select class="search" id="filter" style="min-width:210px">'+
+            '<option value="todo" selected>Da fare (nuovi)</option>'+
+            '<option value="active">In corso</option>'+
+            '<option value="due">Da riconsegnare</option>'+
+            '<option value="open">Saldo aperto</option>'+
+            '<option value="manage">Da gestire</option>'+
+            '<option value="all">Tutti</option>'+
+          '</select>'+
+        '</div>'+
+        '<div class="clist" id="clist"></div></div><div id="panel"></div>';
     document.getElementById('search').addEventListener('input', renderList);
-    renderList(shopList);
+    document.getElementById('filter').addEventListener('change', renderList);
+    renderList();
   }
+
+  function statusOf(c){
+    var rs=rentalsOf(c.id), now=new Date(), endToday=new Date(); endToday.setHours(23,59,59,999);
+    var due=false, active=false;
+    rs.forEach(function(r){ if(!r.returned){ var rd=retDate(r.start_at,r.days); if(rd<=endToday) due=true; else active=true; } });
+    return { hasRental:rs.length>0, due:due, active:active, open:balOf(c.id) };
+  }
+  function matchFilter(st,f){
+    if(f==='all') return true;
+    if(f==='manage') return !st.hasRental || st.due || st.active || st.open>0;
+    if(f==='todo') return !st.hasRental;
+    if(f==='active') return st.active;
+    if(f==='due') return st.due;
+    if(f==='open') return st.open>0;
+    return true;
+  }
+  function retPill(st){
+    if(!st.hasRental) return '<span class="pill todo">Da fare</span>';
+    if(st.due) return '<span class="pill due">Da riconsegnare</span>';
+    if(st.active) return '<span class="pill active">In corso</span>';
+    return '<span class="pill done">Reso</span>';
+  }
+  function balPill(st){ return st.open>0 ? '<span class="pill open">Saldo '+eur(st.open)+'</span>' : ''; }
   window.renderApp = renderApp;
   window.refreshData = function(){
     loadAll().then(function(){ if(selId!=null){ renderPanel(); } else { renderList(); } toast('Aggiornato'); })
       .catch(function(){ toast('Errore aggiornamento'); });
   };
   window.closePanel = function(){ selId=null; editing=null; pendingDel=null; renderPanel(); window.scrollTo({top:0,behavior:'smooth'}); };
-  function renderList(defaultList){
+  function renderList(){
     var q=(document.getElementById('search')?document.getElementById('search').value:'').trim().toLowerCase();
-    var list;
-    if(q){ list = clients.filter(function(c){ return (c.first_name+' '+c.last_name).toLowerCase().indexOf(q)>=0 || (c.email||'').toLowerCase().indexOf(q)>=0; }); }
-    else { list = Array.isArray(defaultList)?defaultList:clients.filter(function(c){ return c.point==='shop'; }); }
+    var f=document.getElementById('filter')?document.getElementById('filter').value:'todo';
+    var base=clients.filter(function(c){ return c.point==='shop'; });
+    if(q){ base=base.filter(function(c){ return (c.first_name+' '+c.last_name).toLowerCase().indexOf(q)>=0 || (c.email||'').toLowerCase().indexOf(q)>=0; }); }
+    var list=base.filter(function(c){ return matchFilter(statusOf(c), f); });
     var box=document.getElementById('clist');
-    if(!list.length){ box.innerHTML='<div class="empty">Nessun check-in shop. Usa la ricerca per un cliente specifico.</div>'; return; }
+    if(!list.length){ box.innerHTML='<div class="empty">Nessun cliente in questo stato. Cambia filtro o cerca per nome.</div>'; return; }
     box.innerHTML = list.map(function(c){
-      var rs=rentalsOf(c.id), b=balOf(c.id);
-      var status = rs.length ? (b>0?'<span class="pill open">Saldo '+eur(b)+'</span>':'<span class="pill done">Fatto</span>') : '<span class="pill todo">Da fare</span>';
+      var st=statusOf(c);
       return '<button class="crow" onclick="pick('+c.id+')"><span><span class="nm">'+esc(c.first_name)+' '+esc(c.last_name)+'</span><br>'+
-        '<span class="meta">'+esc(c.activity||'')+' · '+esc(c.phone||'')+'</span></span>'+status+'</button>';
+        '<span class="meta">'+esc(c.activity||'')+' · '+esc(c.phone||'')+'</span></span>'+
+        '<span class="pills">'+retPill(st)+balPill(st)+'</span></button>';
     }).join('');
   }
 
