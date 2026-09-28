@@ -164,6 +164,7 @@
       document.getElementById('login').hidden = true;
       document.getElementById('app').hidden = false;
       renderApp();
+      openFromUrl();
     }).catch(function(){
       document.getElementById('loginErr').textContent='Password errata o problema di connessione.';
       pw=''; try{ localStorage.removeItem(LS_KEY); }catch(e){}
@@ -171,6 +172,10 @@
   }
   document.getElementById('loginBtn').addEventListener('click', function(){ doLogin(false); });
   document.getElementById('pw').addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(false); });
+  function openFromUrl(){
+    try{ var m=new URLSearchParams(location.search).get('c'); if(m){ var id=parseInt(m,10);
+      if(id && clients.some(function(c){return c.id===id;})){ window.pick(id); } } }catch(e){}
+  }
   (function tryRemembered(){ try{ var s=localStorage.getItem(LS_KEY); if(s){ pw=s; doLogin(true); } }catch(e){} })();
 
   // ---- render list ----

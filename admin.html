@@ -118,10 +118,12 @@
     <p class="sub">Materiale ancora fuori e pagamenti aperti.</p>
     <div class="stats" id="rstats"></div>
     <div class="bar">
-      <select id="rentalFilter" class="sel" style="min-width:210px">
-        <option value="due">Riconsegne attese (oggi/scaduti)</option>
+      <select id="rentalFilter" class="sel" style="min-width:200px">
+        <option value="active" selected>In corso</option>
+        <option value="due">Da riconsegnare</option>
         <option value="open">Saldo aperto</option>
-        <option value="active">In corso</option>
+        <option value="returned">Reso</option>
+        <option value="manage">Da gestire</option>
         <option value="all">Tutti</option>
       </select>
       <button class="btn ghost" id="rRefreshBtn">Aggiorna</button>
@@ -219,9 +221,11 @@
       '<div class="stat"><div class="n">'+eur(open)+'</div><div class="l">Da incassare</div></div>'+
       '<div class="stat"><div class="n">'+due+'</div><div class="l">Da riconsegnare oggi/scaduti</div></div>';
     var list=rentalsData.filter(function(r){ var rd=retIso(r.start_at,r.days), bal=r.price-r.paid;
-      if(f==='due') return !r.returned && rd<=endToday;
-      if(f==='open') return bal>0;
-      if(f==='active') return !r.returned && rd>now;
+      if(f==='active')   return !r.returned && rd>now;
+      if(f==='due')      return !r.returned && rd<=endToday;
+      if(f==='open')     return bal>0;
+      if(f==='returned') return !!r.returned;
+      if(f==='manage')   return !r.returned || bal>0;
       return true;
     }).sort(function(a,b){ return retIso(a.start_at,a.days)-retIso(b.start_at,b.days); });
     var rows=document.getElementById('rrows');
@@ -236,12 +240,7 @@
         '<td class="num">'+eur(r.price)+'</td>'+
         '<td class="num">'+eur(r.paid)+'</td>'+
         '<td class="num" style="'+(bal>0?'color:var(--danger);font-weight:700':'')+'">'+eur(bal)+'</td>'+
-        '<td>'+(r.returned?'—':
-          '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">'+
-          '<input type="number" id="pay_'+r.id+'" value="'+r.paid+'" style="width:84px;min-height:40px;padding:6px 8px;font:inherit;font-size:15px;border:2px solid var(--line-strong);border-radius:9px">'+
-          '<button class="chip" onclick="savePaid('+r.id+')">Salva</button>'+
-          '<button class="chip" style="background:var(--cta);color:#fff;border-color:var(--cta)" onclick="markReturned('+r.id+')">Reso</button>'+
-          '</div>')+'</td>'+
+        '<td><a class="chip" href="/rental?c='+r.client_id+'">Apri in /rental ›</a></td>'+
       '</tr>';
     }).join('');
   }
