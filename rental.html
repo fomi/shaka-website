@@ -79,6 +79,8 @@
   .mini{font:inherit;font-size:14px;font-weight:700;border-radius:9px;padding:8px 12px;cursor:pointer;border:2px solid var(--line)}
   .mini.edit{background:var(--surface-2);color:var(--ink)}
   .mini.ret{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+  .mini.del{background:var(--surface);color:var(--danger);border-color:color-mix(in srgb,var(--danger) 45%,var(--line))}
+  .mini.delc{background:var(--danger);color:#fff;border-color:var(--danger)}
   .empty{color:var(--muted);font-size:14px;padding:8px 0 14px}
   .addbtn{font:inherit;font-weight:700;font-size:17px;background:var(--accent-soft);color:var(--accent);
     border:2px solid var(--accent);border-radius:12px;padding:12px 16px;cursor:pointer;width:100%;margin-top:8px}
@@ -124,7 +126,7 @@
   var LS_KEY = 'shaka_rental_pw';
 
   var pw = '';
-  var clients = [], rentals = [], selId = null, editing = null; // editing: rental id or 'new'
+  var clients = [], rentals = [], selId = null, editing = null, pendingDel = null; // editing: rental id or 'new'
 
   function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(function(){t.classList.remove('show');},1600); }
   function eur(n){ return "€"+(Math.round(n*100)/100).toFixed(0); }
@@ -171,30 +173,30 @@
   // ---- render list ----
   function renderApp(){
     selId=null; editing=null;
-    var todayShop = clients.filter(function(c){ return c.point==='shop' && isToday(c.created_at); });
+    var shopList = clients.filter(function(c){ return c.point==='shop'; });
     document.getElementById('app').innerHTML =
       '<div class="topbar"><h1>Rental</h1><div class="topact">'+
         '<button class="tbtn" onclick="refreshData()">↻ Aggiorna</button>'+
         '<a class="tbtn" href="/admin">Admin ›</a></div></div>'+
-      '<p class="sub">Check-in shop di oggi. Tocca un cliente per gestire il noleggio.</p>'+
-      '<div class="card"><input class="search" id="search" type="search" placeholder="Cerca cliente (anche di giorni fa)…">'+
+      '<p class="sub">Tutti i check-in shop. Tocca un cliente per gestire il noleggio.</p>'+
+      '<div class="card"><input class="search" id="search" type="search" placeholder="Cerca cliente…">'+
       '<div class="clist" id="clist"></div></div><div id="panel"></div>';
     document.getElementById('search').addEventListener('input', renderList);
-    renderList(todayShop);
+    renderList(shopList);
   }
   window.renderApp = renderApp;
   window.refreshData = function(){
     loadAll().then(function(){ if(selId!=null){ renderPanel(); } else { renderList(); } toast('Aggiornato'); })
       .catch(function(){ toast('Errore aggiornamento'); });
   };
-  window.closePanel = function(){ selId=null; editing=null; renderPanel(); window.scrollTo({top:0,behavior:'smooth'}); };
+  window.closePanel = function(){ selId=null; editing=null; pendingDel=null; renderPanel(); window.scrollTo({top:0,behavior:'smooth'}); };
   function renderList(defaultList){
     var q=(document.getElementById('search')?document.getElementById('search').value:'').trim().toLowerCase();
     var list;
     if(q){ list = clients.filter(function(c){ return (c.first_name+' '+c.last_name).toLowerCase().indexOf(q)>=0 || (c.email||'').toLowerCase().indexOf(q)>=0; }); }
-    else { list = Array.isArray(defaultList)?defaultList:clients.filter(function(c){ return c.point==='shop' && isToday(c.created_at); }); }
+    else { list = Array.isArray(defaultList)?defaultList:clients.filter(function(c){ return c.point==='shop'; }); }
     var box=document.getElementById('clist');
-    if(!list.length){ box.innerHTML='<div class="empty">Nessun check-in shop oggi. Usa la ricerca per clienti precedenti.</div>'; return; }
+    if(!list.length){ box.innerHTML='<div class="empty">Nessun check-in shop. Usa la ricerca per un cliente specifico.</div>'; return; }
     box.innerHTML = list.map(function(c){
       var rs=rentalsOf(c.id), b=balOf(c.id);
       var status = rs.length ? (b>0?'<span class="pill open">Saldo '+eur(b)+'</span>':'<span class="pill done">Fatto</span>') : '<span class="pill todo">Da fare</span>';
@@ -203,7 +205,7 @@
     }).join('');
   }
 
-  window.pick=function(id){ selId=id; editing=null; renderPanel(); document.getElementById('panel').scrollIntoView({behavior:'smooth'}); };
+  window.pick=function(id){ selId=id; editing=null; pendingDel=null; renderPanel(); document.getElementById('panel').scrollIntoView({behavior:'smooth'}); };
 
   function renderPanel(){
     var p=document.getElementById('panel');
@@ -222,6 +224,9 @@
         '<div class="line-actions">'+
           '<button class="mini edit" onclick="editLine('+r.id+')">Modifica / Saldo</button>'+
           (r.returned?'':'<button class="mini ret" onclick="markReturned('+r.id+')">Segna reso</button>')+
+          (pendingDel===r.id
+            ? '<button class="mini delc" onclick="delLine('+r.id+')">Conferma elimina</button>'
+            : '<button class="mini del" onclick="delLine('+r.id+')">Elimina</button>')+
         '</div></div>';
     }).join('') : '<div class="empty">Nessun noleggio ancora.</div>';
 
@@ -254,8 +259,8 @@
       '<button class="cancel" onclick="cancelForm()">Annulla</button></div>';
   }
 
-  window.startAdd=function(){ editing='new'; renderPanel(); bindSave(); };
-  window.editLine=function(id){ editing=id; renderPanel(); bindSave(); };
+  window.startAdd=function(){ editing='new'; pendingDel=null; renderPanel(); bindSave(); };
+  window.editLine=function(id){ editing=id; pendingDel=null; renderPanel(); bindSave(); };
   window.cancelForm=function(){ editing=null; renderPanel(); };
   function bindSave(){ var b=document.getElementById('f_save'); if(b) b.addEventListener('click', saveLine); }
 
@@ -288,6 +293,19 @@
       .then(function(){ editing=null; toast('Salvato'); renderPanel(); })
       .catch(function(){ toast('Errore nel salvataggio'); });
   }
+
+  window.delLine=function(id){
+    if(pendingDel!==id){ // first tap: ask confirmation
+      pendingDel=id; renderPanel();
+      setTimeout(function(){ if(pendingDel===id){ pendingDel=null; renderPanel(); } }, 3500);
+      return;
+    }
+    pendingDel=null;
+    api('/api/rental-delete', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({id:id}) })
+      .then(function(res){ if(res&&res.ok){ return loadAll(); } throw new Error('del'); })
+      .then(function(){ toast('Noleggio eliminato'); renderPanel(); })
+      .catch(function(){ toast('Errore eliminazione'); });
+  };
 })();
 </script>
 </body>

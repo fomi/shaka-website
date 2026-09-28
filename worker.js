@@ -169,6 +169,19 @@ async function handleRentalSave(request, env) {
   }
 }
 
+// POST /api/rental-delete — delete a single rental line
+async function handleRentalDelete(request, env) {
+  if (!checkAdmin(request, env)) return json({ error: 'unauthorized' }, 401);
+  let d;
+  try { d = await request.json(); } catch (e) { return json({ error: 'bad_request' }, 400); }
+  const id = parseInt(d.id, 10);
+  if (!id) return json({ error: 'missing_id' }, 400);
+  try {
+    await env.DB.prepare('DELETE FROM rentals WHERE id=?').bind(id).run();
+    return json({ ok: true });
+  } catch (e) { return json({ error: 'server' }, 500); }
+}
+
 // POST /api/client-update — edit point / activity / participants of a check-in
 async function handleClientUpdate(request, env) {
   if (!checkAdmin(request, env)) return json({ error: 'unauthorized' }, 401);
@@ -222,6 +235,10 @@ export default {
       if (p === '/api/rental') {
         if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
         return await handleRentalSave(request, env);
+      }
+      if (p === '/api/rental-delete') {
+        if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
+        return await handleRentalDelete(request, env);
       }
       if (p === '/api/client-update') {
         if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
