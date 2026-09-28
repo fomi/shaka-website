@@ -1,223 +1,232 @@
 <!doctype html>
-<html lang="en">
+<html lang="it">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
 <title>Shaka Admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
 <style>
+  /* Sun-proof: single committed light theme, high contrast, large type (like the beach check-in). */
   :root{
-    color-scheme: light dark;
-    --bg:#f4f6f8; --surface:#ffffff; --ink:#141b24; --muted:#5b6675;
-    --line:#dde3ea; --accent:#0a6a72; --cta:#1d2635; --cta-ink:#fff; --danger:#a5301c;
-    --chip:#eef3f7;
-  }
-  @media (prefers-color-scheme: dark){
-    :root{ --bg:#0f141b; --surface:#171e28; --ink:#eef2f6; --muted:#93a0af; --line:#2a3441; --accent:#2dd4bf; --cta:#e9eef4; --cta-ink:#171e28; --danger:#e07a63; --chip:#1e2732; }
+    color-scheme: light;
+    --ground:#dbe3ea; --surface:#ffffff; --surface-2:#eef3f7;
+    --ink:#0d141c; --ink-soft:#2c3a49; --muted:#465767;
+    --line:#9fb0bf; --line-strong:#6f8393;
+    --cta:#1d2635; --cta-ink:#ffffff; --accent:#0a6a72; --accent-soft:#dff0f0;
+    --danger:#a5301c; --warn:#a86814;
   }
   *{box-sizing:border-box}
   html,body{margin:0}
-  body{background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.45}
-  .wrap{max-width:1000px;margin:0 auto;padding:24px 18px 60px}
-  h1{font-size:24px;margin:0 0 4px}
-  .sub{color:var(--muted);font-size:14px;margin:0 0 20px}
+  body{background:var(--ground);color:var(--ink);
+    font-family:"Atkinson Hyperlegible", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size:17px;line-height:1.45;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:22px 60px}
+  h1{font-size:26px;font-weight:700;margin:0 0 2px}
+  .sub{color:var(--ink-soft);font-size:15px;margin:0 0 16px}
+  .head-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .err{color:var(--danger);font-weight:700;font-size:15px;margin-top:12px;min-height:1px}
 
-  /* login */
-  .login{max-width:360px;margin:60px auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px}
-  .login h1{font-size:20px}
-  label{display:block;font-weight:600;font-size:14px;margin:14px 0 6px}
-  input[type=password], input[type=search]{
-    width:100%;font:inherit;color:var(--ink);background:var(--surface);
-    border:1px solid var(--line);border-radius:10px;padding:11px 12px}
-  input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
-  .btn{font:inherit;font-weight:700;background:var(--cta);color:var(--cta-ink);border:none;border-radius:10px;padding:11px 16px;cursor:pointer}
-  .btn:hover{filter:brightness(1.08)}
-  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
-  .err{color:var(--danger);font-weight:600;font-size:14px;margin-top:12px;min-height:1px}
+  .btn{font:inherit;font-weight:700;font-size:16px;background:var(--cta);color:var(--cta-ink);border:none;border-radius:11px;padding:11px 15px;cursor:pointer;text-decoration:none;display:inline-block;min-height:48px}
+  .btn:hover{filter:brightness(1.1)}
+  .btn.ghost{background:var(--surface);color:var(--ink);border:2px solid var(--line-strong)}
+  .btn.ghost:hover{border-color:var(--accent);filter:none}
+  .sel{font:inherit;font-size:16px;color:var(--ink);background:var(--surface);border:2px solid var(--line-strong);border-radius:11px;padding:10px 12px;min-height:48px}
+  .sel:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 28%,transparent)}
+  .grow{flex:1;min-width:180px}
+
+  .login{max-width:400px;margin:44px auto;background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:24px}
+  .login .lg{display:block;font-weight:700;font-size:15px;margin:14px 0 6px}
+  .login input[type=password]{width:100%;font:inherit;font-size:18px;color:var(--ink);background:var(--surface);border:2px solid var(--line-strong);border-radius:11px;padding:12px 13px;min-height:54px}
+  .login input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 30%,transparent)}
+  .ck{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:14px}
+  .ck input{width:22px;height:22px;accent-color:var(--accent)}
+
+  .stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+  .stat{background:var(--surface);border:2px solid var(--line);border-radius:13px;padding:12px 18px}
+  .stat .n{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}
+  .stat .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
 
   .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
-  .bar .grow{flex:1;min-width:200px}
-  .stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
-  .stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
-  .stat .n{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
-  .stat .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
-  td a{color:var(--accent);text-decoration:none}
-  td a:hover{text-decoration:underline}
-  .chip{display:inline-block;font:inherit;font-size:12px;font-weight:600;text-decoration:none;cursor:pointer;
-    color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:4px 9px;white-space:nowrap}
-  .chip:hover{border-color:var(--accent)}
-  .chip.danger{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 40%,var(--line))}
-  .modal-bg{position:fixed;inset:0;background:rgba(10,15,22,.55);display:flex;align-items:center;justify-content:center;padding:18px;z-index:50}
-  .modal{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;max-width:440px;width:100%}
-  .modal h3{margin:0 0 14px;font-size:19px}
-  .modal label{display:block;font-weight:600;font-size:14px;margin:12px 0 6px}
-  .modal select,.modal textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--surface);
-    border:1px solid var(--line);border-radius:10px;padding:10px 12px}
-  .modal textarea{min-height:80px;resize:vertical}
-  .modal-actions{display:flex;gap:10px;margin-top:20px}
-  .modal .warn{background:color-mix(in srgb,var(--danger) 12%,transparent);border:1px solid color-mix(in srgb,var(--danger) 35%,var(--line));border-radius:10px;padding:11px 13px;font-size:14px;color:var(--ink)}
+  .toggle{display:inline-flex;background:var(--surface);border:2px solid var(--line-strong);border-radius:12px;padding:4px;gap:4px}
+  .toggle button{font:inherit;font-weight:700;font-size:15px;border:none;background:none;color:var(--muted);border-radius:9px;padding:9px 15px;cursor:pointer}
+  .toggle button.on{background:var(--cta);color:var(--cta-ink)}
 
-  .tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px}
-  table{border-collapse:collapse;width:100%;font-size:14px}
-  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+  .chip{display:inline-block;font:inherit;font-size:13px;font-weight:700;text-decoration:none;cursor:pointer;color:var(--ink);background:var(--surface);border:2px solid var(--line-strong);border-radius:9px;padding:6px 11px;white-space:nowrap}
+  .chip:hover{border-color:var(--accent)}
+  .chip.danger{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 45%,var(--line-strong))}
+  .acts{display:inline-flex;gap:6px;vertical-align:middle}
+  .inline-actions{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+  .pill{display:inline-block;font-size:13px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
+  .pill.school{background:color-mix(in srgb,var(--accent) 20%,transparent);color:var(--accent)}
+  .pill.shop{background:color-mix(in srgb,#c07a1a 24%,transparent);color:var(--warn)}
+  .pill.yes{background:color-mix(in srgb,var(--accent) 20%,transparent);color:var(--accent)}
+
+  .tablewrap{overflow-x:auto;background:var(--surface);border:2px solid var(--line);border-radius:14px}
+  table{border-collapse:collapse;width:100%;font-size:16px}
+  th,td{text-align:left;padding:12px 14px;border-bottom:2px solid var(--surface-2);white-space:nowrap;vertical-align:top}
   th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
-  th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);position:sticky;top:0;background:var(--surface)}
+  th{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700}
   tr:last-child td{border-bottom:none}
-  .pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--chip);color:var(--muted)}
-  .pill.yes{background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--accent)}
-  .empty{padding:40px;text-align:center;color:var(--muted)}
-  .foot{color:var(--muted);font-size:12px;margin-top:16px}
+  td a{color:var(--accent);text-decoration:none;font-weight:700}
+  td a:hover{text-decoration:underline}
+  .empty{padding:22px;text-align:center;color:var(--muted)}
+  .foot{color:var(--muted);font-size:13px;margin-top:14px}
+
+  .cards{display:flex;flex-direction:column;gap:14px}
+  .rcard{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:16px 18px}
+  .rc-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .rc-name{font-weight:700;font-size:20px}
+  .rc-tags{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .rc-date{font-size:14px;color:var(--muted);margin-bottom:10px}
+  .rc-field{display:flex;gap:12px;padding:8px 0;border-top:2px solid var(--surface-2)}
+  .rc-field .k{flex:0 0 108px;font-size:13px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);font-weight:700;padding-top:3px}
+  .rc-field .v{flex:1;min-width:0;word-break:break-word;font-size:17px}
+  .rc-field .v a{color:var(--accent);text-decoration:none;font-weight:700}
+  .rc-actions{display:flex;gap:10px;margin-top:14px}
+  .rc-actions .chip{font-size:15px;padding:9px 16px}
+
+  .modal-bg{position:fixed;inset:0;background:rgba(10,15,22,.55);display:flex;align-items:center;justify-content:center;padding:18px;z-index:50}
+  .modal{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:22px;max-width:460px;width:100%}
+  .modal h3{margin:0 0 12px;font-size:20px}
+  .modal label{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
+  .modal select,.modal textarea{width:100%;font:inherit;font-size:17px;color:var(--ink);background:var(--surface);border:2px solid var(--line-strong);border-radius:11px;padding:11px 12px}
+  .modal textarea{min-height:84px;resize:vertical}
+  .modal-actions{display:flex;gap:10px;margin-top:20px}
+  .modal .warn{background:color-mix(in srgb,var(--danger) 12%,transparent);border:2px solid color-mix(in srgb,var(--danger) 35%,var(--line));border-radius:11px;padding:11px 13px;font-size:14px;margin-top:10px}
+  [hidden]{display:none!important}
 </style>
 </head>
 <body>
 <div class="wrap" id="root">
 
-  <!-- Login gate -->
+  <!-- Login -->
   <div class="login" id="login">
     <h1>Shaka Admin</h1>
-    <p class="sub">Enter the admin password.</p>
-    <label for="pw">Password</label>
+    <p class="sub">Inserisci la password.</p>
+    <label class="lg" for="pw">Password</label>
     <input type="password" id="pw" autocomplete="current-password">
-    <label style="display:flex;align-items:center;gap:10px;margin-top:12px;font-weight:400;font-size:14px">
-      <input type="checkbox" id="remember" style="width:20px;height:20px;accent-color:var(--accent)"> Ricorda su questo dispositivo
-    </label>
-    <div style="margin-top:16px"><button class="btn" id="loginBtn" style="width:100%">Open</button></div>
+    <label class="ck"><input type="checkbox" id="remember"> Ricorda su questo dispositivo</label>
+    <div style="margin-top:16px"><button class="btn" id="loginBtn" style="width:100%">Entra</button></div>
     <div class="err" id="loginErr"></div>
   </div>
 
-  <!-- App (hidden until logged in) -->
+  <!-- App -->
   <div id="app" hidden>
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-      <h1>Noleggio Shop</h1>
-      <a class="btn ghost" href="/rental" style="text-decoration:none">Apri /rental ›</a>
-    </div>
+
+    <div class="head-row"><h1>Noleggio Shop</h1><a class="btn ghost" href="/rental">Apri /rental ›</a></div>
     <p class="sub">Materiale ancora fuori e pagamenti aperti.</p>
     <div class="stats" id="rstats"></div>
     <div class="bar">
-      <select id="rentalFilter" class="btn ghost" style="min-width:190px">
+      <select id="rentalFilter" class="sel" style="min-width:210px">
         <option value="due">Riconsegne attese (oggi/scaduti)</option>
         <option value="open">Saldo aperto</option>
         <option value="active">In corso</option>
         <option value="all">Tutti</option>
       </select>
-      <button class="btn ghost" id="rRefreshBtn">Refresh</button>
+      <button class="btn ghost" id="rRefreshBtn">Aggiorna</button>
     </div>
     <div class="tablewrap">
       <table>
-        <thead>
-          <tr><th>Cliente</th><th>Attrezzatura</th><th>Inizio</th><th>Riconsegna</th><th class="num">Prezzo</th><th class="num">Pagato</th><th class="num">Saldo</th><th>Azioni</th></tr>
-        </thead>
+        <thead><tr><th>Cliente</th><th>Attrezzatura</th><th>Inizio</th><th>Riconsegna</th><th class="num">Prezzo</th><th class="num">Pagato</th><th class="num">Saldo</th><th>Azioni</th></tr></thead>
         <tbody id="rrows"></tbody>
       </table>
     </div>
 
-    <h1 style="margin-top:34px">Check-ins</h1>
-    <p class="sub">Newest first. Data lives in your Cloudflare D1 database.</p>
-
+    <h1 style="margin-top:38px">Check-ins</h1>
+    <p class="sub">Registrazioni clienti. Tabella su desktop, schede su mobile.</p>
     <div class="stats" id="stats"></div>
-
     <div class="bar">
-      <input type="search" id="search" class="grow" placeholder="Search name or email…">
-      <select id="pointFilter" class="btn ghost" style="min-width:110px">
-        <option value="">All points</option>
-        <option value="school">School</option>
-        <option value="shop">Shop</option>
+      <input type="search" id="search" class="sel grow" placeholder="Cerca nome, email o partecipante…">
+      <select id="pointFilter" class="sel">
+        <option value="">Tutti i point</option><option value="school">School</option><option value="shop">Shop</option>
       </select>
-      <select id="activityFilter" class="btn ghost" style="min-width:150px">
-        <option value="">All activities</option>
-      </select>
-      <button class="btn ghost" id="refreshBtn">Refresh</button>
+      <select id="activityFilter" class="sel"><option value="">Tutte le attività</option></select>
+      <span class="toggle"><button id="btnTable" onclick="setCkView('table')">Tabella</button><button id="btnCards" onclick="setCkView('cards')">Card</button></span>
+      <button class="btn ghost" id="refreshBtn">Aggiorna</button>
       <button class="btn" id="csvBtn">Export CSV</button>
     </div>
 
-    <div class="tablewrap">
-      <table>
-        <thead>
-          <tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Point</th><th>Activity</th><th>Participants</th><th>Marketing</th><th>Lang</th><th>Azioni</th></tr>
-        </thead>
-        <tbody id="rows"></tbody>
-      </table>
+    <div id="tableView">
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Point</th><th>Activity</th><th>Participants</th><th>Mkt</th><th>Lang</th><th>Azioni</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <p class="foot">Mostra fino a 2000 record recenti. Export CSV per la copia completa / backup.</p>
     </div>
-    <p class="foot">Showing up to 2000 most recent records. Export CSV for the full working copy / backup.</p>
-  </div>
+    <div id="cardsView" hidden><div class="cards" id="cardList"></div></div>
 
+  </div>
 </div>
 
 <script>
 (function(){
-  var pw = '';
-  var current = [];
+  var LS_KEY='shaka_admin_pw';
+  var pw='', current=[], rentalsData=[], clientsById={}, tmr;
+  var ACTS=["Windsurf lesson","Wingfoil lesson","Windsurf rental","Wingfoil rental","SUP / Kayak rental","Kite rental","Kite lesson","Surf rental","Bodyboard / Skimboard rental","Skate rental"];
 
-  var loginBtn = document.getElementById('loginBtn');
-  var pwInput  = document.getElementById('pw');
-  var loginErr = document.getElementById('loginErr');
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function pad(n){return ('0'+n).slice(-2);}
+  function fmtDate(iso){ try{var d=new Date(iso); return d.toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+d.toLocaleString('en-GB',{hour:'2-digit',minute:'2-digit'});}catch(e){return iso;} }
+  function fmtDT(iso){ try{var d=new Date(iso); return pad(d.getDate())+'/'+pad(d.getMonth()+1)+' '+pad(d.getHours())+':'+pad(d.getMinutes());}catch(e){return iso;} }
+  function retIso(iso,days){ var d=new Date(iso); d.setHours(d.getHours()+days*24); return d; }
+  function eur(n){ return '€'+(Math.round(n*100)/100).toFixed(0); }
+  function telHref(p){ return 'tel:'+String(p||'').replace(/[^\d+]/g,''); }
+  function waHref(p){ return 'https://wa.me/'+String(p||'').replace(/[^\d]/g,''); }
+  function pointPill(p){ return p==='school'?'<span class="pill school">School</span>':p==='shop'?'<span class="pill shop">Shop</span>':'<span class="pill">—</span>'; }
+  function cliName(cid){ var c=clientsById[cid]; return c?(c.first_name+' '+c.last_name):('#'+cid); }
+  function cliPhone(cid){ var c=clientsById[cid]; return c?c.phone:''; }
 
-  var LS_KEY = 'shaka_admin_pw';
+  // ---- login ----
   function doLogin(remembered){
-    if(!remembered){ pw = pwInput.value; }
-    if(!pw){ loginErr.textContent='Enter the password.'; return; }
-    loginErr.textContent='Checking…';
+    if(!remembered){ pw=document.getElementById('pw').value; }
+    if(!pw){ document.getElementById('loginErr').textContent='Inserisci la password.'; return; }
+    document.getElementById('loginErr').textContent='Controllo…';
     load().then(function(){
-      if(!remembered && document.getElementById('remember').checked){ try{ localStorage.setItem(LS_KEY, pw); }catch(e){} }
-      document.getElementById('login').hidden = true;
-      document.getElementById('app').hidden = false;
+      if(!remembered && document.getElementById('remember').checked){ try{ localStorage.setItem(LS_KEY,pw); }catch(e){} }
+      document.getElementById('login').hidden=true;
+      document.getElementById('app').hidden=false;
+      setCkView(window.innerWidth<700?'cards':'table');
     }).catch(function(){
-      loginErr.textContent='Wrong password or connection problem.';
+      document.getElementById('loginErr').textContent='Password errata o problema di connessione.';
       pw=''; try{ localStorage.removeItem(LS_KEY); }catch(e){}
     });
   }
-  loginBtn.addEventListener('click', function(){ doLogin(false); });
-  pwInput.addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(false); });
-  (function tryRemembered(){ try{ var s=localStorage.getItem(LS_KEY); if(s){ pw=s; doLogin(true); } }catch(e){} })();
+  document.getElementById('loginBtn').addEventListener('click', function(){ doLogin(false); });
+  document.getElementById('pw').addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(false); });
 
-  var rentalsData = [];
-  var clientsById = {};
-
+  // ---- data ----
   function load(){
     return Promise.all([
-      fetch('/api/clients', { headers:{ 'Authorization':'Bearer '+pw } }).then(function(r){ if(!r.ok) throw new Error('auth'); return r.json(); }),
-      fetch('/api/rentals', { headers:{ 'Authorization':'Bearer '+pw } }).then(function(r){ if(!r.ok) throw new Error('auth'); return r.json(); })
+      fetch('/api/clients',{headers:{'Authorization':'Bearer '+pw}}).then(function(r){ if(!r.ok) throw new Error('auth'); return r.json(); }),
+      fetch('/api/rentals',{headers:{'Authorization':'Bearer '+pw}}).then(function(r){ if(!r.ok) throw new Error('auth'); return r.json(); })
     ]).then(function(res){
-      current = (res[0] && res[0].clients) || [];
-      rentalsData = (res[1] && res[1].rentals) || [];
-      clientsById = {}; current.forEach(function(c){ clientsById[c.id]=c; });
-      render();
-      renderRentals();
+      current=(res[0]&&res[0].clients)||[];
+      rentalsData=(res[1]&&res[1].rentals)||[];
+      clientsById={}; current.forEach(function(c){ clientsById[c.id]=c; });
+      render(); renderRentals();
     });
   }
 
   // ---- rentals ----
-  function pad(n){ return ('0'+n).slice(-2); }
-  function fmtDT(iso){ try{ var d=new Date(iso); return pad(d.getDate())+'/'+pad(d.getMonth()+1)+' '+pad(d.getHours())+':'+pad(d.getMinutes()); }catch(e){ return iso; } }
-  function retIso(iso,days){ var d=new Date(iso); d.setHours(d.getHours()+days*24); return d; }
-  function eur(n){ return '€'+(Math.round(n*100)/100).toFixed(0); }
-  function cliName(cid){ var c=clientsById[cid]; return c?(c.first_name+' '+c.last_name):('#'+cid); }
-  function cliPhone(cid){ var c=clientsById[cid]; return c?c.phone:''; }
-
   function renderRentals(){
-    var f = document.getElementById('rentalFilter').value;
-    var now = new Date();
-    var endToday = new Date(); endToday.setHours(23,59,59,999);
+    var f=document.getElementById('rentalFilter').value, now=new Date(), endToday=new Date(); endToday.setHours(23,59,59,999);
     var open=0, due=0;
-    rentalsData.forEach(function(r){
-      if((r.price-r.paid)>0) open += (r.price-r.paid);
-      if(!r.returned && retIso(r.start_at,r.days) <= endToday) due++;
-    });
-    document.getElementById('rstats').innerHTML =
+    rentalsData.forEach(function(r){ if((r.price-r.paid)>0) open+=(r.price-r.paid); if(!r.returned && retIso(r.start_at,r.days)<=endToday) due++; });
+    document.getElementById('rstats').innerHTML=
       '<div class="stat"><div class="n">'+eur(open)+'</div><div class="l">Da incassare</div></div>'+
       '<div class="stat"><div class="n">'+due+'</div><div class="l">Da riconsegnare oggi/scaduti</div></div>';
-
-    var list = rentalsData.filter(function(r){
-      var rd = retIso(r.start_at,r.days), bal=r.price-r.paid;
-      if(f==='due')    return !r.returned && rd <= endToday;
-      if(f==='open')   return bal>0;
-      if(f==='active') return !r.returned && rd > now;
+    var list=rentalsData.filter(function(r){ var rd=retIso(r.start_at,r.days), bal=r.price-r.paid;
+      if(f==='due') return !r.returned && rd<=endToday;
+      if(f==='open') return bal>0;
+      if(f==='active') return !r.returned && rd>now;
       return true;
     }).sort(function(a,b){ return retIso(a.start_at,a.days)-retIso(b.start_at,b.days); });
-
     var rows=document.getElementById('rrows');
     if(!list.length){ rows.innerHTML='<tr><td colspan="8"><div class="empty">Niente qui.</div></td></tr>'; return; }
-    rows.innerHTML = list.map(function(r){
+    rows.innerHTML=list.map(function(r){
       var bal=r.price-r.paid, rd=retIso(r.start_at,r.days), overdue=(!r.returned && rd<now);
       return '<tr'+(r.returned?' style="opacity:.55"':'')+'>'+
         '<td>'+esc(cliName(r.client_id))+'<br><span style="font-size:12px;color:var(--muted)">'+esc(cliPhone(r.client_id))+'</span></td>'+
@@ -229,188 +238,140 @@
         '<td class="num" style="'+(bal>0?'color:var(--danger);font-weight:700':'')+'">'+eur(bal)+'</td>'+
         '<td>'+(r.returned?'—':
           '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">'+
-          '<input type="number" id="pay_'+r.id+'" value="'+r.paid+'" style="width:80px;min-height:38px;padding:6px 8px;font-size:14px" title="Pagato €">'+
-          '<button class="btn ghost" style="padding:6px 10px;font-size:13px" onclick="savePaid('+r.id+')">Salva</button>'+
-          '<button class="btn" style="padding:6px 10px;font-size:13px" onclick="markReturned('+r.id+')">Reso</button>'+
+          '<input type="number" id="pay_'+r.id+'" value="'+r.paid+'" style="width:84px;min-height:40px;padding:6px 8px;font:inherit;font-size:15px;border:2px solid var(--line-strong);border-radius:9px">'+
+          '<button class="chip" onclick="savePaid('+r.id+')">Salva</button>'+
+          '<button class="chip" style="background:var(--cta);color:#fff;border-color:var(--cta)" onclick="markReturned('+r.id+')">Reso</button>'+
           '</div>')+'</td>'+
       '</tr>';
     }).join('');
   }
-
-  function postRental(payload){
-    return fetch('/api/rental',{ method:'POST', headers:{'Authorization':'Bearer '+pw,'content-type':'application/json'}, body:JSON.stringify(payload) })
-      .then(function(r){ return r.json(); }).then(function(res){ if(!res||!res.ok) throw new Error('save'); return load(); });
-  }
+  function postRental(payload){ return fetch('/api/rental',{method:'POST',headers:{'Authorization':'Bearer '+pw,'content-type':'application/json'},body:JSON.stringify(payload)}).then(function(r){return r.json();}).then(function(res){ if(!res||!res.ok) throw new Error('save'); return load(); }); }
   function rentalById(id){ return rentalsData.filter(function(r){return r.id===id;})[0]; }
-  function basePayload(r){ return { id:r.id, client_id:r.client_id, item:r.item, extras:(r.extras?r.extras.split(',').map(function(s){return s.trim();}):[]), start_at:r.start_at, days:r.days, price:r.price, paid:r.paid, notes:r.notes, returned:!!r.returned }; }
+  function basePayload(r){ return {id:r.id,client_id:r.client_id,item:r.item,extras:(r.extras?r.extras.split(',').map(function(s){return s.trim();}):[]),start_at:r.start_at,days:r.days,price:r.price,paid:r.paid,notes:r.notes,returned:!!r.returned}; }
   window.savePaid=function(id){ var r=rentalById(id); if(!r) return; var v=parseFloat(document.getElementById('pay_'+id).value)||0; var p=basePayload(r); p.paid=v; postRental(p).catch(function(){ alert('Errore'); }); };
   window.markReturned=function(id){ var r=rentalById(id); if(!r) return; var p=basePayload(r); p.returned=true; postRental(p).catch(function(){ alert('Errore'); }); };
-
-  // ---- client edit / delete ----
-  var ACTS = ["Windsurf lesson","Wingfoil lesson","Windsurf rental","Wingfoil rental","SUP / Kayak rental","Kite rental","Kite lesson","Surf rental","Bodyboard / Skimboard rental","Skate rental"];
-  function clientById(id){ return current.filter(function(c){return c.id===id;})[0]; }
-  function rentalCount(cid){ return rentalsData.filter(function(r){return r.client_id===cid;}).length; }
-  window.closeModal = function(){ var m=document.getElementById('modalRoot'); if(m) m.remove(); };
-
-  window.editClient = function(id){
-    var c = clientById(id); if(!c) return;
-    var actOpts = ACTS.map(function(a){return '<option'+(c.activity===a?' selected':'')+'>'+esc(a)+'</option>';}).join('') +
-      ((ACTS.indexOf(c.activity)<0 && c.activity) ? '<option selected>'+esc(c.activity)+'</option>' : '');
-    var html='<div class="modal-bg" id="modalRoot"><div class="modal">'+
-      '<h3>Modifica cliente</h3>'+
-      '<div style="font-size:14px;color:var(--muted)">'+esc(c.first_name)+' '+esc(c.last_name)+'</div>'+
-      '<label>Point</label><select id="m_point">'+
-        '<option value="school"'+(c.point==='school'?' selected':'')+'>School</option>'+
-        '<option value="shop"'+(c.point==='shop'?' selected':'')+'>Shop</option>'+
-        '<option value=""'+(!c.point?' selected':'')+'>—</option></select>'+
-      '<label>Activity</label><select id="m_activity">'+actOpts+'</select>'+
-      '<label>Participants</label><textarea id="m_participants">'+(c.participants?esc(c.participants):'')+'</textarea>'+
-      '<div class="modal-actions">'+
-        '<button class="btn" style="flex:1" onclick="saveClient('+id+')">Salva</button>'+
-        '<button class="btn ghost" style="flex:1" onclick="closeModal()">Annulla</button>'+
-      '</div></div></div>';
-    document.body.insertAdjacentHTML('beforeend', html);
-  };
-  window.saveClient = function(id){
-    var payload={ id:id, point:document.getElementById('m_point').value, activity:document.getElementById('m_activity').value, participants:document.getElementById('m_participants').value.trim() };
-    fetch('/api/client-update',{method:'POST',headers:{'Authorization':'Bearer '+pw,'content-type':'application/json'},body:JSON.stringify(payload)})
-      .then(function(r){return r.json();}).then(function(res){ if(!res||!res.ok) throw 0; window.closeModal(); return load(); })
-      .catch(function(){ alert('Errore nel salvataggio'); });
-  };
-  window.delClient = function(id){
-    var c = clientById(id); if(!c) return;
-    var n = rentalCount(id);
-    var warn = n>0 ? '<div class="warn">Attenzione: questo cliente ha '+n+' noleggio/i collegati. Verranno eliminati anche quelli.</div>' : '';
-    var html='<div class="modal-bg" id="modalRoot"><div class="modal">'+
-      '<h3>Eliminare il cliente?</h3>'+
-      '<div style="font-size:15px;margin-bottom:6px">'+esc(c.first_name)+' '+esc(c.last_name)+' · '+esc(c.email||'')+'</div>'+warn+
-      '<div class="modal-actions">'+
-        '<button class="btn" style="flex:1;background:var(--danger)" onclick="confirmDel('+id+')">Elimina definitivamente</button>'+
-        '<button class="btn ghost" style="flex:1" onclick="closeModal()">Annulla</button>'+
-      '</div></div></div>';
-    document.body.insertAdjacentHTML('beforeend', html);
-  };
-  window.confirmDel = function(id){
-    fetch('/api/client-delete',{method:'POST',headers:{'Authorization':'Bearer '+pw,'content-type':'application/json'},body:JSON.stringify({id:id})})
-      .then(function(r){return r.json();}).then(function(res){ if(!res||!res.ok) throw 0; window.closeModal(); return load(); })
-      .catch(function(){ alert('Errore eliminazione'); });
-  };
-
   document.getElementById('rentalFilter').addEventListener('change', renderRentals);
   document.getElementById('rRefreshBtn').addEventListener('click', function(){ load().catch(function(){}); });
 
-  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-
-  function fmtDate(iso){
-    try{ var d=new Date(iso); return d.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'2-digit',hour:'2-digit',minute:'2-digit'}); }
-    catch(e){ return iso; }
-  }
-
+  // ---- check-ins ----
   function visible(){
-    var pf = document.getElementById('pointFilter').value;
-    var af = document.getElementById('activityFilter').value;
-    var q  = (document.getElementById('search').value||'').trim().toLowerCase();
+    var pf=document.getElementById('pointFilter').value, af=document.getElementById('activityFilter').value, q=(document.getElementById('search').value||'').trim().toLowerCase();
     return current.filter(function(c){
       if(pf && c.point!==pf) return false;
       if(af && c.activity!==af) return false;
-      if(q){
-        var hay = ((c.first_name||'')+' '+(c.last_name||'')+' '+(c.email||'')+' '+(c.participants||'')).toLowerCase();
-        if(hay.indexOf(q)<0) return false;
-      }
+      if(q){ var hay=((c.first_name||'')+' '+(c.last_name||'')+' '+(c.email||'')+' '+(c.participants||'')).toLowerCase(); if(hay.indexOf(q)<0) return false; }
       return true;
     });
   }
-
   function syncActivityFilter(){
-    var sel = document.getElementById('activityFilter');
-    var chosen = sel.value;
-    var acts = {};
+    var sel=document.getElementById('activityFilter'), chosen=sel.value, acts={};
     current.forEach(function(c){ if(c.activity) acts[c.activity]=1; });
-    var list = Object.keys(acts).sort();
-    sel.innerHTML = '<option value="">All activities</option>' +
-      list.map(function(a){ return '<option value="'+esc(a)+'">'+esc(a)+'</option>'; }).join('');
-    if(list.indexOf(chosen)>=0) sel.value = chosen;
+    var list=Object.keys(acts).sort();
+    sel.innerHTML='<option value="">Tutte le attività</option>'+list.map(function(a){return '<option value="'+esc(a)+'">'+esc(a)+'</option>';}).join('');
+    if(list.indexOf(chosen)>=0) sel.value=chosen;
   }
+  function phoneChips(p){ return '<a class="chip" href="'+telHref(p)+'">Chiama</a><a class="chip" href="'+waHref(p)+'" target="_blank" rel="noopener">WhatsApp</a>'; }
 
-  function pointPill(p){
-    if(p==='school') return '<span class="pill yes">School</span>';
-    if(p==='shop')   return '<span class="pill" style="background:color-mix(in srgb,#c07a1a 18%,transparent);color:#a86814">Shop</span>';
-    return '<span class="pill">—</span>';
+  function rowHtml(c){
+    var mk=c.marketing_consent?'<span class="pill yes">Yes</span>':'<span class="pill">No</span>';
+    var parts=c.participants?esc(c.participants).replace(/\n/g,'<br>'):'<span style="color:var(--muted)">—</span>';
+    var email=c.email?'<a href="mailto:'+esc(c.email)+'">'+esc(c.email)+'</a>':'';
+    return '<tr>'+
+      '<td style="white-space:normal;min-width:70px">'+esc(fmtDate(c.created_at))+'</td>'+
+      '<td style="white-space:normal;min-width:90px">'+esc(c.first_name)+' '+esc(c.last_name)+'</td>'+
+      '<td>'+email+'</td>'+
+      '<td>'+esc(c.phone||'')+' <span class="acts">'+phoneChips(c.phone)+'</span></td>'+
+      '<td>'+pointPill(c.point)+'</td>'+
+      '<td>'+esc(c.activity)+'</td>'+
+      '<td style="white-space:normal;min-width:130px">'+parts+'</td>'+
+      '<td>'+mk+'</td>'+
+      '<td>'+esc(c.lang)+'</td>'+
+      '<td><span class="acts"><button class="chip" onclick="editClient('+c.id+')">Modifica</button><button class="chip danger" onclick="delClient('+c.id+')">Elimina</button></span></td>'+
+    '</tr>';
   }
-
-  function telHref(p){ return 'tel:'+String(p||'').replace(/[^\d+]/g,''); }
-  function waHref(p){ return 'https://wa.me/'+String(p||'').replace(/[^\d]/g,''); }
-
+  function cardHtml(c){
+    function f(k,v){ return '<div class="rc-field"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>'; }
+    var parts=c.participants?esc(c.participants).replace(/\n/g,'<br>'):'<span style="color:var(--muted)">—</span>';
+    var email=c.email?'<a href="mailto:'+esc(c.email)+'">'+esc(c.email)+'</a>':'—';
+    return '<div class="rcard">'+
+      '<div class="rc-top"><span class="rc-name">'+esc(c.first_name)+' '+esc(c.last_name)+'</span>'+
+        '<span class="rc-tags">'+pointPill(c.point)+'<span class="pill">'+esc(c.lang||'').toUpperCase()+'</span></span></div>'+
+      '<div class="rc-date">'+esc(fmtDate(c.created_at))+'</div>'+
+      f('Email',email)+
+      f('Telefono', esc(c.phone||'')+'<div class="inline-actions">'+phoneChips(c.phone)+'</div>')+
+      f('Attività', esc(c.activity))+
+      f('Partecipanti', parts)+
+      '<div class="rc-actions"><button class="chip" onclick="editClient('+c.id+')">Modifica</button><button class="chip danger" onclick="delClient('+c.id+')">Elimina</button></div>'+
+    '</div>';
+  }
   function render(){
     syncActivityFilter();
-    var list = visible();
-    var rows = document.getElementById('rows');
-    if(!list.length){
-      rows.innerHTML = '<tr><td colspan="10"><div class="empty">No check-ins yet.</div></td></tr>';
-    } else {
-      rows.innerHTML = list.map(function(c){
-        var mk = c.marketing_consent ? '<span class="pill yes">Yes</span>' : '<span class="pill">No</span>';
-        var parts = c.participants ? esc(c.participants).replace(/\n/g,'<br>') : '<span style="color:var(--muted)">—</span>';
-        var email = c.email ? '<a href="mailto:'+esc(c.email)+'">'+esc(c.email)+'</a>' : '';
-        var phone = esc(c.phone||'')+
-          '<div style="display:flex;gap:6px;margin-top:4px">'+
-            '<a class="chip" href="'+telHref(c.phone)+'">Chiama</a>'+
-            '<a class="chip" href="'+waHref(c.phone)+'" target="_blank" rel="noopener">WhatsApp</a>'+
-          '</div>';
-        return '<tr>'+
-          '<td>'+esc(fmtDate(c.created_at))+'</td>'+
-          '<td>'+esc(c.first_name)+' '+esc(c.last_name)+'</td>'+
-          '<td>'+email+'</td>'+
-          '<td style="white-space:normal">'+phone+'</td>'+
-          '<td>'+pointPill(c.point)+'</td>'+
-          '<td>'+esc(c.activity)+'</td>'+
-          '<td style="white-space:normal;min-width:160px">'+parts+'</td>'+
-          '<td>'+mk+'</td>'+
-          '<td>'+esc(c.lang)+'</td>'+
-          '<td style="white-space:normal"><div style="display:flex;gap:6px">'+
-            '<button class="chip" onclick="editClient('+c.id+')">Modifica</button>'+
-            '<button class="chip danger" onclick="delClient('+c.id+')">Elimina</button>'+
-          '</div></td>'+
-        '</tr>';
-      }).join('');
-    }
-    var optin  = list.filter(function(c){return c.marketing_consent;}).length;
-    var school = current.filter(function(c){return c.point==='school';}).length;
-    var shop   = current.filter(function(c){return c.point==='shop';}).length;
-    document.getElementById('stats').innerHTML =
-      '<div class="stat"><div class="n">'+list.length+'</div><div class="l">Records shown</div></div>'+
+    var list=visible();
+    document.getElementById('rows').innerHTML = list.length ? list.map(rowHtml).join('') : '<tr><td colspan="10"><div class="empty">Nessun check-in.</div></td></tr>';
+    document.getElementById('cardList').innerHTML = list.length ? list.map(cardHtml).join('') : '<div class="empty">Nessun check-in.</div>';
+    var optin=list.filter(function(c){return c.marketing_consent;}).length,
+        school=current.filter(function(c){return c.point==='school';}).length,
+        shop=current.filter(function(c){return c.point==='shop';}).length;
+    document.getElementById('stats').innerHTML=
+      '<div class="stat"><div class="n">'+list.length+'</div><div class="l">Mostrati</div></div>'+
       '<div class="stat"><div class="n">'+school+'</div><div class="l">School</div></div>'+
       '<div class="stat"><div class="n">'+shop+'</div><div class="l">Shop</div></div>'+
       '<div class="stat"><div class="n">'+optin+'</div><div class="l">Marketing opt-in</div></div>';
   }
-
-  // search (debounced) — re-query server so it works beyond the loaded page
-  var t;
-  document.getElementById('search').addEventListener('input', function(){
-    clearTimeout(t); t=setTimeout(function(){ render(); }, 150);
-  });
+  window.setCkView=function(v){
+    document.getElementById('tableView').hidden=(v!=='table');
+    document.getElementById('cardsView').hidden=(v!=='cards');
+    document.getElementById('btnTable').classList.toggle('on', v==='table');
+    document.getElementById('btnCards').classList.toggle('on', v==='cards');
+  };
+  document.getElementById('search').addEventListener('input', function(){ clearTimeout(tmr); tmr=setTimeout(render,150); });
   document.getElementById('pointFilter').addEventListener('change', render);
   document.getElementById('activityFilter').addEventListener('change', render);
   document.getElementById('refreshBtn').addEventListener('click', function(){ load().catch(function(){}); });
 
-  // CSV export of what is currently loaded
   document.getElementById('csvBtn').addEventListener('click', function(){
-    var cols = ['id','first_name','last_name','email','phone','point','activity','participants','marketing_consent','review_sent','lang','created_at'];
-    var head = cols.join(',');
-    var body = visible().map(function(c){
-      return cols.map(function(k){
-        var v = c[k]==null?'':String(c[k]);
-        if(/[",\n]/.test(v)) v = '"'+v.replace(/"/g,'""')+'"';
-        return v;
-      }).join(',');
-    }).join('\n');
-    var csv = head+'\n'+body;
-    var blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'shaka-clients-'+new Date().toISOString().slice(0,10)+'.csv';
+    var cols=['id','first_name','last_name','email','phone','point','activity','participants','marketing_consent','review_sent','lang','created_at'];
+    var body=visible().map(function(c){ return cols.map(function(k){ var v=c[k]==null?'':String(c[k]); if(/[",\n]/.test(v)) v='"'+v.replace(/"/g,'""')+'"'; return v; }).join(','); }).join('\n');
+    var csv=cols.join(',')+'\n'+body, blob=new Blob([csv],{type:'text/csv;charset=utf-8'}), a=document.createElement('a');
+    a.href=URL.createObjectURL(blob); a.download='shaka-clients-'+new Date().toISOString().slice(0,10)+'.csv';
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
   });
+
+  // ---- client edit / delete ----
+  function clientById(id){ return current.filter(function(c){return c.id===id;})[0]; }
+  function rentalCount(cid){ return rentalsData.filter(function(r){return r.client_id===cid;}).length; }
+  window.closeModal=function(){ var m=document.getElementById('modalRoot'); if(m) m.remove(); };
+  window.editClient=function(id){
+    var c=clientById(id); if(!c) return;
+    var actOpts=ACTS.map(function(a){return '<option'+(c.activity===a?' selected':'')+'>'+esc(a)+'</option>';}).join('')+((ACTS.indexOf(c.activity)<0&&c.activity)?'<option selected>'+esc(c.activity)+'</option>':'');
+    var html='<div class="modal-bg" id="modalRoot"><div class="modal">'+
+      '<h3>Modifica cliente</h3><div style="font-size:14px;color:var(--muted)">'+esc(c.first_name)+' '+esc(c.last_name)+'</div>'+
+      '<label>Point</label><select id="m_point"><option value="school"'+(c.point==='school'?' selected':'')+'>School</option><option value="shop"'+(c.point==='shop'?' selected':'')+'>Shop</option><option value=""'+(!c.point?' selected':'')+'>—</option></select>'+
+      '<label>Activity</label><select id="m_activity">'+actOpts+'</select>'+
+      '<label>Participants</label><textarea id="m_participants">'+(c.participants?esc(c.participants):'')+'</textarea>'+
+      '<div class="modal-actions"><button class="btn" style="flex:1" onclick="saveClient('+id+')">Salva</button><button class="btn ghost" style="flex:1" onclick="closeModal()">Annulla</button></div>'+
+    '</div></div>';
+    document.body.insertAdjacentHTML('beforeend', html);
+  };
+  window.saveClient=function(id){
+    var payload={id:id,point:document.getElementById('m_point').value,activity:document.getElementById('m_activity').value,participants:document.getElementById('m_participants').value.trim()};
+    fetch('/api/client-update',{method:'POST',headers:{'Authorization':'Bearer '+pw,'content-type':'application/json'},body:JSON.stringify(payload)}).then(function(r){return r.json();}).then(function(res){ if(!res||!res.ok) throw 0; window.closeModal(); return load(); }).catch(function(){ alert('Errore nel salvataggio'); });
+  };
+  window.delClient=function(id){
+    var c=clientById(id); if(!c) return; var n=rentalCount(id);
+    var warn=n>0?'<div class="warn">Attenzione: questo cliente ha '+n+' noleggio/i collegati. Verranno eliminati anche quelli.</div>':'';
+    var html='<div class="modal-bg" id="modalRoot"><div class="modal">'+
+      '<h3>Eliminare il cliente?</h3><div style="font-size:15px;margin-bottom:6px">'+esc(c.first_name)+' '+esc(c.last_name)+' · '+esc(c.email||'')+'</div>'+warn+
+      '<div class="modal-actions"><button class="btn" style="flex:1;background:var(--danger)" onclick="confirmDel('+id+')">Elimina definitivamente</button><button class="btn ghost" style="flex:1" onclick="closeModal()">Annulla</button></div>'+
+    '</div></div>';
+    document.body.insertAdjacentHTML('beforeend', html);
+  };
+  window.confirmDel=function(id){
+    fetch('/api/client-delete',{method:'POST',headers:{'Authorization':'Bearer '+pw,'content-type':'application/json'},body:JSON.stringify({id:id})}).then(function(r){return r.json();}).then(function(res){ if(!res||!res.ok) throw 0; window.closeModal(); return load(); }).catch(function(){ alert('Errore eliminazione'); });
+  };
+
+  // auto-login if remembered
+  (function(){ try{ var s=localStorage.getItem(LS_KEY); if(s){ pw=s; doLogin(true); } }catch(e){} })();
 })();
 </script>
 </body>
