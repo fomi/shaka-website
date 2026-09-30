@@ -1,90 +1,151 @@
 /* ============================================================
-   SHAKA — UNICA FONTE DEI DATI CHE CAMBIANO
-   Modifica SOLO questo file per cambiare orari o prezzi.
-   Si aggiorna in automatico su tutte le pagine (e su tutte
-   le lingue, se condividi questo file tra le cartelle).
+   SHAKA — UNICA FONTE DEI DATI CHE CAMBIANO  (multilingua)
+   ------------------------------------------------------------
+   COSA MODIFICARE:
+   · Orari  → oggetto  T  (una volta sola, vale per tutte le lingue)
+   · Prezzi → oggetto  PRICES  (solo numeri, una volta sola)
+   · Testi tradotti (chiusure, note, promo) → oggetti  L / PRICE_NOTES / PROMO_TEXT
+   La lingua viene letta da <html lang="..">, quindi lo stesso file
+   funziona in /  /es/  /it/  /de/  (condividi questo unico file).
    ============================================================ */
 (function () {
 
-  /* ---------- ORARI ---------- */
-  var HOURS = {
-    shopHours:  "9:00 – 15:00<br>19:00 – 20:30",                 // footer: due orari impilati
-    shopClosed: "Closed on Tuesdays",                            // footer: riga chiusura
-    shopBox:    "9:00 – 15:00<br>19:00 – 20:30<br>Closed on Tuesdays", // box info: tutto impilato
-    schoolLine: "10:00 – 17:00",                  // footer: solo orario
-    schoolFull: "10:00 – 17:00 · every day",      // about: orario + giorni in riga
-    schoolDays: "10:00 – 17:00<br>Open every day" // box index: orario + giorni a capo
+  var LANG = (document.documentElement.lang || 'en').slice(0, 2).toLowerCase();
+  if (['en', 'es', 'it', 'de'].indexOf(LANG) === -1) LANG = 'en';
+
+  /* ---------- ORARI: solo numeri/orari, UGUALI in tutte le lingue ---------- */
+  var T = {
+    shop:   "9:00 – 15:00<br>19:00 – 20:30",   // due fasce impilate
+    school: "10:00 – 17:00"
   };
 
-  /* ---------- PREZZI (solo il numero, senza € — l'unità sta nella pagina) ---------- */
+  /* ---------- ETICHETTE testuali per lingua ---------- */
+  var L = {
+    en: { closedTue: "Closed on Tuesdays", everyDay: "Open every day", everyDayInline: "every day", promoEnds: "· ends " },
+    es: { closedTue: "Cerrado los martes", everyDay: "Abierto cada día", everyDayInline: "cada día", promoEnds: "· termina el " },
+    it: { closedTue: "Chiuso il martedì", everyDay: "Aperto ogni giorno", everyDayInline: "ogni giorno", promoEnds: "· fino al " },
+    de: { closedTue: "Dienstags geschlossen", everyDay: "Jeden Tag geöffnet", everyDayInline: "jeden Tag", promoEnds: "· endet am " }
+  };
+  var l = L[LANG];
+
+  /* ---------- ORARI composti (numeri + etichetta lingua) ---------- */
+  var HOURS = {
+    shopHours:  T.shop,                                 // footer: due orari impilati
+    shopClosed: l.closedTue,                            // footer: riga chiusura
+    shopBox:    T.shop + "<br>" + l.closedTue,          // box info: tutto impilato
+    schoolLine: T.school,                               // footer: solo orario
+    schoolFull: T.school + " · " + l.everyDayInline,    // about: orario + giorni in riga
+    schoolDays: T.school + "<br>" + l.everyDay          // box index: orario + giorni a capo
+  };
+
+  /* ---------- PREZZI: solo numeri (senza € — l'unità sta nella pagina), UGUALI ovunque ---------- */
   var PRICES = {
     school: {
-      // ---- WINDSURF · lezioni ----
-      windsurf_lesson:  "75",   // 1 lezione (2h)
-      windsurf_course:  "190",  // corso completo (6h / 3 giorni)
-      windsurf_private: "95",   // privata (all'ora)
-      // ---- WINGFOIL · lezioni ----
-      wing_lesson:  "95",   // 1 lezione (1.5h)
-      wing_course:  "250",  // corso completo (4.5h / 3 giorni)
-      wing_private: "145",  // privata (all'ora)
-      // ---- NOLEGGIO in loco (prezzo per 1 ora) ----
-      rental_windsurf: "30",  // windsurf 1h
-      rental_wing:     "45",  // wingfoil 1h
-      rental_sup:      "20",  // SUP 1h
-      rental_kayak1:   "25",  // kayak singolo 1h
-      rental_kayak2:   "35",  // kayak doppio 1h
-      // ---- NOLEGGIO · note ed extra (testo con prezzi) ----
-      rental_windsurf_note:  "2h 50€ · +10€ each extra hour",
-      rental_windsurf_extra: "+10€ for wetsuit and harness",
-      rental_wing_note:      "2h 75€ · +10€ each extra hour",
-      rental_wing_extra:     "+10€ for wetsuit",
-      rental_extra_hour:     "+10€ each extra hour"   // SUP e kayak
+      windsurf_lesson:  "75",   windsurf_course:  "190",  windsurf_private: "95",
+      wing_lesson:  "95",       wing_course:  "250",       wing_private: "145",
+      rental_windsurf: "30",    rental_wing: "45",         rental_sup: "20",
+      rental_kayak1: "25",      rental_kayak2: "35"
     },
-
     shop: {
-      // ---- WINDSURF · set completo (per durata) ----
       windsurf_1d: "65",  windsurf_4d: "243", windsurf_6d: "325", windsurf_9d: "455", windsurf_12d: "535",
-      windsurf_note: "* Extra carbon boom &amp; extension +10€/day · Board or sail only 40€/day, 195€/6 days",
-      // ---- KITESURF ----
       kite_1d: "85",  kite_4d: "280", kite_6d: "375", kite_9d: "525", kite_12d: "620",
-      kite_note: "* Board or kite only 40€/day, 195€/6 days",
-      // ---- WINGFOIL ----
       wing_1d: "95",  wing_4d: "320", wing_6d: "445", wing_9d: "620", wing_12d: "735",
-      wing_note: "* Board or wing only 40€/day, 195€/6 days",
-      // ---- SURF · soft / hard ----
       surf_soft_1d: "18", surf_soft_4d: "65",  surf_soft_6d: "100", surf_soft_9d: "140", surf_soft_12d: "165",
       surf_hard_1d: "23", surf_hard_4d: "85",  surf_hard_6d: "120", surf_hard_9d: "165", surf_hard_12d: "195",
-      // ---- BODYBOARD & SKIMBOARD ----
       bboard_1d: "8", bboard_4d: "30", bboard_6d: "40", bboard_9d: "53", bboard_12d: "70",
-      // ---- SURF SKATE ----
       skate_1d: "11", skate_4d: "35", skate_6d: "50",
-      // ---- BIKE · 1 day / extra day ----
       bike_mtb_1d: "25",  bike_mtb_extra: "22",
       bike_road_1d: "35", bike_road_extra: "33",
       bike_ebike_1d: "45", bike_ebike_extra: "42"
     }
   };
 
-  /* ---------- BARRA PROMO (sotto il menu, su index/shop/school) ----------
-     active: false = barra nascosta ovunque.  Per accenderla: active: true.
-     Cambi testo, CTA, link e data qui — si aggiorna su tutte le pagine. */
-  var PROMO = {
-    active: true,                                       // true = mostra la barra
-    text:  "Winter Special: -15% on lessons & rental",   // il messaggio (corto!)
-    cta:   "Book now",                                   // testo call-to-action (la freccia si aggiunge da sola)
-    link:  "school.html#book",                           // dove porta il clic
-    until: ""                                            // es. "31 Aug" per l'urgenza · "" = niente data
+  /* ---------- NOTE prezzi (testo con € dentro) per lingua ---------- */
+  var PRICE_NOTES = {
+    en: {
+      school: {
+        rental_windsurf_note:  "2h 50€ · +10€ each extra hour",
+        rental_windsurf_extra: "+10€ for wetsuit and harness",
+        rental_wing_note:      "2h 75€ · +10€ each extra hour",
+        rental_wing_extra:     "+10€ for wetsuit",
+        rental_extra_hour:     "+10€ each extra hour"
+      },
+      shop: {
+        windsurf_note: "* Extra carbon boom &amp; extension +10€/day · Board or sail only 40€/day, 195€/6 days",
+        kite_note:     "* Board or kite only 40€/day, 195€/6 days",
+        wing_note:     "* Board or wing only 40€/day, 195€/6 days"
+      }
+    },
+    es: {
+      school: {
+        rental_windsurf_note:  "2h 50€ · +10€ cada hora extra",
+        rental_windsurf_extra: "+10€ por neopreno y arnés",
+        rental_wing_note:      "2h 75€ · +10€ cada hora extra",
+        rental_wing_extra:     "+10€ por neopreno",
+        rental_extra_hour:     "+10€ cada hora extra"
+      },
+      shop: {
+        windsurf_note: "* Botavara de carbono y alargador extra +10€/día · Solo tabla o vela 40€/día, 195€/6 días",
+        kite_note:     "* Solo tabla o cometa 40€/día, 195€/6 días",
+        wing_note:     "* Solo tabla o wing 40€/día, 195€/6 días"
+      }
+    },
+    it: {
+      school: {
+        rental_windsurf_note:  "2h 50€ · +10€ ogni ora extra",
+        rental_windsurf_extra: "+10€ per muta e trapezio",
+        rental_wing_note:      "2h 75€ · +10€ ogni ora extra",
+        rental_wing_extra:     "+10€ per muta",
+        rental_extra_hour:     "+10€ ogni ora extra"
+      },
+      shop: {
+        windsurf_note: "* Boma in carbonio e prolunga extra +10€/giorno · Solo tavola o vela 40€/giorno, 195€/6 giorni",
+        kite_note:     "* Solo tavola o kite 40€/giorno, 195€/6 giorni",
+        wing_note:     "* Solo tavola o wing 40€/giorno, 195€/6 giorni"
+      }
+    },
+    de: {
+      school: {
+        rental_windsurf_note:  "2h 50€ · +10€ pro Extra-Stunde",
+        rental_windsurf_extra: "+10€ für Neopren und Trapez",
+        rental_wing_note:      "2h 75€ · +10€ pro Extra-Stunde",
+        rental_wing_extra:     "+10€ für Neopren",
+        rental_extra_hour:     "+10€ pro Extra-Stunde"
+      },
+      shop: {
+        windsurf_note: "* Extra Carbon-Gabelbaum &amp; Verlängerung +10€/Tag · Nur Board oder Segel 40€/Tag, 195€/6 Tage",
+        kite_note:     "* Nur Board oder Kite 40€/Tag, 195€/6 Tage",
+        wing_note:     "* Nur Board oder Wing 40€/Tag, 195€/6 Tage"
+      }
+    }
   };
+  // fondi le note tradotte nei prezzi
+  var _n = PRICE_NOTES[LANG] || PRICE_NOTES.en;
+  for (var sk in _n.school) { if (_n.school.hasOwnProperty(sk)) PRICES.school[sk] = _n.school[sk]; }
+  for (var pk in _n.shop)   { if (_n.shop.hasOwnProperty(pk))   PRICES.shop[pk]   = _n.shop[pk]; }
+
+  /* ---------- BARRA PROMO ----------
+     active/link/until = controllo unico (uguale per tutte le lingue).
+     Testo e CTA = tradotti per lingua in PROMO_TEXT. */
+  var PROMO = {
+    active: false,               // true = mostra la barra ovunque
+    link:  "school.html#book",   // dove porta il clic
+    until: ""                    // es. "31/08" per l'urgenza · "" = niente data
+  };
+  var PROMO_TEXT = {
+    en: { text: "Summer Special: -15% on lessons & rental", cta: "Book now" },
+    es: { text: "Oferta de verano: -15% en clases y alquiler", cta: "Reserva ya" },
+    it: { text: "Offerta estate: -15% su lezioni e noleggio", cta: "Prenota ora" },
+    de: { text: "Sommer-Special: -15% auf Kurse & Verleih", cta: "Jetzt buchen" }
+  };
+  var pt = PROMO_TEXT[LANG] || PROMO_TEXT.en;
 
   /* ============================================================
      Da qui in giù è il motore: non serve toccarlo.
      ============================================================ */
   var D = {};
-  // orari: chiavi usabili direttamente  (es. data-sd="shopBox")
   for (var k in HOURS) { if (HOURS.hasOwnProperty(k)) D[k] = HOURS[k]; }
-  // prezzi: usabili come percorso        (es. data-sd="prices.school.windsurf_lesson")
   D.prices = PRICES;
-
   window.SITE_DATA = D;
 
   function get(path) {
@@ -108,11 +169,11 @@
     if (!PROMO.active) { bar.style.display = 'none'; return; }
     bar.style.display = 'flex';
     if (PROMO.link) bar.setAttribute('href', PROMO.link);
-    var t = bar.querySelector('.promo-text');  if (t) t.textContent = PROMO.text || '';
-    var c = bar.querySelector('.promo-cta');   if (c) c.textContent = PROMO.cta  || '';
+    var t = bar.querySelector('.promo-text');  if (t) t.textContent = pt.text || '';
+    var c = bar.querySelector('.promo-cta');   if (c) c.textContent = pt.cta  || '';
     var u = bar.querySelector('.promo-until');
     if (u) {
-      if (PROMO.until) { u.textContent = '· ends ' + PROMO.until; u.style.display = ''; }
+      if (PROMO.until) { u.textContent = l.promoEnds + PROMO.until; u.style.display = ''; }
       else { u.textContent = ''; u.style.display = 'none'; }
     }
   }
