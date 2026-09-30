@@ -106,11 +106,11 @@
     },
     de: {
       school: {
-        rental_windsurf_note:  "2h 50€ · +10€ pro Extra-Stunde",
+        rental_windsurf_note:  "2h 50€ · +10€ je weitere Stunde",
         rental_windsurf_extra: "+10€ für Neopren und Trapez",
-        rental_wing_note:      "2h 75€ · +10€ pro Extra-Stunde",
+        rental_wing_note:      "2h 75€ · +10€ je weitere Stunde",
         rental_wing_extra:     "+10€ für Neopren",
-        rental_extra_hour:     "+10€ pro Extra-Stunde"
+        rental_extra_hour:     "+10€ je weitere Stunde"
       },
       shop: {
         windsurf_note: "* Extra Carbon-Gabelbaum &amp; Verlängerung +10€/Tag · Nur Board oder Segel 40€/Tag, 195€/6 Tage",
@@ -136,7 +136,7 @@
     en: { text: "Summer Special: -15% on lessons & rental", cta: "Book now" },
     es: { text: "Oferta de verano: -15% en clases y alquiler", cta: "Reserva ya" },
     it: { text: "Offerta estate: -15% su lezioni e noleggio", cta: "Prenota ora" },
-    de: { text: "Sommer-Special: -15% auf Kurse & Verleih", cta: "Jetzt buchen" }
+    de: { text: "Sommer Special: -15% auf Kurse & Verleih", cta: "Jetzt buchen" }
   };
   var pt = PROMO_TEXT[LANG] || PROMO_TEXT.en;
 
