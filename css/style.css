@@ -1,11 +1,11 @@
 /* fonts */
-@font-face{font-family:'Bebas Neue';font-style:normal;font-weight:400;font-display:swap;src:url('../fonts/bebas-neue-400.woff2') format('woff2');}
-@font-face{font-family:'Barlow';font-style:normal;font-weight:400;font-display:swap;src:url('../fonts/barlow-400.woff2') format('woff2');}
-@font-face{font-family:'Barlow';font-style:italic;font-weight:400;font-display:swap;src:url('../fonts/barlow-400-italic.woff2') format('woff2');}
-@font-face{font-family:'Barlow';font-style:normal;font-weight:600;font-display:swap;src:url('../fonts/barlow-600.woff2') format('woff2');}
-@font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:400;font-display:swap;src:url('../fonts/barlow-condensed-400.woff2') format('woff2');}
-@font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:600;font-display:swap;src:url('../fonts/barlow-condensed-600.woff2') format('woff2');}
-@font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:700;font-display:swap;src:url('../fonts/barlow-condensed-700.woff2') format('woff2');}
+@font-face{font-family:'Bebas Neue';font-style:normal;font-weight:400;font-display:optional;src:url('../fonts/bebas-neue-400.woff2') format('woff2');}
+@font-face{font-family:'Barlow';font-style:normal;font-weight:400;font-display:optional;src:url('../fonts/barlow-400.woff2') format('woff2');}
+@font-face{font-family:'Barlow';font-style:italic;font-weight:400;font-display:optional;src:url('../fonts/barlow-400-italic.woff2') format('woff2');}
+@font-face{font-family:'Barlow';font-style:normal;font-weight:600;font-display:optional;src:url('../fonts/barlow-600.woff2') format('woff2');}
+@font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:400;font-display:optional;src:url('../fonts/barlow-condensed-400.woff2') format('woff2');}
+@font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:600;font-display:optional;src:url('../fonts/barlow-condensed-600.woff2') format('woff2');}
+@font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:700;font-display:optional;src:url('../fonts/barlow-condensed-700.woff2') format('woff2');}
 @font-face{font-family:'BebasFallback';src:local('Arial'),local('Helvetica'),local('sans-serif');size-adjust:87.67%;ascent-override:102.65%;descent-override:34.22%;line-gap-override:0.00%;}
 @font-face{font-family:'BarlowFallback';src:local('Arial'),local('Helvetica'),local('sans-serif');size-adjust:116.22%;ascent-override:86.04%;descent-override:17.21%;line-gap-override:0.00%;}
 @font-face{font-family:'BarlowCondensedFallback';src:local('Arial'),local('Helvetica'),local('sans-serif');size-adjust:89.94%;ascent-override:111.19%;descent-override:22.24%;line-gap-override:0.00%;}
@@ -298,7 +298,7 @@ footer { background: #111; padding: 48px 48px 28px; }
 .page-school .hero-slides { position: absolute; inset: 0; }
 .page-school .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease; }
 .page-school .hero-slide.active { opacity: 1; }
-.page-school .hero-bg { position: absolute; inset: 0; background-image: url('../images/background6.jpg'); background-size: cover; background-position: center 40%; }
+.page-school .hero-bg { position: absolute; inset: 0; background-image: url('../images/background6.webp'); background-size: cover; background-position: center 40%; }
 .page-school .hero-ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', 'BarlowCondensedFallback', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #ccc; }
 .page-school .hero-content { position: relative; z-index: 3; padding: 0 48px 36px; }
 .page-school .hero-title { font-family: 'Bebas Neue', 'BebasFallback', sans-serif; font-size: 88px; letter-spacing: 6px; line-height: 0.95; color: #111; padding-top: 4px; }
@@ -394,7 +394,7 @@ footer { background: #111; padding: 48px 48px 28px; }
 .page-shop .hero-slides { position: absolute; inset: 0; }
 .page-shop .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease; }
 .page-shop .hero-slide.active { opacity: 1; }
-.page-shop .hero-bg { position: absolute; inset: 0; background-image: url('../images/background6.jpg'); background-size: cover; background-position: center 40%; }
+.page-shop .hero-bg { position: absolute; inset: 0; background-image: url('../images/background6.webp'); background-size: cover; background-position: center 40%; }
 .page-shop .hero-ph { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', 'BarlowCondensedFallback', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #ccc; }
 .page-shop .hero-content { position: relative; z-index: 3; padding: 0 48px 36px; }
 .page-shop .hero-title { font-family: 'Bebas Neue', 'BebasFallback', sans-serif; font-size: 88px; letter-spacing: 6px; line-height: 0.95; color: #111; padding-top: 4px; }
@@ -472,13 +472,13 @@ footer { background: #111; padding: 48px 48px 28px; }
 
 /* --- about --- */
 .page-about .hero { position: relative; height: 520px; overflow: hidden; display: flex; align-items: flex-end; }
-.page-about .hero-bg { position: absolute; inset: 0; background-image: url('../images/about-hero.jpg'); background-size: cover; background-position: center 55%; }
+.page-about .hero-bg { position: absolute; inset: 0; background-image: url('../images/about-hero.webp'); background-size: cover; background-position: center 55%; }
 .page-about .hero-content { position: relative; z-index: 2; padding: 0 48px 36px; }
 .page-about .hero-title { font-family: 'Bebas Neue', 'BebasFallback', sans-serif; font-size: 88px; letter-spacing: 6px; line-height: 0.95; color: #111; padding-top: 4px; }
 
 /* ===== LEGAL PAGES (privacy, terms) ===== */
 .page-legal .hero { position: relative; height: 420px; overflow: hidden; display: flex; align-items: flex-end; }
-.page-legal .hero-bg { position: absolute; inset: 0; background-image: url('../images/background6.jpg'); background-size: cover; background-position: center 40%; }
+.page-legal .hero-bg { position: absolute; inset: 0; background-image: url('../images/background6.webp'); background-size: cover; background-position: center 40%; }
 .page-legal .hero-content { position: relative; z-index: 2; padding: 0 48px 36px; }
 .page-legal .hero-title { font-family: 'Bebas Neue', 'BebasFallback', sans-serif; font-size: 80px; letter-spacing: 5px; line-height: 0.95; color: #111; padding-top: 4px; }
 .legal { max-width: 860px; margin: 0 auto; padding: 64px 48px 80px; }
