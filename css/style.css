@@ -236,6 +236,7 @@ footer { background: #111; padding: 48px 48px 28px; }
 .page-index .sp-inner { padding: 48px 48px 24px; display: flex; flex-direction: column; flex: 1; }
 .page-index .sp-inner .sp-sports { flex: 1; align-content: flex-start; }
 .page-index .sp-info-boxes { display: flex; flex-direction: column; margin-top: 24px; }
+.page-index .sp-info-boxes { min-height: 180px; }
 .page-index .sp-info-box { display: flex; align-items: center; gap: 14px; padding: 14px 48px; background: transparent; transition: background 0.2s; cursor: default; width: 100%; }
 .page-index .sp-info-box:hover { background: #f5f2ed; }
 .page-index .sp-info-box svg { flex-shrink: 0; color: #273043; }
@@ -587,6 +588,7 @@ footer { background: #111; padding: 48px 48px 28px; }
   .page-index .sport-pill img { height: 29px; }
   .page-index .sport-pill span { font-size: 17px; }
   .page-index .sp-info-boxes { margin-top: 16px; border-bottom: none; }
+  .page-index .sp-info-boxes { min-height: 0; }
   .page-index .sp-info-box { margin: 0; padding: 10px 24px; }
   .page-index .sp-btn { font-size: 15px; letter-spacing: 2px; padding: 12px 22px; white-space: normal; text-align: center; line-height: 1.25; }
   .page-index .review-slide { grid-template-columns: 1fr; min-height: 0; }

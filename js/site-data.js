@@ -113,7 +113,7 @@
         rental_extra_hour:     "+10€ je weitere Stunde"
       },
       shop: {
-        windsurf_note: "* Extra Carbon-Gabelbaum &amp; Verlängerung +10€/Tag · Nur Board oder Segel 40€/Tag, 195€/6 Tage",
+        windsurf_note: "* Extra Carbon Gabelbaum &amp; Verlängerung +10€/Tag · Nur Board oder Segel 40€/Tag, 195€/6 Tage",
         kite_note:     "* Nur Board oder Kite 40€/Tag, 195€/6 Tage",
         wing_note:     "* Nur Board oder Wing 40€/Tag, 195€/6 Tage"
       }
