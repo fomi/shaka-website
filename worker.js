@@ -280,27 +280,6 @@ async function handleUnsub(request, env) {
   return new Response(page, { status: 200, headers: { 'content-type': 'text/html; charset=utf-8' } });
 }
 
-// GET /admin/api/test-emails?to=..&point=school|shop&lang=it&name=.. — TEMPORARY
-// (owner only, behind Access). Sends welcome + review to ONE address on demand,
-// so you can preview both without waiting for the cron. Safe to remove after.
-async function handleTestEmails(request, env) {
-  const u = getUser(request);
-  if (u.role !== 'owner') return json({ error: 'forbidden' }, 403);
-  if (!env.BREVO_API_KEY) return json({ hasKey: false, note: 'BREVO_API_KEY is not set' });
-  const q = new URL(request.url).searchParams;
-  const to = (q.get('to') || EMAIL.reply_to).trim();
-  const point = (q.get('point') === 'shop') ? 'shop' : 'school';
-  const lang = normLang(q.get('lang'));
-  const name = (q.get('name') || 'Test').slice(0, 40);
-  const client = { id: 0, first_name: name, email: to, point: point, lang: lang };
-  const out = {};
-  try { const w = welcomeEmail(client); out.welcome = await sendBrevo(env, to, name, w.subject, w.html); }
-  catch (e) { out.welcome = { error: String(e) }; }
-  try { const r = await reviewEmail(env, client); out.review = await sendBrevo(env, to, name, r.subject, r.html); }
-  catch (e) { out.review = { error: String(e) }; }
-  return json({ to: to, point: point, lang: lang, result: out });
-}
-
 // ---- GET /admin/api/me , /rental/api/me ------------------------------------
 function handleMe(request) {
   const u = getUser(request);
@@ -520,10 +499,6 @@ export default {
       if (p === '/admin/api/me') {
         if (m !== 'GET') return json({ error: 'method_not_allowed' }, 405);
         return handleMe(request);
-      }
-      if (p === '/admin/api/test-emails') {
-        if (m !== 'GET') return json({ error: 'method_not_allowed' }, 405);
-        return await handleTestEmails(request, env);
       }
       if (p === '/admin/api/clients') {
         if (m !== 'GET') return json({ error: 'method_not_allowed' }, 405);
