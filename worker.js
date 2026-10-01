@@ -280,6 +280,34 @@ async function handleUnsub(request, env) {
   return new Response(page, { status: 200, headers: { 'content-type': 'text/html; charset=utf-8' } });
 }
 
+// GET /admin/api/test-email?to=.. — TEMPORARY diagnostic (owner only, behind
+// Access). Reports whether the key is present and Brevo's exact response.
+// Safe to remove once email delivery is confirmed.
+async function handleTestEmail(request, env) {
+  const u = getUser(request);
+  if (u.role !== 'owner') return json({ error: 'forbidden' }, 403);
+  const to = (new URL(request.url).searchParams.get('to') || EMAIL.reply_to).trim();
+  if (!env.BREVO_API_KEY) return json({ hasKey: false, note: 'BREVO_API_KEY is not set on the Worker' });
+  try {
+    const mail = welcomeEmail({ first_name: 'Test', lang: 'it', point: 'school' });
+    const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: { 'api-key': env.BREVO_API_KEY, 'content-type': 'application/json', 'accept': 'application/json' },
+      body: JSON.stringify({
+        sender: { name: EMAIL.from_name, email: EMAIL.from_email },
+        to: [{ email: to }],
+        replyTo: { email: EMAIL.reply_to, name: EMAIL.from_name },
+        subject: mail.subject,
+        htmlContent: mail.html
+      })
+    });
+    const body = await res.text();
+    return json({ hasKey: true, to: to, status: res.status, ok: res.ok, brevo: body.slice(0, 600) });
+  } catch (e) {
+    return json({ hasKey: true, error: String(e) });
+  }
+}
+
 // ---- GET /admin/api/me , /rental/api/me ------------------------------------
 function handleMe(request) {
   const u = getUser(request);
@@ -499,6 +527,10 @@ export default {
       if (p === '/admin/api/me') {
         if (m !== 'GET') return json({ error: 'method_not_allowed' }, 405);
         return handleMe(request);
+      }
+      if (p === '/admin/api/test-email') {
+        if (m !== 'GET') return json({ error: 'method_not_allowed' }, 405);
+        return await handleTestEmail(request, env);
       }
       if (p === '/admin/api/clients') {
         if (m !== 'GET') return json({ error: 'method_not_allowed' }, 405);
