@@ -1,21 +1,62 @@
 // Cloudflare Worker entry for the "shaka-website" project.
 //
 // Routing is asset-first: any request that matches a static file (index.html,
-// checkin-school.html -> /checkin-school, checkin-shop.html -> /checkin-shop,
-// admin.html -> /admin, ...) is served directly and NEVER runs this Worker.
-// This Worker is invoked ONLY for /api/checkin and /api/clients.
+// checkin-school.html -> /checkin-school, admin.html -> /admin, ...) is served
+// directly and NEVER runs this Worker.
+//
+// This Worker handles only these paths:
+//   POST /api/checkin                 PUBLIC (beach/shop check-in form)
+//   GET  /admin/api/me                identity + role
+//   GET  /admin/api/clients           check-ins list      owner, rental, instructor
+//   GET  /admin/api/rentals           rentals overview     owner, rental
+//   POST /admin/api/client-update     edit check-in        owner
+//   POST /admin/api/client-delete     delete check-in      owner
+//   GET  /rental/api/me               identity + role
+//   GET  /rental/api/clients          shop check-ins       owner, rental
+//   GET  /rental/api/rentals          rentals list         owner, rental
+//   POST /rental/api/rental           add/edit rental      owner, rental
+//   POST /rental/api/rental-delete    delete rental        owner, rental
+//
+// /admin/* and /rental/* are behind Cloudflare Access (two applications), so any
+// request reaching these handlers has already been authenticated by Access,
+// which injects the Cf-Access-Authenticated-User-Email header. We map that email
+// to a role and enforce per-role permissions here as a second layer of defense.
 //
 // Bindings/secrets (wrangler.jsonc + project secrets):
 //   ASSETS            -> static assets binding
 //   DB                -> D1 database binding -> shaka-clients
-//   TURNSTILE_SECRET  -> secret (Turnstile secret key)
-//   ADMIN_PASSWORD    -> secret (password for /admin)
+//   TURNSTILE_SECRET  -> secret (Turnstile secret key, used by /api/checkin)
 
 function json(obj, status) {
   return new Response(JSON.stringify(obj), {
     status: status || 200,
     headers: { 'content-type': 'application/json; charset=utf-8' }
   });
+}
+
+// ---- Roles --------------------------------------------------------------
+// Email (from Cloudflare Access) -> role. Lowercase keys.
+const ROLES = {
+  'fomigiorgix@gmail.com': 'owner',      // Giorgio: full access
+  'info@shaka-fuerte.com': 'rental',     // Matteo: rental full + check-ins read only
+  'shaka.center@gmail.com': 'instructor' // Instructors: check-ins read only
+};
+
+function getUser(request) {
+  const email = (request.headers.get('Cf-Access-Authenticated-User-Email') || '').trim().toLowerCase();
+  return { email: email, role: ROLES[email] || null };
+}
+
+// Permissions per role.
+//   checkins_read  : view the check-ins table
+//   rentals_read   : view rentals (admin overview + /rental page)
+//   rentals_write  : add / edit / delete rentals
+//   checkins_write : edit / delete a check-in record
+function can(role, action) {
+  if (role === 'owner') return true;
+  if (role === 'rental') return action === 'checkins_read' || action === 'rentals_read' || action === 'rentals_write';
+  if (role === 'instructor') return action === 'checkins_read';
+  return false;
 }
 
 // Union of school + shop activities (canonical English values stored in DB).
@@ -25,7 +66,19 @@ const ALLOWED_ACTIVITIES = [
 ];
 const ALLOWED_POINTS = ['school', 'shop'];
 
-// ---- POST /api/checkin ------------------------------------------------------
+const RENTAL_ITEMS = [
+  'Windsurf rental', 'Kite rental', 'Kite lesson', 'Wingfoil rental',
+  'Surf rental', 'Bodyboard / Skimboard rental', 'Skate rental', 'Altro'
+];
+
+// ---- GET /admin/api/me , /rental/api/me ------------------------------------
+function handleMe(request) {
+  const u = getUser(request);
+  if (!u.role) return json({ error: 'forbidden' }, 403);
+  return json({ ok: true, email: u.email, role: u.role });
+}
+
+// ---- POST /api/checkin (PUBLIC) --------------------------------------------
 async function handleCheckin(request, env) {
   let data;
   try { data = await request.json(); }
@@ -83,11 +136,10 @@ async function handleCheckin(request, env) {
   return json({ ok: true });
 }
 
-// ---- GET /api/clients (admin) ----------------------------------------------
+// ---- GET clients (check-ins) -----------------------------------------------
 async function handleClients(request, env) {
-  const auth = request.headers.get('Authorization') || '';
-  const pw = auth.replace(/^Bearer\s+/i, '');
-  if (!env.ADMIN_PASSWORD || pw !== env.ADMIN_PASSWORD) return json({ error: 'unauthorized' }, 401);
+  const u = getUser(request);
+  if (!can(u.role, 'checkins_read')) return json({ error: 'forbidden' }, 403);
 
   const url = new URL(request.url);
   const q = (url.searchParams.get('q') || '').trim();
@@ -109,21 +161,10 @@ async function handleClients(request, env) {
   return json({ ok: true, count: results.length, clients: results });
 }
 
-// ---- Rentals (admin-authenticated) -----------------------------------------
-function checkAdmin(request, env) {
-  const auth = request.headers.get('Authorization') || '';
-  const pw = auth.replace(/^Bearer\s+/i, '');
-  return env.ADMIN_PASSWORD && pw === env.ADMIN_PASSWORD;
-}
-
-const RENTAL_ITEMS = [
-  'Windsurf rental', 'Kite rental', 'Kite lesson', 'Wingfoil rental',
-  'Surf rental', 'Bodyboard / Skimboard rental', 'Skate rental', 'Altro'
-];
-
-// GET /api/rentals — all rental lines (for /admin and /rental page)
+// ---- GET rentals -----------------------------------------------------------
 async function handleRentalsGet(request, env) {
-  if (!checkAdmin(request, env)) return json({ error: 'unauthorized' }, 401);
+  const u = getUser(request);
+  if (!can(u.role, 'rentals_read')) return json({ error: 'forbidden' }, 403);
   const { results } = await env.DB.prepare(
     `SELECT id, client_id, item, extras, start_at, days, price, paid, notes, returned, returned_at, created_at
        FROM rentals ORDER BY created_at DESC LIMIT 5000`
@@ -131,9 +172,10 @@ async function handleRentalsGet(request, env) {
   return json({ ok: true, rentals: results });
 }
 
-// POST /api/rental — insert (no id) or update (id present) one rental line
+// ---- POST rental (insert/update) -------------------------------------------
 async function handleRentalSave(request, env) {
-  if (!checkAdmin(request, env)) return json({ error: 'unauthorized' }, 401);
+  const u = getUser(request);
+  if (!can(u.role, 'rentals_write')) return json({ error: 'forbidden' }, 403);
   let d;
   try { d = await request.json(); } catch (e) { return json({ error: 'bad_request' }, 400); }
 
@@ -169,9 +211,10 @@ async function handleRentalSave(request, env) {
   }
 }
 
-// POST /api/rental-delete — delete a single rental line
+// ---- POST rental-delete ----------------------------------------------------
 async function handleRentalDelete(request, env) {
-  if (!checkAdmin(request, env)) return json({ error: 'unauthorized' }, 401);
+  const u = getUser(request);
+  if (!can(u.role, 'rentals_write')) return json({ error: 'forbidden' }, 403);
   let d;
   try { d = await request.json(); } catch (e) { return json({ error: 'bad_request' }, 400); }
   const id = parseInt(d.id, 10);
@@ -182,9 +225,10 @@ async function handleRentalDelete(request, env) {
   } catch (e) { return json({ error: 'server' }, 500); }
 }
 
-// POST /api/client-update — edit point / activity / participants of a check-in
+// ---- POST client-update ----------------------------------------------------
 async function handleClientUpdate(request, env) {
-  if (!checkAdmin(request, env)) return json({ error: 'unauthorized' }, 401);
+  const u = getUser(request);
+  if (!can(u.role, 'checkins_write')) return json({ error: 'forbidden' }, 403);
   let d;
   try { d = await request.json(); } catch (e) { return json({ error: 'bad_request' }, 400); }
   const id = parseInt(d.id, 10);
@@ -200,9 +244,10 @@ async function handleClientUpdate(request, env) {
   } catch (e) { return json({ error: 'server' }, 500); }
 }
 
-// POST /api/client-delete — delete a check-in AND its rentals (cascade)
+// ---- POST client-delete (cascade rentals) ----------------------------------
 async function handleClientDelete(request, env) {
-  if (!checkAdmin(request, env)) return json({ error: 'unauthorized' }, 401);
+  const u = getUser(request);
+  if (!can(u.role, 'checkins_write')) return json({ error: 'forbidden' }, 403);
   let d;
   try { d = await request.json(); } catch (e) { return json({ error: 'bad_request' }, 400); }
   const id = parseInt(d.id, 10);
@@ -214,39 +259,61 @@ async function handleClientDelete(request, env) {
   } catch (e) { return json({ error: 'server' }, 500); }
 }
 
-// ---- Entry ------------------------------------------------------------------
+// ---- Entry -----------------------------------------------------------------
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const p = url.pathname;
+    const m = request.method;
     try {
+      // Public
       if (p === '/api/checkin') {
-        if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
+        if (m !== 'POST') return json({ error: 'method_not_allowed' }, 405);
         return await handleCheckin(request, env);
       }
-      if (p === '/api/clients') {
-        if (request.method !== 'GET') return json({ error: 'method_not_allowed' }, 405);
+
+      // Admin (behind Access app "Shaka Admin")
+      if (p === '/admin/api/me') {
+        if (m !== 'GET') return json({ error: 'method_not_allowed' }, 405);
+        return handleMe(request);
+      }
+      if (p === '/admin/api/clients') {
+        if (m !== 'GET') return json({ error: 'method_not_allowed' }, 405);
         return await handleClients(request, env);
       }
-      if (p === '/api/rentals') {
-        if (request.method !== 'GET') return json({ error: 'method_not_allowed' }, 405);
+      if (p === '/admin/api/rentals') {
+        if (m !== 'GET') return json({ error: 'method_not_allowed' }, 405);
         return await handleRentalsGet(request, env);
       }
-      if (p === '/api/rental') {
-        if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
-        return await handleRentalSave(request, env);
-      }
-      if (p === '/api/rental-delete') {
-        if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
-        return await handleRentalDelete(request, env);
-      }
-      if (p === '/api/client-update') {
-        if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
+      if (p === '/admin/api/client-update') {
+        if (m !== 'POST') return json({ error: 'method_not_allowed' }, 405);
         return await handleClientUpdate(request, env);
       }
-      if (p === '/api/client-delete') {
-        if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
+      if (p === '/admin/api/client-delete') {
+        if (m !== 'POST') return json({ error: 'method_not_allowed' }, 405);
         return await handleClientDelete(request, env);
+      }
+
+      // Rental (behind Access app "Shaka Rental")
+      if (p === '/rental/api/me') {
+        if (m !== 'GET') return json({ error: 'method_not_allowed' }, 405);
+        return handleMe(request);
+      }
+      if (p === '/rental/api/clients') {
+        if (m !== 'GET') return json({ error: 'method_not_allowed' }, 405);
+        return await handleClients(request, env);
+      }
+      if (p === '/rental/api/rentals') {
+        if (m !== 'GET') return json({ error: 'method_not_allowed' }, 405);
+        return await handleRentalsGet(request, env);
+      }
+      if (p === '/rental/api/rental') {
+        if (m !== 'POST') return json({ error: 'method_not_allowed' }, 405);
+        return await handleRentalSave(request, env);
+      }
+      if (p === '/rental/api/rental-delete') {
+        if (m !== 'POST') return json({ error: 'method_not_allowed' }, 405);
+        return await handleRentalDelete(request, env);
       }
     } catch (e) {
       return json({ error: 'server' }, 500);

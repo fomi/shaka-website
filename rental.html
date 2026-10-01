@@ -106,15 +106,10 @@
 </head>
 <body>
 <div class="wrap" id="root">
-  <!-- Login -->
-  <div class="card login" id="login">
+  <!-- Gate (shown only if the Cloudflare Access identity is missing) -->
+  <div class="card login" id="gate" hidden>
     <h1>Shaka Rental</h1>
-    <p class="sub">Back-office noleggi. Inserisci la password.</p>
-    <label class="lg" for="pw">Password</label>
-    <input type="password" id="pw" autocomplete="current-password">
-    <div class="rowck"><input type="checkbox" id="remember"><label for="remember">Ricorda su questo tablet</label></div>
-    <div style="margin-top:16px"><button class="btn" id="loginBtn">Entra</button></div>
-    <div class="err" id="loginErr"></div>
+    <p class="sub">Sessione non valida o non autorizzata. Ricarica la pagina.</p>
   </div>
 
   <!-- App -->
@@ -126,9 +121,7 @@
 (function(){
   var ITEMS = ["Windsurf rental","Kite rental","Kite lesson","Wingfoil rental","Surf rental","Bodyboard / Skimboard rental","Skate rental","Altro"];
   var EXTRAS = ["Muta","Casco","Trapezio","Boma carbonio"];
-  var LS_KEY = 'shaka_rental_pw';
 
-  var pw = '';
   var clients = [], rentals = [], selId = null, editing = null, pendingDel = null; // editing: rental id or 'new'
 
   function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(function(){t.classList.remove('show');},1600); }
@@ -146,37 +139,29 @@
   function isToday(iso){ var d=new Date(iso), n=new Date(); return d.getFullYear()===n.getFullYear()&&d.getMonth()===n.getMonth()&&d.getDate()===n.getDate(); }
 
   // ---- data ----
-  function api(path, opts){ opts=opts||{}; opts.headers=Object.assign({'Authorization':'Bearer '+pw}, opts.headers||{}); return fetch(path,opts).then(function(r){ if(r.status===401) throw new Error('auth'); return r.json(); }); }
+  function api(path, opts){ opts=opts||{}; return fetch(path,opts).then(function(r){ if(r.status===401||r.status===403) throw new Error('auth'); return r.json(); }); }
   function loadAll(){
-    return Promise.all([ api('/api/clients'), api('/api/rentals') ]).then(function(res){
+    return Promise.all([ api('/rental/api/clients'), api('/rental/api/rentals') ]).then(function(res){
       clients = (res[0]&&res[0].clients)||[];
       rentals = (res[1]&&res[1].rentals)||[];
     });
   }
 
-  // ---- login ----
-  function doLogin(remembered){
-    if(!remembered){ pw = document.getElementById('pw').value; }
-    if(!pw){ document.getElementById('loginErr').textContent='Inserisci la password.'; return; }
-    document.getElementById('loginErr').textContent='Controllo…';
+  // ---- init (identity from Cloudflare Access) ----
+  function start(){
     loadAll().then(function(){
-      if(!remembered && document.getElementById('remember').checked){ try{ localStorage.setItem(LS_KEY, pw); }catch(e){} }
-      document.getElementById('login').hidden = true;
       document.getElementById('app').hidden = false;
       renderApp();
       openFromUrl();
     }).catch(function(){
-      document.getElementById('loginErr').textContent='Password errata o problema di connessione.';
-      pw=''; try{ localStorage.removeItem(LS_KEY); }catch(e){}
+      document.getElementById('gate').hidden = false;
     });
   }
-  document.getElementById('loginBtn').addEventListener('click', function(){ doLogin(false); });
-  document.getElementById('pw').addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(false); });
   function openFromUrl(){
     try{ var m=new URLSearchParams(location.search).get('c'); if(m){ var id=parseInt(m,10);
       if(id && clients.some(function(c){return c.id===id;})){ window.pick(id); } } }catch(e){}
   }
-  (function tryRemembered(){ try{ var s=localStorage.getItem(LS_KEY); if(s){ pw=s; doLogin(true); } }catch(e){} })();
+  start();
 
   // ---- render list ----
   function renderApp(){
@@ -332,7 +317,7 @@
   }
 
   function save(payload){
-    api('/api/rental', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(payload) })
+    api('/rental/api/rental', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(payload) })
       .then(function(res){ if(res&&res.ok){ return loadAll(); } throw new Error('save'); })
       .then(function(){ editing=null; toast('Salvato'); renderPanel(); })
       .catch(function(){ toast('Errore nel salvataggio'); });
@@ -345,7 +330,7 @@
       return;
     }
     pendingDel=null;
-    api('/api/rental-delete', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({id:id}) })
+    api('/rental/api/rental-delete', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({id:id}) })
       .then(function(res){ if(res&&res.ok){ return loadAll(); } throw new Error('del'); })
       .then(function(){ toast('Noleggio eliminato'); renderPanel(); })
       .catch(function(){ toast('Errore eliminazione'); });

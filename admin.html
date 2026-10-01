@@ -100,20 +100,16 @@
 <body>
 <div class="wrap" id="root">
 
-  <!-- Login -->
-  <div class="login" id="login">
+  <!-- Gate (shown only if the Cloudflare Access identity is missing) -->
+  <div class="login" id="gate" hidden>
     <h1>Shaka Admin</h1>
-    <p class="sub">Inserisci la password.</p>
-    <label class="lg" for="pw">Password</label>
-    <input type="password" id="pw" autocomplete="current-password">
-    <label class="ck"><input type="checkbox" id="remember"> Ricorda su questo dispositivo</label>
-    <div style="margin-top:16px"><button class="btn" id="loginBtn" style="width:100%">Entra</button></div>
-    <div class="err" id="loginErr"></div>
+    <p class="sub">Sessione non valida o non autorizzata. Ricarica la pagina.</p>
   </div>
 
   <!-- App -->
   <div id="app" hidden>
 
+    <div id="rentalSection">
     <div class="head-row"><h1>Noleggio Shop</h1><a class="btn ghost" href="/rental">Apri /rental ›</a></div>
     <p class="sub">Materiale ancora fuori e pagamenti aperti.</p>
     <div class="stats" id="rstats"></div>
@@ -133,6 +129,7 @@
         <thead><tr><th>Cliente</th><th>Attrezzatura</th><th>Inizio</th><th>Riconsegna</th><th class="num">Prezzo</th><th class="num">Pagato</th><th class="num">Saldo</th><th>Azioni</th></tr></thead>
         <tbody id="rrows"></tbody>
       </table>
+    </div>
     </div>
 
     <h1 style="margin-top:38px">Check-ins</h1>
@@ -165,8 +162,7 @@
 
 <script>
 (function(){
-  var LS_KEY='shaka_admin_pw';
-  var pw='', current=[], rentalsData=[], clientsById={}, tmr;
+  var role=null, current=[], rentalsData=[], clientsById={}, tmr;
   var ACTS=["Windsurf lesson","Wingfoil lesson","Windsurf rental","Wingfoil rental","SUP / Kayak rental","Kite rental","Kite lesson","Surf rental","Bodyboard / Skimboard rental","Skate rental"];
 
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
@@ -181,34 +177,31 @@
   function cliName(cid){ var c=clientsById[cid]; return c?(c.first_name+' '+c.last_name):('#'+cid); }
   function cliPhone(cid){ var c=clientsById[cid]; return c?c.phone:''; }
 
-  // ---- login ----
-  function doLogin(remembered){
-    if(!remembered){ pw=document.getElementById('pw').value; }
-    if(!pw){ document.getElementById('loginErr').textContent='Inserisci la password.'; return; }
-    document.getElementById('loginErr').textContent='Controllo…';
-    load().then(function(){
-      if(!remembered && document.getElementById('remember').checked){ try{ localStorage.setItem(LS_KEY,pw); }catch(e){} }
-      document.getElementById('login').hidden=true;
-      document.getElementById('app').hidden=false;
-      setCkView(window.innerWidth<700?'cards':'table');
-    }).catch(function(){
-      document.getElementById('loginErr').textContent='Password errata o problema di connessione.';
-      pw=''; try{ localStorage.removeItem(LS_KEY); }catch(e){}
-    });
+  // ---- init (identity from Cloudflare Access) ----
+  function applyRole(){
+    if(role==='instructor'){ var rs=document.getElementById('rentalSection'); if(rs) rs.hidden=true; }
+    if(role!=='owner'){ var cb=document.getElementById('csvBtn'); if(cb) cb.hidden=true; }
   }
-  document.getElementById('loginBtn').addEventListener('click', function(){ doLogin(false); });
-  document.getElementById('pw').addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(false); });
+  function init(){
+    fetch('/admin/api/me').then(function(r){ if(!r.ok) throw new Error('auth'); return r.json(); })
+      .then(function(me){ role=me.role; applyRole(); return load(); })
+      .then(function(){
+        document.getElementById('app').hidden=false;
+        setCkView(window.innerWidth<700?'cards':'table');
+      }).catch(function(){
+        document.getElementById('gate').hidden=false;
+      });
+  }
 
   // ---- data ----
   function load(){
-    return Promise.all([
-      fetch('/api/clients',{headers:{'Authorization':'Bearer '+pw}}).then(function(r){ if(!r.ok) throw new Error('auth'); return r.json(); }),
-      fetch('/api/rentals',{headers:{'Authorization':'Bearer '+pw}}).then(function(r){ if(!r.ok) throw new Error('auth'); return r.json(); })
-    ]).then(function(res){
+    var reqs=[ fetch('/admin/api/clients').then(function(r){ if(!r.ok) throw new Error('auth'); return r.json(); }) ];
+    if(role!=='instructor'){ reqs.push(fetch('/admin/api/rentals').then(function(r){ if(!r.ok) throw new Error('auth'); return r.json(); })); }
+    return Promise.all(reqs).then(function(res){
       current=(res[0]&&res[0].clients)||[];
       rentalsData=(res[1]&&res[1].rentals)||[];
       clientsById={}; current.forEach(function(c){ clientsById[c.id]=c; });
-      render(); renderRentals();
+      render(); if(role!=='instructor') renderRentals();
     });
   }
 
@@ -244,11 +237,7 @@
       '</tr>';
     }).join('');
   }
-  function postRental(payload){ return fetch('/api/rental',{method:'POST',headers:{'Authorization':'Bearer '+pw,'content-type':'application/json'},body:JSON.stringify(payload)}).then(function(r){return r.json();}).then(function(res){ if(!res||!res.ok) throw new Error('save'); return load(); }); }
-  function rentalById(id){ return rentalsData.filter(function(r){return r.id===id;})[0]; }
-  function basePayload(r){ return {id:r.id,client_id:r.client_id,item:r.item,extras:(r.extras?r.extras.split(',').map(function(s){return s.trim();}):[]),start_at:r.start_at,days:r.days,price:r.price,paid:r.paid,notes:r.notes,returned:!!r.returned}; }
-  window.savePaid=function(id){ var r=rentalById(id); if(!r) return; var v=parseFloat(document.getElementById('pay_'+id).value)||0; var p=basePayload(r); p.paid=v; postRental(p).catch(function(){ alert('Errore'); }); };
-  window.markReturned=function(id){ var r=rentalById(id); if(!r) return; var p=basePayload(r); p.returned=true; postRental(p).catch(function(){ alert('Errore'); }); };
+  // Rental editing lives in /rental; the admin rental table is read-only.
   document.getElementById('rentalFilter').addEventListener('change', renderRentals);
   document.getElementById('rRefreshBtn').addEventListener('click', function(){ load().catch(function(){}); });
 
@@ -285,7 +274,9 @@
       '<td style="white-space:normal;min-width:130px">'+parts+'</td>'+
       '<td>'+mk+'</td>'+
       '<td>'+esc(c.lang)+'</td>'+
-      '<td><span class="acts"><button class="chip" onclick="editClient('+c.id+')">Modifica</button><button class="chip danger" onclick="delClient('+c.id+')">Elimina</button></span></td>'+
+      (role==='owner'
+        ? '<td><span class="acts"><button class="chip" onclick="editClient('+c.id+')">Modifica</button><button class="chip danger" onclick="delClient('+c.id+')">Elimina</button></span></td>'
+        : '<td></td>')+
     '</tr>';
   }
   function cardHtml(c){
@@ -300,7 +291,7 @@
       f('Telefono', esc(c.phone||'')+'<div class="inline-actions">'+phoneChips(c.phone)+'</div>')+
       f('Attività', esc(c.activity))+
       f('Partecipanti', parts)+
-      '<div class="rc-actions"><button class="chip" onclick="editClient('+c.id+')">Modifica</button><button class="chip danger" onclick="delClient('+c.id+')">Elimina</button></div>'+
+      (role==='owner'?'<div class="rc-actions"><button class="chip" onclick="editClient('+c.id+')">Modifica</button><button class="chip danger" onclick="delClient('+c.id+')">Elimina</button></div>':'')+
     '</div>';
   }
   function render(){
@@ -354,7 +345,7 @@
   };
   window.saveClient=function(id){
     var payload={id:id,point:document.getElementById('m_point').value,activity:document.getElementById('m_activity').value,participants:document.getElementById('m_participants').value.trim()};
-    fetch('/api/client-update',{method:'POST',headers:{'Authorization':'Bearer '+pw,'content-type':'application/json'},body:JSON.stringify(payload)}).then(function(r){return r.json();}).then(function(res){ if(!res||!res.ok) throw 0; window.closeModal(); return load(); }).catch(function(){ alert('Errore nel salvataggio'); });
+    fetch('/admin/api/client-update',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)}).then(function(r){return r.json();}).then(function(res){ if(!res||!res.ok) throw 0; window.closeModal(); return load(); }).catch(function(){ alert('Errore nel salvataggio'); });
   };
   window.delClient=function(id){
     var c=clientById(id); if(!c) return; var n=rentalCount(id);
@@ -366,11 +357,10 @@
     document.body.insertAdjacentHTML('beforeend', html);
   };
   window.confirmDel=function(id){
-    fetch('/api/client-delete',{method:'POST',headers:{'Authorization':'Bearer '+pw,'content-type':'application/json'},body:JSON.stringify({id:id})}).then(function(r){return r.json();}).then(function(res){ if(!res||!res.ok) throw 0; window.closeModal(); return load(); }).catch(function(){ alert('Errore eliminazione'); });
+    fetch('/admin/api/client-delete',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({id:id})}).then(function(r){return r.json();}).then(function(res){ if(!res||!res.ok) throw 0; window.closeModal(); return load(); }).catch(function(){ alert('Errore eliminazione'); });
   };
 
-  // auto-login if remembered
-  (function(){ try{ var s=localStorage.getItem(LS_KEY); if(s){ pw=s; doLogin(true); } }catch(e){} })();
+  init();
 })();
 </script>
 </body>
