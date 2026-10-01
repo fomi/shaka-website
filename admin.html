@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -21,7 +21,7 @@
   body{background:var(--ground);color:var(--ink);
     font-family:"Atkinson Hyperlegible", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     font-size:17px;line-height:1.45;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:22px 60px}
+  .wrap{max-width:none;margin:0 auto;padding-inline:20px;padding-block:22px 60px}
   h1{font-size:26px;font-weight:700;margin:0 0 2px}
   .sub{color:var(--ink-soft);font-size:15px;margin:0 0 16px}
   .head-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -94,6 +94,8 @@
   .modal textarea{min-height:84px;resize:vertical}
   .modal-actions{display:flex;gap:10px;margin-top:20px}
   .modal .warn{background:color-mix(in srgb,var(--danger) 12%,transparent);border:2px solid color-mix(in srgb,var(--danger) 35%,var(--line));border-radius:11px;padding:11px 13px;font-size:14px;margin-top:10px}
+  #tableView td:nth-child(3){white-space:normal;word-break:break-word}
+  #tableView td:nth-child(6){white-space:normal}
   [hidden]{display:none!important}
 </style>
 </head>
@@ -103,57 +105,57 @@
   <!-- Gate (shown only if the Cloudflare Access identity is missing) -->
   <div class="login" id="gate" hidden>
     <h1>Shaka Admin</h1>
-    <p class="sub">Sessione non valida o non autorizzata. Ricarica la pagina.</p>
+    <p class="sub">Session invalid or not authorized. Reload the page.</p>
   </div>
 
   <!-- App -->
   <div id="app" hidden>
 
     <div id="rentalSection">
-    <div class="head-row"><h1>Noleggio Shop</h1><a class="btn ghost" href="/rental">Apri /rental ›</a></div>
-    <p class="sub">Materiale ancora fuori e pagamenti aperti.</p>
+    <div class="head-row"><h1>Shop Rentals</h1><a class="btn ghost" href="/rental">Open /rental ›</a></div>
+    <p class="sub">Gear still out and open payments.</p>
     <div class="stats" id="rstats"></div>
     <div class="bar">
       <select id="rentalFilter" class="sel" style="min-width:200px">
-        <option value="active" selected>In corso</option>
-        <option value="due">Da riconsegnare</option>
-        <option value="open">Saldo aperto</option>
-        <option value="returned">Reso</option>
-        <option value="manage">Da gestire</option>
-        <option value="all">Tutti</option>
+        <option value="active" selected>Active</option>
+        <option value="due">Due back</option>
+        <option value="open">Open balance</option>
+        <option value="returned">Returned</option>
+        <option value="manage">To manage</option>
+        <option value="all">All</option>
       </select>
-      <button class="btn ghost" id="rRefreshBtn">Aggiorna</button>
+      <button class="btn ghost" id="rRefreshBtn">Refresh</button>
     </div>
     <div class="tablewrap">
       <table>
-        <thead><tr><th>Cliente</th><th>Attrezzatura</th><th>Inizio</th><th>Riconsegna</th><th class="num">Prezzo</th><th class="num">Pagato</th><th class="num">Saldo</th><th>Azioni</th></tr></thead>
+        <thead><tr><th>Client</th><th>Gear</th><th>Start</th><th>Return</th><th class="num">Price</th><th class="num">Paid</th><th class="num">Balance</th><th>Actions</th></tr></thead>
         <tbody id="rrows"></tbody>
       </table>
     </div>
     </div>
 
     <h1 style="margin-top:38px">Check-ins</h1>
-    <p class="sub">Registrazioni clienti. Tabella su desktop, schede su mobile.</p>
+    <p class="sub">Client check-ins. Table on desktop, cards on mobile.</p>
     <div class="stats" id="stats"></div>
     <div class="bar">
-      <input type="search" id="search" class="sel grow" placeholder="Cerca nome, email o partecipante…">
+      <input type="search" id="search" class="sel grow" placeholder="Search name, email or participant…">
       <select id="pointFilter" class="sel">
-        <option value="">Tutti i point</option><option value="school">School</option><option value="shop">Shop</option>
+        <option value="">All points</option><option value="school">School</option><option value="shop">Shop</option>
       </select>
-      <select id="activityFilter" class="sel"><option value="">Tutte le attività</option></select>
-      <span class="toggle"><button id="btnTable" onclick="setCkView('table')">Tabella</button><button id="btnCards" onclick="setCkView('cards')">Card</button></span>
-      <button class="btn ghost" id="refreshBtn">Aggiorna</button>
+      <select id="activityFilter" class="sel"><option value="">All activities</option></select>
+      <span class="toggle"><button id="btnTable" onclick="setCkView('table')">Table</button><button id="btnCards" onclick="setCkView('cards')">Cards</button></span>
+      <button class="btn ghost" id="refreshBtn">Refresh</button>
       <button class="btn" id="csvBtn">Export CSV</button>
     </div>
 
     <div id="tableView">
       <div class="tablewrap">
         <table>
-          <thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Point</th><th>Activity</th><th>Participants</th><th>Mkt</th><th>Lang</th><th>Azioni</th></tr></thead>
+          <thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Point</th><th>Activity</th><th>Participants</th><th>Mkt</th><th>Lang</th><th>Actions</th></tr></thead>
           <tbody id="rows"></tbody>
         </table>
       </div>
-      <p class="foot">Mostra fino a 2000 record recenti. Export CSV per la copia completa / backup.</p>
+      <p class="foot">Shows up to 2000 recent records. Export CSV for a full copy / backup.</p>
     </div>
     <div id="cardsView" hidden><div class="cards" id="cardList"></div></div>
 
@@ -211,8 +213,8 @@
     var open=0, due=0;
     rentalsData.forEach(function(r){ if((r.price-r.paid)>0) open+=(r.price-r.paid); if(!r.returned && retIso(r.start_at,r.days)<=endToday) due++; });
     document.getElementById('rstats').innerHTML=
-      '<div class="stat"><div class="n">'+eur(open)+'</div><div class="l">Da incassare</div></div>'+
-      '<div class="stat"><div class="n">'+due+'</div><div class="l">Da riconsegnare oggi/scaduti</div></div>';
+      '<div class="stat"><div class="n">'+eur(open)+'</div><div class="l">To collect</div></div>'+
+      '<div class="stat"><div class="n">'+due+'</div><div class="l">Due today / overdue</div></div>';
     var list=rentalsData.filter(function(r){ var rd=retIso(r.start_at,r.days), bal=r.price-r.paid;
       if(f==='active')   return !r.returned && rd>now;
       if(f==='due')      return !r.returned && rd<=endToday;
@@ -222,18 +224,18 @@
       return true;
     }).sort(function(a,b){ return retIso(a.start_at,a.days)-retIso(b.start_at,b.days); });
     var rows=document.getElementById('rrows');
-    if(!list.length){ rows.innerHTML='<tr><td colspan="8"><div class="empty">Niente qui.</div></td></tr>'; return; }
+    if(!list.length){ rows.innerHTML='<tr><td colspan="8"><div class="empty">Nothing here.</div></td></tr>'; return; }
     rows.innerHTML=list.map(function(r){
       var bal=r.price-r.paid, rd=retIso(r.start_at,r.days), overdue=(!r.returned && rd<now);
       return '<tr'+(r.returned?' style="opacity:.55"':'')+'>'+
         '<td>'+esc(cliName(r.client_id))+'<br><span style="font-size:12px;color:var(--muted)">'+esc(cliPhone(r.client_id))+'</span></td>'+
         '<td>'+esc(r.item)+(r.extras?'<br><span style="font-size:12px;color:var(--muted)">'+esc(r.extras)+'</span>':'')+'</td>'+
         '<td>'+fmtDT(r.start_at)+'</td>'+
-        '<td>'+(r.returned?'<span class="pill yes">Reso</span>':(fmtDT(rd.toISOString())+(overdue?' <span class="pill" style="background:var(--danger);color:#fff">scaduto</span>':'')))+'</td>'+
+        '<td>'+(r.returned?'<span class="pill yes">Returned</span>':(fmtDT(rd.toISOString())+(overdue?' <span class="pill" style="background:var(--danger);color:#fff">overdue</span>':'')))+'</td>'+
         '<td class="num">'+eur(r.price)+'</td>'+
         '<td class="num">'+eur(r.paid)+'</td>'+
         '<td class="num" style="'+(bal>0?'color:var(--danger);font-weight:700':'')+'">'+eur(bal)+'</td>'+
-        '<td><a class="chip" href="/rental?c='+r.client_id+'">Apri in /rental ›</a></td>'+
+        '<td><a class="chip" href="/rental?c='+r.client_id+'">Open in /rental ›</a></td>'+
       '</tr>';
     }).join('');
   }
@@ -255,10 +257,10 @@
     var sel=document.getElementById('activityFilter'), chosen=sel.value, acts={};
     current.forEach(function(c){ if(c.activity) acts[c.activity]=1; });
     var list=Object.keys(acts).sort();
-    sel.innerHTML='<option value="">Tutte le attività</option>'+list.map(function(a){return '<option value="'+esc(a)+'">'+esc(a)+'</option>';}).join('');
+    sel.innerHTML='<option value="">All activities</option>'+list.map(function(a){return '<option value="'+esc(a)+'">'+esc(a)+'</option>';}).join('');
     if(list.indexOf(chosen)>=0) sel.value=chosen;
   }
-  function phoneChips(p){ return '<a class="chip" href="'+telHref(p)+'">Chiama</a><a class="chip" href="'+waHref(p)+'" target="_blank" rel="noopener">WhatsApp</a>'; }
+  function phoneChips(p){ return '<a class="chip" href="'+telHref(p)+'">Call</a><a class="chip" href="'+waHref(p)+'" target="_blank" rel="noopener">WhatsApp</a>'; }
 
   function rowHtml(c){
     var mk=c.marketing_consent?'<span class="pill yes">Yes</span>':'<span class="pill">No</span>';
@@ -275,7 +277,7 @@
       '<td>'+mk+'</td>'+
       '<td>'+esc(c.lang)+'</td>'+
       (role==='owner'
-        ? '<td><span class="acts"><button class="chip" onclick="editClient('+c.id+')">Modifica</button><button class="chip danger" onclick="delClient('+c.id+')">Elimina</button></span></td>'
+        ? '<td><span class="acts"><button class="chip" onclick="editClient('+c.id+')">Edit</button><button class="chip danger" onclick="delClient('+c.id+')">Delete</button></span></td>'
         : '<td></td>')+
     '</tr>';
   }
@@ -288,22 +290,22 @@
         '<span class="rc-tags">'+pointPill(c.point)+'<span class="pill">'+esc(c.lang||'').toUpperCase()+'</span></span></div>'+
       '<div class="rc-date">'+esc(fmtDate(c.created_at))+'</div>'+
       f('Email',email)+
-      f('Telefono', esc(c.phone||'')+'<div class="inline-actions">'+phoneChips(c.phone)+'</div>')+
-      f('Attività', esc(c.activity))+
-      f('Partecipanti', parts)+
-      (role==='owner'?'<div class="rc-actions"><button class="chip" onclick="editClient('+c.id+')">Modifica</button><button class="chip danger" onclick="delClient('+c.id+')">Elimina</button></div>':'')+
+      f('Phone', esc(c.phone||'')+'<div class="inline-actions">'+phoneChips(c.phone)+'</div>')+
+      f('Activity', esc(c.activity))+
+      f('Participants', parts)+
+      (role==='owner'?'<div class="rc-actions"><button class="chip" onclick="editClient('+c.id+')">Edit</button><button class="chip danger" onclick="delClient('+c.id+')">Delete</button></div>':'')+
     '</div>';
   }
   function render(){
     syncActivityFilter();
     var list=visible();
-    document.getElementById('rows').innerHTML = list.length ? list.map(rowHtml).join('') : '<tr><td colspan="10"><div class="empty">Nessun check-in.</div></td></tr>';
-    document.getElementById('cardList').innerHTML = list.length ? list.map(cardHtml).join('') : '<div class="empty">Nessun check-in.</div>';
+    document.getElementById('rows').innerHTML = list.length ? list.map(rowHtml).join('') : '<tr><td colspan="10"><div class="empty">No check-ins.</div></td></tr>';
+    document.getElementById('cardList').innerHTML = list.length ? list.map(cardHtml).join('') : '<div class="empty">No check-ins.</div>';
     var optin=list.filter(function(c){return c.marketing_consent;}).length,
         school=current.filter(function(c){return c.point==='school';}).length,
         shop=current.filter(function(c){return c.point==='shop';}).length;
     document.getElementById('stats').innerHTML=
-      '<div class="stat"><div class="n">'+list.length+'</div><div class="l">Mostrati</div></div>'+
+      '<div class="stat"><div class="n">'+list.length+'</div><div class="l">Shown</div></div>'+
       '<div class="stat"><div class="n">'+school+'</div><div class="l">School</div></div>'+
       '<div class="stat"><div class="n">'+shop+'</div><div class="l">Shop</div></div>'+
       '<div class="stat"><div class="n">'+optin+'</div><div class="l">Marketing opt-in</div></div>';
@@ -335,29 +337,29 @@
     var c=clientById(id); if(!c) return;
     var actOpts=ACTS.map(function(a){return '<option'+(c.activity===a?' selected':'')+'>'+esc(a)+'</option>';}).join('')+((ACTS.indexOf(c.activity)<0&&c.activity)?'<option selected>'+esc(c.activity)+'</option>':'');
     var html='<div class="modal-bg" id="modalRoot"><div class="modal">'+
-      '<h3>Modifica cliente</h3><div style="font-size:14px;color:var(--muted)">'+esc(c.first_name)+' '+esc(c.last_name)+'</div>'+
+      '<h3>Edit client</h3><div style="font-size:14px;color:var(--muted)">'+esc(c.first_name)+' '+esc(c.last_name)+'</div>'+
       '<label>Point</label><select id="m_point"><option value="school"'+(c.point==='school'?' selected':'')+'>School</option><option value="shop"'+(c.point==='shop'?' selected':'')+'>Shop</option><option value=""'+(!c.point?' selected':'')+'>—</option></select>'+
       '<label>Activity</label><select id="m_activity">'+actOpts+'</select>'+
       '<label>Participants</label><textarea id="m_participants">'+(c.participants?esc(c.participants):'')+'</textarea>'+
-      '<div class="modal-actions"><button class="btn" style="flex:1" onclick="saveClient('+id+')">Salva</button><button class="btn ghost" style="flex:1" onclick="closeModal()">Annulla</button></div>'+
+      '<div class="modal-actions"><button class="btn" style="flex:1" onclick="saveClient('+id+')">Save</button><button class="btn ghost" style="flex:1" onclick="closeModal()">Cancel</button></div>'+
     '</div></div>';
     document.body.insertAdjacentHTML('beforeend', html);
   };
   window.saveClient=function(id){
     var payload={id:id,point:document.getElementById('m_point').value,activity:document.getElementById('m_activity').value,participants:document.getElementById('m_participants').value.trim()};
-    fetch('/admin/api/client-update',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)}).then(function(r){return r.json();}).then(function(res){ if(!res||!res.ok) throw 0; window.closeModal(); return load(); }).catch(function(){ alert('Errore nel salvataggio'); });
+    fetch('/admin/api/client-update',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)}).then(function(r){return r.json();}).then(function(res){ if(!res||!res.ok) throw 0; window.closeModal(); return load(); }).catch(function(){ alert('Save error'); });
   };
   window.delClient=function(id){
     var c=clientById(id); if(!c) return; var n=rentalCount(id);
-    var warn=n>0?'<div class="warn">Attenzione: questo cliente ha '+n+' noleggio/i collegati. Verranno eliminati anche quelli.</div>':'';
+    var warn=n>0?'<div class="warn">Warning: this client has '+n+' linked rental(s). Those will be deleted too.</div>':'';
     var html='<div class="modal-bg" id="modalRoot"><div class="modal">'+
-      '<h3>Eliminare il cliente?</h3><div style="font-size:15px;margin-bottom:6px">'+esc(c.first_name)+' '+esc(c.last_name)+' · '+esc(c.email||'')+'</div>'+warn+
-      '<div class="modal-actions"><button class="btn" style="flex:1;background:var(--danger)" onclick="confirmDel('+id+')">Elimina definitivamente</button><button class="btn ghost" style="flex:1" onclick="closeModal()">Annulla</button></div>'+
+      '<h3>Delete this client?</h3><div style="font-size:15px;margin-bottom:6px">'+esc(c.first_name)+' '+esc(c.last_name)+' · '+esc(c.email||'')+'</div>'+warn+
+      '<div class="modal-actions"><button class="btn" style="flex:1;background:var(--danger)" onclick="confirmDel('+id+')">Delete permanently</button><button class="btn ghost" style="flex:1" onclick="closeModal()">Cancel</button></div>'+
     '</div></div>';
     document.body.insertAdjacentHTML('beforeend', html);
   };
   window.confirmDel=function(id){
-    fetch('/admin/api/client-delete',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({id:id})}).then(function(r){return r.json();}).then(function(res){ if(!res||!res.ok) throw 0; window.closeModal(); return load(); }).catch(function(){ alert('Errore eliminazione'); });
+    fetch('/admin/api/client-delete',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({id:id})}).then(function(r){return r.json();}).then(function(res){ if(!res||!res.ok) throw 0; window.closeModal(); return load(); }).catch(function(){ alert('Delete error'); });
   };
 
   init();

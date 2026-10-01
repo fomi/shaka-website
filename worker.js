@@ -68,7 +68,7 @@ const ALLOWED_POINTS = ['school', 'shop'];
 
 const RENTAL_ITEMS = [
   'Windsurf rental', 'Kite rental', 'Kite lesson', 'Wingfoil rental',
-  'Surf rental', 'Bodyboard / Skimboard rental', 'Skate rental', 'Altro'
+  'Surf rental', 'Bodyboard / Skimboard rental', 'Skate rental', 'Other'
 ];
 
 // ---- GET /admin/api/me , /rental/api/me ------------------------------------
@@ -179,7 +179,7 @@ async function handleRentalSave(request, env) {
   let d;
   try { d = await request.json(); } catch (e) { return json({ error: 'bad_request' }, 400); }
 
-  const item = RENTAL_ITEMS.indexOf(d.item) >= 0 ? d.item : 'Altro';
+  const item = RENTAL_ITEMS.indexOf(d.item) >= 0 ? d.item : 'Other';
   const extras = Array.isArray(d.extras) ? d.extras.join(', ') : (d.extras ? String(d.extras) : null);
   const days = Math.min(30, Math.max(1, parseInt(d.days, 10) || 1));
   const price = Math.max(0, parseFloat(d.price) || 0);

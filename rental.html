@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -109,7 +109,7 @@
   <!-- Gate (shown only if the Cloudflare Access identity is missing) -->
   <div class="card login" id="gate" hidden>
     <h1>Shaka Rental</h1>
-    <p class="sub">Sessione non valida o non autorizzata. Ricarica la pagina.</p>
+    <p class="sub">Session invalid or not authorized. Reload the page.</p>
   </div>
 
   <!-- App -->
@@ -119,8 +119,8 @@
 
 <script>
 (function(){
-  var ITEMS = ["Windsurf rental","Kite rental","Kite lesson","Wingfoil rental","Surf rental","Bodyboard / Skimboard rental","Skate rental","Altro"];
-  var EXTRAS = ["Muta","Casco","Trapezio","Boma carbonio"];
+  var ITEMS = ["Windsurf rental","Kite rental","Kite lesson","Wingfoil rental","Surf rental","Bodyboard / Skimboard rental","Skate rental","Other"];
+  var EXTRAS = ["Wetsuit","Helmet","Harness","Carbon boom"];
 
   var clients = [], rentals = [], selId = null, editing = null, pendingDel = null; // editing: rental id or 'new'
 
@@ -169,19 +169,19 @@
     var shopList = clients.filter(function(c){ return c.point==='shop'; });
     document.getElementById('app').innerHTML =
       '<div class="topbar"><h1>Rental</h1><div class="topact">'+
-        '<button class="tbtn" onclick="refreshData()">↻ Aggiorna</button>'+
+        '<button class="tbtn" onclick="refreshData()">↻ Refresh</button>'+
         '<a class="tbtn" href="/admin">Admin ›</a></div></div>'+
-      '<p class="sub">Check-in shop. Tocca un cliente per gestire il noleggio.</p>'+
+      '<p class="sub">Shop check-ins. Tap a client to manage the rental.</p>'+
       '<div class="card">'+
         '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">'+
-          '<input class="search" id="search" type="search" placeholder="Cerca cliente…" style="flex:1;min-width:150px">'+
+          '<input class="search" id="search" type="search" placeholder="Search client…" style="flex:1;min-width:150px">'+
           '<select class="search" id="filter" style="min-width:210px">'+
-            '<option value="todo" selected>Da fare (nuovi)</option>'+
-            '<option value="active">In corso</option>'+
-            '<option value="due">Da riconsegnare</option>'+
-            '<option value="open">Saldo aperto</option>'+
-            '<option value="manage">Da gestire</option>'+
-            '<option value="all">Tutti</option>'+
+            '<option value="todo" selected>To do (new)</option>'+
+            '<option value="active">Active</option>'+
+            '<option value="due">Due back</option>'+
+            '<option value="open">Open balance</option>'+
+            '<option value="manage">To manage</option>'+
+            '<option value="all">All</option>'+
           '</select>'+
         '</div>'+
         '<div class="clist" id="clist"></div></div><div id="panel"></div>';
@@ -206,16 +206,16 @@
     return true;
   }
   function retPill(st){
-    if(!st.hasRental) return '<span class="pill todo">Da fare</span>';
-    if(st.due) return '<span class="pill due">Da riconsegnare</span>';
-    if(st.active) return '<span class="pill active">In corso</span>';
-    return '<span class="pill done">Reso</span>';
+    if(!st.hasRental) return '<span class="pill todo">To do</span>';
+    if(st.due) return '<span class="pill due">Due back</span>';
+    if(st.active) return '<span class="pill active">Active</span>';
+    return '<span class="pill done">Returned</span>';
   }
-  function balPill(st){ return st.open>0 ? '<span class="pill open">Saldo '+eur(st.open)+'</span>' : ''; }
+  function balPill(st){ return st.open>0 ? '<span class="pill open">Balance '+eur(st.open)+'</span>' : ''; }
   window.renderApp = renderApp;
   window.refreshData = function(){
-    loadAll().then(function(){ if(selId!=null){ renderPanel(); } else { renderList(); } toast('Aggiornato'); })
-      .catch(function(){ toast('Errore aggiornamento'); });
+    loadAll().then(function(){ if(selId!=null){ renderPanel(); } else { renderList(); } toast('Updated'); })
+      .catch(function(){ toast('Refresh error'); });
   };
   window.closePanel = function(){ selId=null; editing=null; pendingDel=null; renderPanel(); window.scrollTo({top:0,behavior:'smooth'}); };
   function renderList(){
@@ -225,7 +225,7 @@
     if(q){ base=base.filter(function(c){ return (c.first_name+' '+c.last_name).toLowerCase().indexOf(q)>=0 || (c.email||'').toLowerCase().indexOf(q)>=0; }); }
     var list=base.filter(function(c){ return matchFilter(statusOf(c), f); });
     var box=document.getElementById('clist');
-    if(!list.length){ box.innerHTML='<div class="empty">Nessun cliente in questo stato. Cambia filtro o cerca per nome.</div>'; return; }
+    if(!list.length){ box.innerHTML='<div class="empty">No client in this state. Change filter or search by name.</div>'; return; }
     box.innerHTML = list.map(function(c){
       var st=statusOf(c);
       return '<button class="crow" onclick="pick('+c.id+')"><span><span class="nm">'+esc(c.first_name)+' '+esc(c.last_name)+'</span><br>'+
@@ -244,27 +244,27 @@
     var lines = rs.length ? rs.map(function(r){
       var bl=r.price-r.paid, rd=retDate(r.start_at,r.days);
       return '<div class="line'+(r.returned?' ret':'')+'">'+
-        '<div class="line-top"><span class="it">'+esc(r.item)+(r.returned?' · RESO':'')+'</span>'+
-          '<span class="'+(bl>0?'bal-open':'bal-ok')+'">'+(bl>0?'Saldo '+eur(bl):'Saldato')+'</span></div>'+
+        '<div class="line-top"><span class="it">'+esc(r.item)+(r.returned?' · RETURNED':'')+'</span>'+
+          '<span class="'+(bl>0?'bal-open':'bal-ok')+'">'+(bl>0?'Balance '+eur(bl):'Settled')+'</span></div>'+
         (r.extras?'<div class="ex">'+esc(r.extras)+'</div>':'')+
         (r.notes?'<div class="ex">'+esc(r.notes)+'</div>':'')+
-        '<div class="when">Inizio '+fmtDT(r.start_at)+' · '+r.days+'gg → Riconsegna '+fmtDT(rd.toISOString())+'</div>'+
-        '<div class="money">Prezzo '+eur(r.price)+' · Pagato '+eur(r.paid)+'</div>'+
+        '<div class="when">Start '+fmtDT(r.start_at)+' · '+r.days+'d → Return '+fmtDT(rd.toISOString())+'</div>'+
+        '<div class="money">Price '+eur(r.price)+' · Paid '+eur(r.paid)+'</div>'+
         '<div class="line-actions">'+
-          '<button class="mini edit" onclick="editLine('+r.id+')">Modifica / Saldo</button>'+
-          (r.returned?'':'<button class="mini ret" onclick="markReturned('+r.id+')">Segna reso</button>')+
+          '<button class="mini edit" onclick="editLine('+r.id+')">Edit / Balance</button>'+
+          (r.returned?'':'<button class="mini ret" onclick="markReturned('+r.id+')">Mark returned</button>')+
           (pendingDel===r.id
-            ? '<button class="mini delc" onclick="delLine('+r.id+')">Conferma elimina</button>'
-            : '<button class="mini del" onclick="delLine('+r.id+')">Elimina</button>')+
+            ? '<button class="mini delc" onclick="delLine('+r.id+')">Confirm delete</button>'
+            : '<button class="mini del" onclick="delLine('+r.id+')">Delete</button>')+
         '</div></div>';
-    }).join('') : '<div class="empty">Nessun noleggio ancora.</div>';
+    }).join('') : '<div class="empty">No rentals yet.</div>';
 
-    p.innerHTML='<div class="card"><button class="backbtn" onclick="closePanel()">✕ Chiudi scheda</button>'+
+    p.innerHTML='<div class="card"><button class="backbtn" onclick="closePanel()">✕ Close card</button>'+
       '<div class="cli-head"><div><div class="nm">'+esc(c.first_name)+' '+esc(c.last_name)+'</div>'+
         '<div class="contact">'+esc(c.email||'')+' · '+esc(c.phone||'')+'</div></div>'+
-        '<div class="totbox"><div class="lab">Saldo cliente</div><div class="val '+(b>0?'open':'')+'">'+eur(b)+'</div></div></div>'+
+        '<div class="totbox"><div class="lab">Client balance</div><div class="val '+(b>0?'open':'')+'">'+eur(b)+'</div></div></div>'+
       lines+
-      (editing?formHtml():'<button class="addbtn" onclick="startAdd()">+ Aggiungi attrezzatura / servizio</button>')+
+      (editing?formHtml():'<button class="addbtn" onclick="startAdd()">+ Add gear / service</button>')+
       '</div>';
   }
 
@@ -272,20 +272,20 @@
     var e = (editing!=='new') ? rentals.filter(function(r){return r.id===editing;})[0] : null;
     var exArr = e && e.extras ? e.extras.split(',').map(function(s){return s.trim();}) : [];
     return '<div class="addform"><div class="grid">'+
-      '<label class="f full"><span class="flab">Attrezzatura / servizio</span><select id="f_item">'+
+      '<label class="f full"><span class="flab">Gear / service</span><select id="f_item">'+
         ITEMS.map(function(o){return '<option'+(e&&e.item===o?' selected':'')+'>'+o+'</option>';}).join('')+'</select></label>'+
-      '<label class="f full"><span class="flab">Extra</span><div class="extras">'+
+      '<label class="f full"><span class="flab">Extras</span><div class="extras">'+
         EXTRAS.map(function(x,i){return '<label><input type="checkbox" id="f_ex'+i+'" value="'+x+'"'+(exArr.indexOf(x)>=0?' checked':'')+'> '+x+'</label>';}).join('')+'</div></label>'+
-      '<label class="f"><span class="flab">Giorni (24h)</span><select id="f_days">'+
+      '<label class="f"><span class="flab">Days (24h)</span><select id="f_days">'+
         Array.from({length:30},function(_,i){var v=i+1;return '<option'+(e&&e.days===v?' selected':'')+'>'+v+'</option>';}).join('')+'</select></label>'+
-      '<label class="f"><span class="flab">Inizio (data + ora)</span><input type="datetime-local" id="f_start" value="'+(e?localFromIso(e.start_at):nowLocalInput())+'"></label>'+
-      '<label class="f"><span class="flab">Prezzo €</span><input type="number" id="f_price" inputmode="decimal" value="'+(e?e.price:'')+'" placeholder="0"></label>'+
-      '<label class="f"><span class="flab">Pagato €</span><input type="number" id="f_paid" inputmode="decimal" value="'+(e?e.paid:'')+'" placeholder="0"></label>'+
-      '<label class="f full"><span class="flab">Note</span><textarea id="f_notes" placeholder="Taglia tavola/vela, numero di serie, dettaglio se Altro">'+(e&&e.notes?esc(e.notes):'')+'</textarea></label>'+
-      (e?'<label class="f full rowck" style="margin:0"><input type="checkbox" id="f_ret"'+(e.returned?' checked':'')+'> <span class="flab">Materiale reso</span></label>':'')+
+      '<label class="f"><span class="flab">Start (date + time)</span><input type="datetime-local" id="f_start" value="'+(e?localFromIso(e.start_at):nowLocalInput())+'"></label>'+
+      '<label class="f"><span class="flab">Price €</span><input type="number" id="f_price" inputmode="decimal" value="'+(e?e.price:'')+'" placeholder="0"></label>'+
+      '<label class="f"><span class="flab">Paid €</span><input type="number" id="f_paid" inputmode="decimal" value="'+(e?e.paid:'')+'" placeholder="0"></label>'+
+      '<label class="f full"><span class="flab">Notes</span><textarea id="f_notes" placeholder="Board/sail size, serial number, detail if Other">'+(e&&e.notes?esc(e.notes):'')+'</textarea></label>'+
+      (e?'<label class="f full rowck" style="margin:0"><input type="checkbox" id="f_ret"'+(e.returned?' checked':'')+'> <span class="flab">Gear returned</span></label>':'')+
       '</div>'+
-      '<button class="btn save" id="f_save">Salva</button>'+
-      '<button class="cancel" onclick="cancelForm()">Annulla</button></div>';
+      '<button class="btn save" id="f_save">Save</button>'+
+      '<button class="cancel" onclick="cancelForm()">Cancel</button></div>';
   }
 
   window.startAdd=function(){ editing='new'; pendingDel=null; renderPanel(); bindSave(); };
@@ -319,8 +319,8 @@
   function save(payload){
     api('/rental/api/rental', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(payload) })
       .then(function(res){ if(res&&res.ok){ return loadAll(); } throw new Error('save'); })
-      .then(function(){ editing=null; toast('Salvato'); renderPanel(); })
-      .catch(function(){ toast('Errore nel salvataggio'); });
+      .then(function(){ editing=null; toast('Saved'); renderPanel(); })
+      .catch(function(){ toast('Save error'); });
   }
 
   window.delLine=function(id){
@@ -332,8 +332,8 @@
     pendingDel=null;
     api('/rental/api/rental-delete', { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({id:id}) })
       .then(function(res){ if(res&&res.ok){ return loadAll(); } throw new Error('del'); })
-      .then(function(){ toast('Noleggio eliminato'); renderPanel(); })
-      .catch(function(){ toast('Errore eliminazione'); });
+      .then(function(){ toast('Rental deleted'); renderPanel(); })
+      .catch(function(){ toast('Delete error'); });
   };
 })();
 </script>
