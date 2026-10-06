@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Risposte recensioni · Shaka</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --coral: #ff7f50;
+    --coral-soft: #ffe4d6;
+    --navy: #273043;
+    --bg: #faf7f3;
+    --surface: #ffffff;
+    --fg: #273043;
+    --muted: #6b7280;
+    --line: #ece7e0;
+    --shadow: 0 1px 2px rgba(39,48,67,.06), 0 8px 24px rgba(39,48,67,.06);
+    --ok: #1f9d6b;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --coral: #ff8d63;
+      --coral-soft: #3a2a22;
+      --navy: #0f131c;
+      --bg: #0f131c;
+      --surface: #171c28;
+      --fg: #eceef3;
+      --muted: #9aa3b2;
+      --line: #262c3a;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+      --ok: #3fd199;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --coral: #ff8d63;
+    --coral-soft: #3a2a22;
+    --navy: #0f131c;
+    --bg: #0f131c;
+    --surface: #171c28;
+    --fg: #eceef3;
+    --muted: #9aa3b2;
+    --line: #262c3a;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+    --ok: #3fd199;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.5;
+    padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px);
+  }
+  img { max-width: 100%; }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding-block: 28px 56px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  header { margin-bottom: 18px; }
+  .kicker {
+    font-size: 12px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--coral);
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+  h1 {
+    font-family: "Bebas Neue", "Barlow", system-ui, sans-serif;
+    font-weight: 400;
+    letter-spacing: .02em;
+    font-size: clamp(34px, 9vw, 52px);
+    line-height: .98;
+    margin: 0 0 8px;
+    text-wrap: balance;
+  }
+  .lede {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 62ch;
+    margin: 0;
+  }
+  .lede code {
+    background: var(--coral-soft);
+    color: var(--fg);
+    padding: 1px 6px;
+    border-radius: 6px;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: .92em;
+  }
+
+  .langbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0 22px;
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    background: var(--bg);
+    padding: 10px 0;
+    z-index: 5;
+  }
+  .lang {
+    appearance: none;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--fg);
+    font: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .lang:hover { border-color: var(--coral); }
+  .lang[aria-pressed="true"] {
+    background: var(--coral);
+    border-color: var(--coral);
+    color: #fff;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 18px 18px 16px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+  .card-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .num {
+    font-family: "Bebas Neue", "Barlow", sans-serif;
+    font-size: 26px;
+    line-height: 1;
+    color: var(--coral);
+    min-width: 1.4em;
+  }
+  .card h2 {
+    font-size: 17px;
+    margin: 0;
+    font-weight: 700;
+  }
+  .tag {
+    font-size: 11px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin-left: auto;
+  }
+  .reply {
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--fg);
+    white-space: pre-wrap;
+    min-width: 0;
+    margin: 0 0 14px;
+  }
+  .reply b { color: var(--coral); font-weight: 700; }
+
+  .copy {
+    appearance: none;
+    border: none;
+    background: var(--navy);
+    color: #fff;
+    font: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 9px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform .08s, background .15s;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .copy { background: var(--coral); color: #171c28; }
+  }
+  :root[data-theme="dark"] .copy { background: var(--coral); color: #171c28; }
+  .copy:active { transform: translateY(1px); }
+  .copy.done { background: var(--ok); color: #fff; }
+  .copy svg { width: 16px; height: 16px; }
+
+  footer {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <p class="kicker">Shaka Fuerteventura</p>
+    <h1>Risposte alle recensioni</h1>
+    <p class="lede">Quattro modelli pronti, per ogni tipo di recensione. Scegli la lingua, tocca <b>Copia</b> e sostituisci <code>[Nome]</code> con il nome di chi ha scritto.</p>
+  </header>
+
+  <div class="langbar" role="group" aria-label="Lingua">
+    <button class="lang" data-lang="it" aria-pressed="true">Italiano</button>
+    <button class="lang" data-lang="en" aria-pressed="false">English</button>
+    <button class="lang" data-lang="de" aria-pressed="false">Deutsch</button>
+    <button class="lang" data-lang="es" aria-pressed="false">Español</button>
+  </div>
+
+  <div id="cards"></div>
+
+  <footer>
+    Le recensioni critiche rimandano a <b>info@shaka-fuerte.com</b>, così la conversazione esce dal pubblico. Firma sempre a nome della crew, mai personale.
+  </footer>
+</div>
+
+<script>
+  var SCENARIOS = [
+    {
+      key: "positive",
+      titles: { it: "Recensione positiva", en: "Positive review", de: "Positive Bewertung", es: "Reseña positiva" },
+      tag: { it: "con testo", en: "with text", de: "mit Text", es: "con texto" }
+    },
+    {
+      key: "enthusiastic",
+      titles: { it: "Recensione entusiasta", en: "Enthusiastic review", de: "Begeisterte Bewertung", es: "Reseña entusiasta" },
+      tag: { it: "5 stelle calde", en: "warm 5 stars", de: "warme 5 Sterne", es: "5 estrellas calurosas" }
+    },
+    {
+      key: "critical",
+      titles: { it: "Recensione critica", en: "Critical review", de: "Kritische Bewertung", es: "Reseña crítica" },
+      tag: { it: "porta in privato", en: "take it private", de: "ins Private", es: "llevar a privado" }
+    },
+    {
+      key: "starsonly",
+      titles: { it: "Solo stelle", en: "Stars only", de: "Nur Sterne", es: "Solo estrellas" },
+      tag: { it: "senza testo", en: "no text", de: "ohne Text", es: "sin texto" }
+    }
+  ];
+
+  var TEXT = {
+    positive: {
+      it: "Ciao [Nome], grazie mille per le tue belle parole! Siamo super felici che tu ti sia trovato bene da noi allo Shaka. È stato un piacere averti in acqua e speriamo di rivederti presto a Fuerteventura. Un grande abbraccio dalla crew Shaka.",
+      en: "Hi [Name], thank you so much for your kind words! We are really happy you enjoyed your time with us at Shaka. It was a pleasure having you on the water and we hope to see you again soon in Fuerteventura. Big aloha from the Shaka team.",
+      de: "Hallo [Name], vielen Dank für deine netten Worte! Wir freuen uns sehr, dass dir die Zeit bei uns im Shaka gefallen hat. Es war uns eine Freude, dich auf dem Wasser zu haben, und wir hoffen, dich bald wieder auf Fuerteventura zu sehen. Liebe Grüße vom Shaka Team.",
+      es: "Hola [Name], muchas gracias por tus amables palabras! Nos alegra mucho que hayas disfrutado tu tiempo con nosotros en Shaka. Fue un placer tenerte en el agua y esperamos verte pronto de nuevo en Fuerteventura. Un fuerte abrazo del equipo Shaka."
+    },
+    enthusiastic: {
+      it: "Wow [Nome], grazie di cuore per questa recensione fantastica! Ci ha illuminato la giornata. Mettiamo tanta passione in quello che facciamo e sapere che l'hai percepita per noi vale tantissimo. Ormai fai parte della famiglia Shaka, quindi torna quando vuoi per altro vento, onde e buone vibrazioni. Aloha da tutta la crew Shaka.",
+      en: "Wow [Name], thank you for this amazing review! Reading it made our whole day. We put a lot of passion into what we do and knowing you felt it means the world to us. You are part of the Shaka family now, so come back any time for more wind, waves and good vibes. Aloha from all the Shaka team.",
+      de: "Wow [Name], vielen Dank für diese großartige Bewertung! Sie hat unseren ganzen Tag versüßt. Wir stecken viel Leidenschaft in das, was wir tun, und zu wissen, dass du das gespürt hast, bedeutet uns unglaublich viel. Du gehörst jetzt zur Shaka Familie, also komm jederzeit wieder für mehr Wind, Wellen und gute Laune. Aloha vom ganzen Shaka Team.",
+      es: "Guau [Name], muchas gracias por esta reseña tan increíble! Nos ha alegrado el día entero. Ponemos mucha pasión en lo que hacemos y saber que lo has sentido significa muchísimo para nosotros. Ya eres parte de la familia Shaka, así que vuelve cuando quieras a por más viento, olas y buen rollo. Aloha de todo el equipo Shaka."
+    },
+    critical: {
+      it: "Ciao [Nome], grazie per aver dedicato del tempo a condividere la tua opinione. Ci dispiace davvero che la tua esperienza non sia stata all'altezza delle tue aspettative. Prendiamo sul serio ogni commento e ci piacerebbe capire cosa è successo e rimediare. Scrivici a info@shaka-fuerte.com così possiamo vederla insieme. Grazie, la crew Shaka.",
+      en: "Hi [Name], thank you for taking the time to share your feedback. We are sorry to hear that your experience did not meet your expectations. We take every comment seriously and we would really like to understand what happened and make things right. Please write to us at info@shaka-fuerte.com so we can look into it together. Thank you, the Shaka team.",
+      de: "Hallo [Name], danke, dass du dir die Zeit genommen hast, uns dein Feedback mitzuteilen. Es tut uns leid, dass deine Erfahrung nicht deinen Erwartungen entsprochen hat. Wir nehmen jeden Kommentar ernst und würden wirklich gerne verstehen, was passiert ist, und es wieder gutmachen. Bitte schreib uns an info@shaka-fuerte.com, damit wir uns das gemeinsam ansehen können. Danke, das Shaka Team.",
+      es: "Hola [Name], gracias por tomarte el tiempo de compartir tu opinión. Sentimos mucho que tu experiencia no haya estado a la altura de lo que esperabas. Nos tomamos en serio cada comentario y nos gustaría de verdad entender qué pasó y poder solucionarlo. Escríbenos a info@shaka-fuerte.com y lo revisamos juntos. Gracias, el equipo Shaka."
+    },
+    starsonly: {
+      it: "Ciao [Nome], grazie mille per la valutazione! Ci farebbe piacere sapere di più sulla tua esperienza da noi allo Shaka, quindi lasciaci due parole quando vuoi. Speriamo di rivederti presto in acqua a Fuerteventura. Aloha dalla crew Shaka.",
+      en: "Hi [Name], thank you so much for the rating! We would love to know more about your experience with us at Shaka, so feel free to drop us a few words any time. We hope to see you again soon on the water in Fuerteventura. Aloha from the Shaka team.",
+      de: "Hallo [Name], vielen Dank für die Bewertung! Wir würden gerne mehr über deine Erfahrung bei uns im Shaka erfahren, also schreib uns jederzeit gerne ein paar Worte. Wir hoffen, dich bald wieder auf dem Wasser auf Fuerteventura zu sehen. Aloha vom Shaka Team.",
+      es: "Hola [Name], muchas gracias por la valoración! Nos encantaría saber más sobre tu experiencia con nosotros en Shaka, así que no dudes en dejarnos unas palabras cuando quieras. Esperamos verte pronto de nuevo en el agua en Fuerteventura. Aloha del equipo Shaka."
+    }
+  };
+
+  var LABELS = {
+    it: { copy: "Copia", done: "Copiato" },
+    en: { copy: "Copy", done: "Copied" },
+    de: { copy: "Kopieren", done: "Kopiert" },
+    es: { copy: "Copiar", done: "Copiado" }
+  };
+
+  var lang = "it";
+  var cards = document.getElementById("cards");
+
+  var ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>';
+
+  function highlightEmail(t) {
+    return t.replace(/info@shaka-fuerte\.com/g, "<b>info@shaka-fuerte.com</b>");
+  }
+
+  function render() {
+    cards.innerHTML = "";
+    SCENARIOS.forEach(function (s, i) {
+      var card = document.createElement("section");
+      card.className = "card";
+
+      var head = document.createElement("div");
+      head.className = "card-head";
+      head.innerHTML =
+        '<span class="num">' + (i + 1) + '</span>' +
+        '<h2>' + s.titles[lang] + '</h2>' +
+        '<span class="tag">' + s.tag[lang] + '</span>';
+      card.appendChild(head);
+
+      var txt = TEXT[s.key][lang];
+      var p = document.createElement("p");
+      p.className = "reply";
+      p.innerHTML = highlightEmail(txt);
+      card.appendChild(p);
+
+      var btn = document.createElement("button");
+      btn.className = "copy";
+      btn.innerHTML = ICON + '<span>' + LABELS[lang].copy + '</span>';
+      btn.addEventListener("click", function () { copy(btn, txt); });
+      card.appendChild(btn);
+
+      cards.appendChild(card);
+    });
+  }
+
+  function copy(btn, text) {
+    function ok() {
+      btn.classList.add("done");
+      btn.querySelector("span").textContent = LABELS[lang].done;
+      setTimeout(function () {
+        btn.classList.remove("done");
+        btn.querySelector("span").textContent = LABELS[lang].copy;
+      }, 1600);
+    }
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(ok, function () { fallback(text, ok); });
+      } else {
+        fallback(text, ok);
+      }
+    } catch (e) {
+      fallback(text, ok);
+    }
+  }
+
+  function fallback(text, ok) {
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      ok();
+    } catch (e) {}
+  }
+
+  var buttons = document.querySelectorAll(".lang");
+  buttons.forEach(function (b) {
+    b.addEventListener("click", function () {
+      lang = b.getAttribute("data-lang");
+      buttons.forEach(function (x) {
+        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      });
+      render();
+    });
+  });
+
+  render();
+</script>
+</body>
+</html>
