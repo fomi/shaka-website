@@ -293,7 +293,12 @@
   buildCC();
   var ccSel = document.getElementById('phone_cc');
   if(ccSel){
-    ccSel.addEventListener('focus', function(){ setCCMode('full'); });
+    var ccFull=function(){ setCCMode('full'); };
+    ccSel.addEventListener('pointerdown', ccFull);
+    ccSel.addEventListener('touchstart', ccFull, {passive:true});
+    ccSel.addEventListener('mousedown', ccFull);
+    ccSel.addEventListener('keydown', ccFull);
+    ccSel.addEventListener('focus', ccFull);
     ccSel.addEventListener('blur', function(){ setCCMode('short'); });
     ccSel.addEventListener('change', function(){ ccTouched=true; setCCMode('short'); });
   }
