@@ -66,7 +66,7 @@
   .tag-opt{background:var(--surface-2);color:var(--muted);border:2px solid var(--line)}
   .cf-turnstile{margin-top:6px}
   .phone-row{display:flex;gap:10px}
-  .phone-row select{flex:0 1 auto;width:auto;max-width:52%;min-width:0;padding-right:40px}
+  .phone-row select{flex:0 0 auto;width:auto;min-width:0;padding-right:40px}
   .phone-row input{flex:1 1 60px;min-width:0}
   .submit{font-family:inherit;font-weight:700;font-size:23px;background:var(--cta);color:var(--cta-ink);border:none;border-radius:14px;padding:20px;cursor:pointer;width:100%;min-height:70px;transition:.1s}
   .submit:active{transform:translateY(1px)}
@@ -271,9 +271,13 @@
     for (var i=0;i<COUNTRIES.length;i++){
       var c=COUNTRIES[i];
       if(c.sep){ html += '<option disabled>· · · · · ·</option>'; }
-      else { html += '<option value="'+c.d+'">'+c.f+'  '+c.d+'  '+c.n+'</option>'; }
+      else { html += '<option value="'+c.d+'" data-full="'+c.f+'  '+c.d+'  '+c.n+'" data-short="'+c.f+'  '+c.d+'">'+c.f+'  '+c.d+'</option>'; }
     }
     sel.innerHTML = html;
+  }
+  function setCCMode(m){
+    var sel = document.getElementById('phone_cc'); if(!sel) return;
+    for (var i=0;i<sel.options.length;i++){ var o=sel.options[i]; var v=o.getAttribute('data-'+m); if(v!==null) o.textContent=v; }
   }
   var curLang = 'en';
   function applyLang(lang){
@@ -298,7 +302,11 @@
   });
   buildCC();
   var ccSel = document.getElementById('phone_cc');
-  if(ccSel){ ccSel.addEventListener('change', function(){ ccTouched=true; }); }
+  if(ccSel){
+    ccSel.addEventListener('focus', function(){ setCCMode('full'); });
+    ccSel.addEventListener('blur', function(){ setCCMode('short'); });
+    ccSel.addEventListener('change', function(){ ccTouched=true; setCCMode('short'); });
+  }
   applyLang('en');
 
   var form = document.getElementById('form');
