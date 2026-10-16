@@ -456,9 +456,10 @@ async function handleClientUpdate(request, env) {
   const activity = String(d.activity || '').trim().slice(0, 60);
   if (!activity) return json({ error: 'missing_activity' }, 400);
   const participants = d.participants ? String(d.participants).trim().slice(0, 500) : null;
+  const phone = String(d.phone || '').trim().slice(0, 40);
   try {
-    await env.DB.prepare('UPDATE clients SET point=?, activity=?, participants=? WHERE id=?')
-      .bind(point, activity, participants, id).run();
+    await env.DB.prepare('UPDATE clients SET point=?, activity=?, participants=?, phone=? WHERE id=?')
+      .bind(point, activity, participants, phone, id).run();
     return json({ ok: true });
   } catch (e) { return json({ error: 'server' }, 500); }
 }

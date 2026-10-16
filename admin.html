@@ -90,7 +90,7 @@
   .modal{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:22px;max-width:460px;width:100%}
   .modal h3{margin:0 0 12px;font-size:20px}
   .modal label{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
-  .modal select,.modal textarea{width:100%;font:inherit;font-size:17px;color:var(--ink);background:var(--surface);border:2px solid var(--line-strong);border-radius:11px;padding:11px 12px}
+  .modal select,.modal textarea,.modal input{width:100%;font:inherit;font-size:17px;color:var(--ink);background:var(--surface);border:2px solid var(--line-strong);border-radius:11px;padding:11px 12px}
   .modal textarea{min-height:84px;resize:vertical}
   .modal-actions{display:flex;gap:10px;margin-top:20px}
   .modal .warn{background:color-mix(in srgb,var(--danger) 12%,transparent);border:2px solid color-mix(in srgb,var(--danger) 35%,var(--line));border-radius:11px;padding:11px 13px;font-size:14px;margin-top:10px}
@@ -341,12 +341,13 @@
       '<label>Point</label><select id="m_point"><option value="school"'+(c.point==='school'?' selected':'')+'>School</option><option value="shop"'+(c.point==='shop'?' selected':'')+'>Shop</option><option value=""'+(!c.point?' selected':'')+'>—</option></select>'+
       '<label>Activity</label><select id="m_activity">'+actOpts+'</select>'+
       '<label>Participants</label><textarea id="m_participants">'+(c.participants?esc(c.participants):'')+'</textarea>'+
+      '<label>Phone</label><input id="m_phone" type="text" value="'+esc(c.phone||'')+'">'+
       '<div class="modal-actions"><button class="btn" style="flex:1" onclick="saveClient('+id+')">Save</button><button class="btn ghost" style="flex:1" onclick="closeModal()">Cancel</button></div>'+
     '</div></div>';
     document.body.insertAdjacentHTML('beforeend', html);
   };
   window.saveClient=function(id){
-    var payload={id:id,point:document.getElementById('m_point').value,activity:document.getElementById('m_activity').value,participants:document.getElementById('m_participants').value.trim()};
+    var payload={id:id,point:document.getElementById('m_point').value,activity:document.getElementById('m_activity').value,participants:document.getElementById('m_participants').value.trim(),phone:document.getElementById('m_phone').value.trim()};
     fetch('/admin/api/client-update',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)}).then(function(r){return r.json();}).then(function(res){ if(!res||!res.ok) throw 0; window.closeModal(); return load(); }).catch(function(){ alert('Save error'); });
   };
   window.delClient=function(id){

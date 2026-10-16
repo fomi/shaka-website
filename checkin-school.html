@@ -65,6 +65,9 @@
   .tag-req{background:var(--req);color:#fff}
   .tag-opt{background:var(--surface-2);color:var(--muted);border:2px solid var(--line)}
   .cf-turnstile{margin-top:6px}
+  .phone-row{display:flex;gap:10px}
+  .phone-row select{flex:0 1 auto;width:auto;max-width:52%;min-width:0;padding-right:40px}
+  .phone-row input{flex:1 1 60px;min-width:0}
   .submit{font-family:inherit;font-weight:700;font-size:23px;background:var(--cta);color:var(--cta-ink);border:none;border-radius:14px;padding:20px;cursor:pointer;width:100%;min-height:70px;transition:.1s}
   .submit:active{transform:translateY(1px)}
   .submit:hover{filter:brightness(1.12)}
@@ -111,7 +114,10 @@
         </label>
         <label class="field full">
           <span class="lab"><span data-i18n="phone"></span> <span class="req">*</span></span>
-          <input id="phone" type="tel" required placeholder="+34 600 000 000" autocomplete="tel" inputmode="tel">
+          <div class="phone-row">
+            <select id="phone_cc" aria-label="Country code"></select>
+            <input id="phone_num" type="tel" required placeholder="600 000 000" autocomplete="tel-national" inputmode="tel">
+          </div>
         </label>
         <label class="field full">
           <span class="lab"><span data-i18n="activity"></span> <span class="req">*</span></span>
@@ -148,7 +154,7 @@
           
         </span>
       </label>
-      <div class="cf-turnstile" data-sitekey="0x4AAAAAAFCNhiBH6MSifuXS" data-theme="light" data-size="flexible"></div>
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAAFCNhiBH6MSifuXS" data-theme="light" data-size="flexible" data-refresh-expired="auto"></div>
     </section>
 
     <button type="submit" class="submit" id="submitBtn" data-i18n="submit"></button>
@@ -176,7 +182,7 @@
       marketing:"Sure, Shaka can email me to ask for a Google review.", marketingMeta:"No spam, just that. You can opt out any time.",
       required:"Required", optional:"Optional",
       submit:"Complete check-in", saving:"Saving\u2026",
-      err_fields:"Please complete all fields.", err_email:"Please enter a valid email address.",
+      err_fields:"Please complete all fields.", err_email:"Please enter a valid email address.", err_phone:"Please enter a valid phone number.",
       err_consent:"Please accept the waiver and the privacy policy.",
       err_captcha_missing:"Please complete the anti-spam check and try again.",
       err_captcha_fail:"Anti-spam check failed. Please try again.",
@@ -196,7 +202,7 @@
       marketing:"Claro, Shaka puede escribirme un email para pedirme una rese\u00f1a en Google.", marketingMeta:"Nada de spam, solo eso. Puedes darte de baja cuando quieras.",
       required:"Obligatorio", optional:"Opcional",
       submit:"Completar check-in", saving:"Guardando\u2026",
-      err_fields:"Por favor, completa todos los campos.", err_email:"Introduce un email v\u00e1lido.",
+      err_fields:"Por favor, completa todos los campos.", err_email:"Introduce un email v\u00e1lido.", err_phone:"Introduce un n\u00famero de tel\u00e9fono v\u00e1lido.",
       err_consent:"Acepta la exenci\u00f3n y la pol\u00edtica de privacidad.",
       err_captcha_missing:"Completa la verificaci\u00f3n antispam e int\u00e9ntalo de nuevo.",
       err_captcha_fail:"La verificaci\u00f3n antispam ha fallado. Int\u00e9ntalo de nuevo.",
@@ -216,7 +222,7 @@
       marketing:"Certo, Shaka pu\u00f2 scrivermi un'email per chiedermi una recensione su Google.", marketingMeta:"Niente spam, solo quello. Puoi disiscriverti quando vuoi.",
       required:"Obbligatorio", optional:"Facoltativo",
       submit:"Completa il check-in", saving:"Salvataggio\u2026",
-      err_fields:"Compila tutti i campi.", err_email:"Inserisci un'email valida.",
+      err_fields:"Compila tutti i campi.", err_email:"Inserisci un'email valida.", err_phone:"Inserisci un numero di telefono valido.",
       err_consent:"Accetta la liberatoria e la privacy policy.",
       err_captcha_missing:"Completa la verifica antispam e riprova.",
       err_captcha_fail:"Verifica antispam fallita. Riprova.",
@@ -236,7 +242,7 @@
       marketing:"Klar, Shaka darf mir eine E-Mail schreiben und mich um eine Bewertung auf Google bitten.", marketingMeta:"Kein Spam, nur das. Jederzeit abbestellbar.",
       required:"Erforderlich", optional:"Optional",
       submit:"Check-in abschlie\u00dfen", saving:"Speichern\u2026",
-      err_fields:"Bitte f\u00fclle alle Felder aus.", err_email:"Bitte gib eine g\u00fcltige E-Mail-Adresse ein.",
+      err_fields:"Bitte f\u00fclle alle Felder aus.", err_email:"Bitte gib eine g\u00fcltige E-Mail-Adresse ein.", err_phone:"Bitte gib eine g\u00fcltige Telefonnummer ein.",
       err_consent:"Bitte akzeptiere den Haftungsausschluss und die Datenschutzerkl\u00e4rung.",
       err_captcha_missing:"Bitte schlie\u00dfe die Spam-Pr\u00fcfung ab und versuche es erneut.",
       err_captcha_fail:"Spam-Pr\u00fcfung fehlgeschlagen. Bitte versuche es erneut.",
@@ -245,6 +251,30 @@
     }
   };
 
+  var COUNTRIES = [
+    {f:'🇪🇸',d:'+34',n:'Spain'},{f:'🇩🇪',d:'+49',n:'Germany'},{f:'🇮🇹',d:'+39',n:'Italy'},{f:'🇵🇱',d:'+48',n:'Poland'},
+    {f:'🇦🇹',d:'+43',n:'Austria'},{f:'🇸🇰',d:'+421',n:'Slovakia'},{f:'🇨🇿',d:'+420',n:'Czechia'},{f:'🇬🇧',d:'+44',n:'United Kingdom'},
+    {f:'🇫🇷',d:'+33',n:'France'},{f:'🇳🇱',d:'+31',n:'Netherlands'},{f:'🇨🇭',d:'+41',n:'Switzerland'},{f:'🇭🇺',d:'+36',n:'Hungary'},
+    {f:'🇺🇦',d:'+380',n:'Ukraine'},{sep:true},{f:'🇦🇷',d:'+54',n:'Argentina'},{f:'🇦🇺',d:'+61',n:'Australia'},
+    {f:'🇧🇪',d:'+32',n:'Belgium'},{f:'🇧🇷',d:'+55',n:'Brazil'},{f:'🇧🇬',d:'+359',n:'Bulgaria'},{f:'🇭🇷',d:'+385',n:'Croatia'},
+    {f:'🇩🇰',d:'+45',n:'Denmark'},{f:'🇪🇪',d:'+372',n:'Estonia'},{f:'🇫🇮',d:'+358',n:'Finland'},{f:'🇬🇷',d:'+30',n:'Greece'},
+    {f:'🇮🇸',d:'+354',n:'Iceland'},{f:'🇮🇪',d:'+353',n:'Ireland'},{f:'🇱🇻',d:'+371',n:'Latvia'},{f:'🇱🇹',d:'+370',n:'Lithuania'},
+    {f:'🇱🇺',d:'+352',n:'Luxembourg'},{f:'🇲🇦',d:'+212',n:'Morocco'},{f:'🇳🇿',d:'+64',n:'New Zealand'},{f:'🇳🇴',d:'+47',n:'Norway'},
+    {f:'🇵🇹',d:'+351',n:'Portugal'},{f:'🇷🇴',d:'+40',n:'Romania'},{f:'🇸🇮',d:'+386',n:'Slovenia'},{f:'🇿🇦',d:'+27',n:'South Africa'},
+    {f:'🇸🇪',d:'+46',n:'Sweden'},{f:'🇹🇷',d:'+90',n:'Turkey'},{f:'🇺🇸',d:'+1',n:'USA / Canada'}
+  ];
+  var DIAL_BY_LANG = { es:'+34', it:'+39', de:'+49', en:'+44' };
+  var ccTouched = false;
+  function buildCC(){
+    var sel = document.getElementById('phone_cc'); if(!sel) return;
+    var html='';
+    for (var i=0;i<COUNTRIES.length;i++){
+      var c=COUNTRIES[i];
+      if(c.sep){ html += '<option disabled>· · · · · ·</option>'; }
+      else { html += '<option value="'+c.d+'">'+c.f+'  '+c.d+'  '+c.n+'</option>'; }
+    }
+    sel.innerHTML = html;
+  }
   var curLang = 'en';
   function applyLang(lang){
     var t = T[lang] || T.en; curLang = T[lang] ? lang : 'en';
@@ -261,10 +291,14 @@
     document.querySelectorAll('.lang').forEach(function(b){
       b.classList.toggle('active', b.getAttribute('data-lang')===curLang);
     });
+    if(!ccTouched){ var cc=document.getElementById('phone_cc'); if(cc && DIAL_BY_LANG[curLang]) cc.value = DIAL_BY_LANG[curLang]; }
   }
   document.querySelectorAll('.lang').forEach(function(b){
     b.addEventListener('click', function(){ applyLang(b.getAttribute('data-lang')); });
   });
+  buildCC();
+  var ccSel = document.getElementById('phone_cc');
+  if(ccSel){ ccSel.addEventListener('change', function(){ ccTouched=true; }); }
   applyLang('en');
 
   var form = document.getElementById('form');
@@ -275,16 +309,20 @@
   form.addEventListener('submit', function(e){
     e.preventDefault();
     var t = T[curLang]; err.textContent='';
-    var required = ['first_name','last_name','email','phone','activity'];
+    var required = ['first_name','last_name','email','phone_num','activity'];
     for (var i=0;i<required.length;i++){ if(!val(required[i])){ err.textContent=t.err_fields; return; } }
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val('email'))){ err.textContent=t.err_email; return; }
+    var dial = document.getElementById('phone_cc').value || '';
+    var pnum = val('phone_num');
+    if(dial.indexOf('+')!==0 || pnum.replace(/\D/g,'').length < 5){ err.textContent=t.err_phone; return; }
+    var fullPhone = dial + ' ' + pnum;
     if(!document.getElementById('waiver').checked || !document.getElementById('privacy').checked){ err.textContent=t.err_consent; return; }
     var token=''; var tf=document.querySelector('input[name="cf-turnstile-response"]'); if(tf) token=tf.value;
     if(!token){ err.textContent=t.err_captcha_missing; return; }
 
     var payload = {
       first_name: val('first_name'), last_name: val('last_name'), email: val('email'),
-      phone: val('phone'), activity: document.getElementById('activity').value, point: POINT,
+      phone: fullPhone, activity: document.getElementById('activity').value, point: POINT,
       participants: val('participants'),
       marketing_consent: document.getElementById('marketing').checked,
       waiver_consent: true, privacy_consent: true, lang: curLang, turnstileToken: token
