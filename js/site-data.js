@@ -202,7 +202,7 @@
     // ---- SCUOLA ----
     if (scHol) {
       var r1 = reopenDM(scHol.to), reo1 = r1 ? (hol.reopen + r1) : '';
-      HOURS.schoolLine = hol.short;
+      HOURS.schoolLine = reo1 ? (hol.short + "<br>" + reo1) : hol.short;
       HOURS.schoolFull = reo1 ? (hol.short + " · " + reo1) : hol.short;
       HOURS.schoolDays = reo1 ? (hol.short + "<br>" + reo1) : hol.short;
     } else {
