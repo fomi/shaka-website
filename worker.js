@@ -600,6 +600,65 @@ async function handleSettingsSave(request, env) {
   } catch (e) { return json({ error: 'server' }, 500); }
 }
 
+// ===== Weekly database backup (copia JSON off-platform via email) ===========
+const BACKUP_TO = 'info@shaka-fuerte.com';
+
+function pad2(n) { return ('0' + n).slice(-2); }
+function b64utf8(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  const chunk = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunk) {
+    bin += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+  }
+  return btoa(bin);
+}
+
+// Esporta clients + rentals in un JSON allegato, inviato via Brevo a BACKUP_TO.
+async function runBackup(env) {
+  if (!env.BREVO_API_KEY) return { ok: false, error: 'no_api_key' };
+  try {
+    const clients = (await env.DB.prepare('SELECT * FROM clients').all()).results || [];
+    const rentals = (await env.DB.prepare('SELECT * FROM rentals').all()).results || [];
+    const now = new Date();
+    const payload = {
+      generated_at: now.toISOString(),
+      counts: { clients: clients.length, rentals: rentals.length },
+      clients: clients,
+      rentals: rentals
+    };
+    const b64 = b64utf8(JSON.stringify(payload, null, 2));
+    const dd = pad2(now.getUTCDate()), mm = pad2(now.getUTCMonth() + 1), yyyy = now.getUTCFullYear();
+    const dateStr = dd + '/' + mm + '/' + yyyy;
+    const fname = 'shaka-backup-' + yyyy + '-' + mm + '-' + dd + '.json';
+    const html =
+      '<p>Backup automatico del database Shaka.</p>' +
+      '<p>Data: ' + dateStr + '<br>Clienti: ' + clients.length + '<br>Noleggi: ' + rentals.length + '</p>' +
+      '<p>Il file JSON in allegato contiene tutti i record di clienti e noleggi.</p>';
+    const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: { 'api-key': env.BREVO_API_KEY, 'content-type': 'application/json', 'accept': 'application/json' },
+      body: JSON.stringify({
+        sender: { name: EMAIL.from_name, email: EMAIL.from_email },
+        to: [{ email: BACKUP_TO }],
+        replyTo: { email: EMAIL.reply_to, name: EMAIL.from_name },
+        subject: '[Backup Shaka] clienti e noleggi del ' + dateStr,
+        htmlContent: html,
+        attachment: [{ content: b64, name: fname }]
+      })
+    });
+    return { ok: res.ok, status: res.status, counts: payload.counts, to: BACKUP_TO };
+  } catch (e) { return { ok: false, error: 'server' }; }
+}
+
+// Avvio manuale del backup (solo owner), per un test immediato: GET /admin/api/backup-now
+async function handleBackupNow(request, env) {
+  const u = getUser(request);
+  if (u.role !== 'owner') return json({ error: 'forbidden' }, 403);
+  const r = await runBackup(env);
+  return json(r, r.ok ? 200 : 500);
+}
+
 // ---- Entry -----------------------------------------------------------------
 export default {
   async fetch(request, env, ctx) {
@@ -646,6 +705,10 @@ export default {
         if (m !== 'POST') return json({ error: 'method_not_allowed' }, 405);
         return await handleSettingsSave(request, env);
       }
+      if (p === '/admin/api/backup-now') {
+        if (m !== 'GET') return json({ error: 'method_not_allowed' }, 405);
+        return await handleBackupNow(request, env);
+      }
 
       // Rental (behind Access app "Shaka Rental")
       if (p === '/rental/api/me') {
@@ -677,5 +740,8 @@ export default {
   // Cron Trigger (see wrangler.jsonc): delayed Google-review emails.
   async scheduled(event, env, ctx) {
     ctx.waitUntil(sendReviewBatch(env));
+    // Backup settimanale: lunedi alle 06:00 UTC (il cron ogni 2 ore copre quest'ora).
+    const t = new Date(event.scheduledTime || Date.now());
+    if (t.getUTCDay() === 1 && t.getUTCHours() === 6) ctx.waitUntil(runBackup(env));
   }
 };

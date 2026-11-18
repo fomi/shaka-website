@@ -112,6 +112,7 @@
   <div id="app" hidden>
 
     <div class="head-row" style="justify-content:flex-end;margin-bottom:6px">
+      <button class="btn ghost" id="backupBtn" type="button" hidden>Backup ora</button>
       <a class="btn ghost" id="settingsLink" href="/admin/settings" hidden>Impostazioni sito ›</a>
     </div>
 
@@ -183,13 +184,27 @@
   function cliName(cid){ var c=clientsById[cid]; return c?(c.first_name+' '+c.last_name):('#'+cid); }
   function cliPhone(cid){ var c=clientsById[cid]; return c?c.phone:''; }
 
+  // ---- backup manuale (solo owner) ----
+  function doBackup(){
+    var b=document.getElementById('backupBtn'); if(!b) return;
+    if(!confirm('Inviare ora un backup del database a info@shaka-fuerte.com?')) return;
+    var old=b.textContent; b.disabled=true; b.textContent='Invio…';
+    fetch('/admin/api/backup-now').then(function(r){ return r.json(); }).then(function(res){
+      if(res&&res.ok){ alert('Backup inviato a '+res.to+'.\nClienti: '+res.counts.clients+', noleggi: '+res.counts.rentals+'.'); }
+      else { alert('Backup non riuscito. Riprova tra poco.'); }
+    }).catch(function(){ alert('Backup non riuscito. Riprova tra poco.'); })
+    .then(function(){ b.disabled=false; b.textContent=old; });
+  }
+
   // ---- init (identity from Cloudflare Access) ----
   function applyRole(){
     if(role==='instructor'){ var rs=document.getElementById('rentalSection'); if(rs) rs.hidden=true; }
     if(role!=='owner'){ var cb=document.getElementById('csvBtn'); if(cb) cb.hidden=true; }
     if(role==='owner'||role==='rental'){ var sl=document.getElementById('settingsLink'); if(sl) sl.hidden=false; }
+    if(role==='owner'){ var bb=document.getElementById('backupBtn'); if(bb) bb.hidden=false; }
   }
   function init(){
+    var bk=document.getElementById('backupBtn'); if(bk) bk.addEventListener('click', doBackup);
     fetch('/admin/api/me').then(function(r){ if(!r.ok) throw new Error('auth'); return r.json(); })
       .then(function(me){ role=me.role; applyRole(); return load(); })
       .then(function(){
