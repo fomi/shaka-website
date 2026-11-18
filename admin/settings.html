@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Impostazioni sito · Shaka</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --ground:#dbe3ea; --surface:#ffffff; --surface-2:#eef3f7;
+    --ink:#0d141c; --ink-soft:#2c3a49; --muted:#465767;
+    --line:#9fb0bf; --line-strong:#6f8393;
+    --cta:#1d2635; --cta-ink:#ffffff; --accent:#0a6a72; --accent-soft:#dff0f0;
+    --danger:#a5301c; --warn:#a86814; --ok:#1d7a4d;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--ground);color:var(--ink);
+    font-family:"Atkinson Hyperlegible", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size:17px;line-height:1.45;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding-inline:20px;padding-block:22px 72px}
+  h1{font-size:26px;font-weight:700;margin:0 0 2px}
+  h2{font-size:19px;font-weight:700;margin:0 0 4px}
+  .sub{color:var(--ink-soft);font-size:15px;margin:0 0 16px}
+  .head-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+
+  .btn{font:inherit;font-weight:700;font-size:16px;background:var(--cta);color:var(--cta-ink);border:none;border-radius:11px;padding:12px 18px;cursor:pointer;text-decoration:none;display:inline-block;min-height:48px}
+  .btn:hover{filter:brightness(1.1)}
+  .btn.ghost{background:var(--surface);color:var(--ink);border:2px solid var(--line-strong)}
+  .btn.ghost:hover{border-color:var(--accent);filter:none}
+  .btn[disabled]{opacity:.55;cursor:default;filter:none}
+
+  .card{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:20px 20px 22px;margin-bottom:18px}
+  .card .note{color:var(--muted);font-size:14px;margin:0 0 14px}
+  .row{display:flex;gap:14px;flex-wrap:wrap}
+  .field{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+  .field.grow{flex:1;min-width:150px}
+  label{font-weight:700;font-size:14px}
+  input[type=text],input[type=time],input[type=date],select,textarea{
+    width:100%;font:inherit;font-size:17px;color:var(--ink);background:var(--surface);
+    border:2px solid var(--line-strong);border-radius:11px;padding:11px 12px;min-height:50px}
+  textarea{min-height:66px;resize:vertical}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 28%,transparent)}
+  .ck{display:flex;align-items:center;gap:11px;margin-top:14px;font-size:16px;font-weight:700}
+  .ck input{width:24px;height:24px;accent-color:var(--accent);flex:0 0 auto}
+  .sep{height:2px;background:var(--surface-2);border:none;margin:18px 0 2px}
+
+  .days{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+  .day-ck{display:inline-flex;align-items:center;gap:7px;font-size:15px;font-weight:700;border:2px solid var(--line-strong);border-radius:11px;padding:9px 13px;cursor:pointer;user-select:none}
+  .day-ck input{width:20px;height:20px;accent-color:var(--accent);margin:0}
+  .clo-row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;border:2px solid var(--surface-2);border-radius:12px;padding:12px 14px;margin-top:12px}
+  .clo-row .field{margin-top:0}
+  .clo-ck{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:700;padding-bottom:11px}
+  .clo-ck input{width:22px;height:22px;accent-color:var(--accent);margin:0}
+  .clo-del{align-self:flex-end;margin-bottom:11px}
+  .clo-empty{color:var(--muted);font-size:14px;margin:2px 0 0}
+
+  .lang-block{border:2px solid var(--surface-2);border-radius:12px;padding:4px 14px 16px;margin-top:14px}
+  .lang-block > .tag{display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:4px 11px;margin-top:14px}
+
+  .info{background:var(--accent-soft);border:2px solid color-mix(in srgb,var(--accent) 35%,var(--line));border-radius:12px;padding:13px 15px;font-size:14px;color:var(--ink-soft)}
+  .info b{color:var(--ink)}
+
+  .savebar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;bottom:0;background:var(--ground);padding:14px 0 2px;margin-top:4px}
+  .msg{font-weight:700;font-size:15px;min-height:1px}
+  .msg.ok{color:var(--ok)}
+  .msg.err{color:var(--danger)}
+
+  .login{max-width:440px;margin:60px auto;background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:26px;text-align:center}
+  [hidden]{display:none!important}
+  .muted{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Blocco se identità mancante o ruolo non autorizzato -->
+  <div class="login" id="gate" hidden>
+    <h1>Impostazioni sito</h1>
+    <p class="sub" id="gateMsg" style="margin:10px 0 0">Sessione non valida o non autorizzata.</p>
+  </div>
+
+  <div id="app" hidden>
+    <div class="head-row">
+      <div>
+        <h1>Impostazioni sito</h1>
+        <p class="sub" style="margin:0">Orari e barra promozionale. Le modifiche sono online entro pochi secondi dal salvataggio, senza deploy.</p>
+      </div>
+      <a class="btn ghost" href="/admin">‹ Torna all'admin</a>
+    </div>
+
+    <!-- ORARI SCUOLA -->
+    <div class="card">
+      <h2>Orari scuola</h2>
+      <p class="note">Una sola fascia oraria.</p>
+      <div class="row">
+        <div class="field grow"><label for="sc_open">Apertura</label><input type="time" id="sc_open"></div>
+        <div class="field grow"><label for="sc_close">Chiusura</label><input type="time" id="sc_close"></div>
+      </div>
+      <div class="field"><label>Giorni di chiusura <span class="muted">(nessuno = aperto ogni giorno)</span></label><div class="days" id="sc_days"></div></div>
+    </div>
+
+    <!-- ORARI NEGOZIO -->
+    <div class="card">
+      <h2>Orari negozio</h2>
+      <p class="note">Fascia mattino sempre attiva, fascia serale opzionale.</p>
+      <div class="row">
+        <div class="field grow"><label for="sh_open1">Mattino · apertura</label><input type="time" id="sh_open1"></div>
+        <div class="field grow"><label for="sh_close1">Mattino · chiusura</label><input type="time" id="sh_close1"></div>
+      </div>
+      <label class="ck"><input type="checkbox" id="sh_evening"> Mostra anche la fascia serale</label>
+      <div class="row" id="eveningRow">
+        <div class="field grow"><label for="sh_open2">Sera · apertura</label><input type="time" id="sh_open2"></div>
+        <div class="field grow"><label for="sh_close2">Sera · chiusura</label><input type="time" id="sh_close2"></div>
+      </div>
+      <div class="field"><label>Giorni di chiusura <span class="muted">(nessuno = aperto ogni giorno)</span></label><div class="days" id="sh_days"></div></div>
+    </div>
+
+    <!-- CHIUSURE FERIE -->
+    <div class="card">
+      <h2>Chiusure per ferie</h2>
+      <p class="note">Periodi di più giorni. La data di fine è l'ultimo giorno chiuso: si riapre il giorno dopo. Scegli se vale per scuola, negozio o entrambi.</p>
+      <div id="closures"></div>
+      <button class="btn ghost" id="addClosure" type="button" style="margin-top:14px">+ Aggiungi periodo</button>
+    </div>
+
+    <!-- BARRA PROMO -->
+    <div class="card">
+      <h2>Barra promozionale</h2>
+      <p class="note">La striscia colorata in cima a tutte le pagine del sito.</p>
+      <label class="ck"><input type="checkbox" id="pr_active"> Barra attiva (visibile sul sito)</label>
+      <div class="row">
+        <div class="field grow"><label for="pr_link">Link del pulsante</label><input type="text" id="pr_link" placeholder="school.html#book"></div>
+        <div class="field grow"><label for="pr_until">Data di fine <span class="muted">(opzionale)</span></label><input type="date" id="pr_until"></div>
+      </div>
+      <hr class="sep">
+      <p class="note" style="margin-top:14px">Testo e pulsante per ogni lingua.</p>
+      <div id="langs"></div>
+    </div>
+
+    <!-- NOTA GOOGLE -->
+    <div class="card" style="margin-bottom:22px">
+      <div class="info">
+        <b>Promemoria Google.</b> Questi orari valgono solo per il sito shaka-fuerte.com. Gli orari che compaiono su Google Maps e Ricerca Google si aggiornano a parte, dal profilo Google Business, perché il collegamento automatico non è attivo.
+      </div>
+    </div>
+
+    <div class="savebar">
+      <button class="btn" id="saveBtn">Salva impostazioni</button>
+      <span class="msg" id="msg"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var WEEK = [ {v:1,n:"Lun"},{v:2,n:"Mar"},{v:3,n:"Mer"},{v:4,n:"Gio"},{v:5,n:"Ven"},{v:6,n:"Sab"},{v:0,n:"Dom"} ];
+  var LANGS = [
+    {k:"it", n:"Italiano"}, {k:"en", n:"English"}, {k:"es", n:"Español"}, {k:"de", n:"Deutsch"}
+  ];
+  function $(id){ return document.getElementById(id); }
+  function pad(t){ t=String(t==null?'':t); var m=/^(\d{1,2}):(\d{2})$/.exec(t); return m?(('0'+m[1]).slice(-2)+':'+m[2]):t; }
+
+  // caselle giorni di chiusura (una per giorno, lunedì->domenica)
+  function buildDays(container, cls){
+    for(var i=0;i<WEEK.length;i++){ var w=WEEK[i];
+      var lab=document.createElement('label'); lab.className='day-ck';
+      var cb=document.createElement('input'); cb.type='checkbox'; cb.className=cls; cb.value=w.v;
+      lab.appendChild(cb); lab.appendChild(document.createTextNode(' '+w.n)); container.appendChild(lab);
+    }
+  }
+  buildDays($('sc_days'),'scd'); buildDays($('sh_days'),'shd');
+  function getDays(cls){ var a=[], els=document.querySelectorAll('.'+cls+':checked'); for(var i=0;i<els.length;i++) a.push(parseInt(els[i].value,10)); return a; }
+  function setDays(cls, arr){ arr=arr||[]; var els=document.querySelectorAll('.'+cls); for(var i=0;i<els.length;i++){ els[i].checked = arr.indexOf(parseInt(els[i].value,10))>=0; } }
+
+  // periodi di chiusura per ferie
+  function closureRow(c){
+    c = c || { from:'', to:'', school:true, shop:true };
+    var row=document.createElement('div'); row.className='clo-row';
+    row.innerHTML =
+      '<div class="field"><label>Dal</label><input type="date" class="clo-from"></div>'+
+      '<div class="field"><label>Al <span class="muted">(ultimo chiuso)</span></label><input type="date" class="clo-to"></div>'+
+      '<label class="clo-ck"><input type="checkbox" class="clo-school"> Scuola</label>'+
+      '<label class="clo-ck"><input type="checkbox" class="clo-shop"> Negozio</label>'+
+      '<button type="button" class="chip danger clo-del">Rimuovi</button>';
+    row.querySelector('.clo-from').value = c.from || '';
+    row.querySelector('.clo-to').value = c.to || '';
+    row.querySelector('.clo-school').checked = !!c.school;
+    row.querySelector('.clo-shop').checked = !!c.shop;
+    row.querySelector('.clo-del').addEventListener('click', function(){ row.parentNode.removeChild(row); refreshCloEmpty(); });
+    return row;
+  }
+  function refreshCloEmpty(){ var e=$('cloEmpty'); if(e) e.style.display = ($('closures').querySelectorAll('.clo-row').length>0)?'none':'block'; }
+  function renderClosures(list){
+    var box=$('closures'); box.innerHTML='<p class="clo-empty" id="cloEmpty">Nessun periodo di chiusura.</p>';
+    for(var i=0;i<(list||[]).length;i++) box.appendChild(closureRow(list[i]));
+    refreshCloEmpty();
+  }
+  function readClosures(){
+    var out=[], rows=$('closures').querySelectorAll('.clo-row');
+    for(var i=0;i<rows.length;i++){ var r=rows[i];
+      out.push({ from:r.querySelector('.clo-from').value, to:r.querySelector('.clo-to').value,
+                 school:r.querySelector('.clo-school').checked, shop:r.querySelector('.clo-shop').checked }); }
+    return out;
+  }
+  $('addClosure').addEventListener('click', function(){ $('closures').appendChild(closureRow()); refreshCloEmpty(); });
+
+  // costruisce i blocchi lingua della promo
+  (function(){
+    var box=$('langs');
+    for(var i=0;i<LANGS.length;i++){
+      var lg=LANGS[i];
+      var d=document.createElement('div'); d.className='lang-block';
+      d.innerHTML='<span class="tag">'+lg.n+'</span>'+
+        '<div class="field"><label>Testo</label><textarea id="pt_'+lg.k+'_text"></textarea></div>'+
+        '<div class="field"><label>Testo del pulsante</label><input type="text" id="pt_'+lg.k+'_cta"></div>';
+      box.appendChild(d);
+    }
+  })();
+
+  function syncEvening(){ $('eveningRow').style.display = $('sh_evening').checked ? 'flex' : 'none'; }
+  $('sh_evening').addEventListener('change', syncEvening);
+
+  function setMsg(txt, kind){ var m=$('msg'); m.textContent=txt||''; m.className='msg'+(kind?(' '+kind):''); }
+
+  function fillForm(s){
+    s = s || {};
+    var h = s.hours || {}, sc = h.school || {}, sh = h.shop || {}, p = s.promo || {}, pt = p.text || {};
+    $('sc_open').value = pad(sc.open); $('sc_close').value = pad(sc.close);
+    setDays('scd', sc.closedDays || (sc.closedDay>=0?[sc.closedDay]:[]));
+    $('sh_open1').value = pad(sh.open1); $('sh_close1').value = pad(sh.close1);
+    $('sh_open2').value = pad(sh.open2); $('sh_close2').value = pad(sh.close2);
+    $('sh_evening').checked = !!sh.evening;
+    setDays('shd', sh.closedDays || (sh.closedDay>=0?[sh.closedDay]:[]));
+    renderClosures(s.closures);
+    $('pr_active').checked = !!p.active;
+    $('pr_link').value = p.link || '';
+    $('pr_until').value = /^\d{4}-\d{2}-\d{2}$/.test(p.until||'') ? p.until : '';
+    for(var i=0;i<LANGS.length;i++){ var k=LANGS[i].k, t=pt[k]||{}; $('pt_'+k+'_text').value=t.text||''; $('pt_'+k+'_cta').value=t.cta||''; }
+    syncEvening();
+  }
+
+  function collect(){
+    var text={};
+    for(var i=0;i<LANGS.length;i++){ var k=LANGS[i].k; text[k]={ text: $('pt_'+k+'_text').value, cta: $('pt_'+k+'_cta').value }; }
+    return {
+      hours:{
+        school:{ open:$('sc_open').value, close:$('sc_close').value, closedDays:getDays('scd') },
+        shop:{ open1:$('sh_open1').value, close1:$('sh_close1').value, evening:$('sh_evening').checked,
+                open2:$('sh_open2').value, close2:$('sh_close2').value, closedDays:getDays('shd') }
+      },
+      closures: readClosures(),
+      promo:{ active:$('pr_active').checked, link:$('pr_link').value, until:$('pr_until').value, text:text }
+    };
+  }
+
+  function save(){
+    setMsg('Salvataggio…','');
+    $('saveBtn').disabled=true;
+    fetch('/admin/api/settings',{ method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(collect()) })
+      .then(function(r){ if(!r.ok) throw new Error('save'); return r.json(); })
+      .then(function(res){ if(res.settings) fillForm(res.settings); setMsg('Salvato. Online sul sito entro pochi secondi.','ok'); })
+      .catch(function(){ setMsg('Errore nel salvataggio. Riprova.','err'); })
+      .then(function(){ $('saveBtn').disabled=false; });
+  }
+  $('saveBtn').addEventListener('click', save);
+
+  // init: verifica identità + ruolo, poi carica i settaggi
+  function blocked(msg){ $('gateMsg').textContent=msg; $('gate').hidden=false; }
+  fetch('/admin/api/me').then(function(r){ if(!r.ok) throw 'auth'; return r.json(); })
+    .then(function(me){
+      if(me.role!=='owner' && me.role!=='rental'){ blocked('Questa pagina è riservata a Giorgio e Matteo.'); return; }
+      return fetch('/api/settings').then(function(r){ if(!r.ok) throw 'load'; return r.json(); })
+        .then(function(s){ fillForm(s); $('app').hidden=false; });
+    })
+    .catch(function(err){ blocked(err==='load' ? 'Errore nel caricamento dei dati. Ricarica la pagina.' : 'Sessione non valida o non autorizzata. Ricarica la pagina.'); });
+})();
+</script>
+</body>
+</html>

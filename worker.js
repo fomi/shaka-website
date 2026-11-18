@@ -52,9 +52,10 @@ function getUser(request) {
 //   rentals_read   : view rentals (admin overview + /rental page)
 //   rentals_write  : add / edit / delete rentals
 //   checkins_write : edit / delete a check-in record
+//   settings_write : edit the site settings (opening hours + promo bar)
 function can(role, action) {
   if (role === 'owner') return true;
-  if (role === 'rental') return action === 'checkins_read' || action === 'rentals_read' || action === 'rentals_write';
+  if (role === 'rental') return action === 'checkins_read' || action === 'rentals_read' || action === 'rentals_write' || action === 'settings_write';
   if (role === 'instructor') return action === 'checkins_read';
   return false;
 }
@@ -479,6 +480,126 @@ async function handleClientDelete(request, env) {
   } catch (e) { return json({ error: 'server' }, 500); }
 }
 
+// ===== Site settings (opening hours + promo bar) ============================
+// Single JSON row in the `settings` table (id = 1). Public read, protected write.
+// closedDays: array of weekly closed days, 0 = Sunday ... 6 = Saturday ([] = none).
+// closures: holiday periods [{from,to,school,shop}] with from/to inclusive (YYYY-MM-DD).
+const DEFAULT_SETTINGS = {
+  hours: {
+    school: { open: '10:00', close: '17:00', closedDays: [] },
+    shop:   { open1: '9:00', close1: '15:00', evening: true, open2: '19:00', close2: '20:30', closedDays: [2] }
+  },
+  closures: [],
+  promo: {
+    active: false,
+    link: 'school.html#book',
+    until: '',
+    text: {
+      en: { text: 'Summer Special: -15% on lessons & rental', cta: 'Book now' },
+      es: { text: 'Oferta de verano: -15% en clases y alquiler', cta: 'Reserva ya' },
+      it: { text: 'Offerta estate: -15% su lezioni e noleggio', cta: 'Prenota ora' },
+      de: { text: 'Sommer Special: -15% auf Kurse & Verleih', cta: 'Jetzt buchen' }
+    }
+  }
+};
+
+function sTime(v, fb) { v = String(v == null ? '' : v).trim().slice(0, 5); return /^\d{1,2}:\d{2}$/.test(v) ? v : fb; }
+function sStr(v, max) { return String(v == null ? '' : v).replace(/[\r\n]+/g, ' ').trim().slice(0, max); }
+function sDate(v) { v = String(v == null ? '' : v).trim().slice(0, 10); return /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : ''; }
+// Accepts an array of day indexes, or a legacy single closedDay int. Returns sorted unique 0..6.
+function sDays(v, legacy) {
+  var arr = Array.isArray(v) ? v : (legacy != null && legacy >= 0 ? [legacy] : []);
+  var out = [], seen = {};
+  for (var i = 0; i < arr.length; i++) {
+    var n = parseInt(arr[i], 10);
+    if (n >= 0 && n <= 6 && !seen[n]) { seen[n] = 1; out.push(n); }
+  }
+  out.sort(function (a, b) { return a - b; });
+  return out;
+}
+function sClosures(v) {
+  if (!Array.isArray(v)) return [];
+  var out = [];
+  for (var i = 0; i < v.length && out.length < 30; i++) {
+    var c = v[i] || {};
+    var from = sDate(c.from), to = sDate(c.to);
+    if (!from || !to) continue;
+    if (from > to) { var t = from; from = to; to = t; }
+    var school = !!c.school, shop = !!c.shop;
+    if (!school && !shop) continue;
+    out.push({ from: from, to: to, school: school, shop: shop });
+  }
+  return out;
+}
+
+// Build a clean settings object from untrusted input, falling back to defaults.
+function cleanSettings(d) {
+  var D = DEFAULT_SETTINGS;
+  var h = (d && d.hours) || {};
+  var sc = h.school || {}, sh = h.shop || {};
+  var p = (d && d.promo) || {};
+  var pt = p.text || {};
+  var out = {
+    hours: {
+      school: {
+        open: sTime(sc.open, D.hours.school.open),
+        close: sTime(sc.close, D.hours.school.close),
+        closedDays: sDays(sc.closedDays, sc.closedDay)
+      },
+      shop: {
+        open1: sTime(sh.open1, D.hours.shop.open1),
+        close1: sTime(sh.close1, D.hours.shop.close1),
+        evening: !!sh.evening,
+        open2: sTime(sh.open2, D.hours.shop.open2),
+        close2: sTime(sh.close2, D.hours.shop.close2),
+        closedDays: sDays(sh.closedDays, sh.closedDay)
+      }
+    },
+    closures: sClosures(d && d.closures),
+    promo: {
+      active: !!p.active,
+      link: sStr(p.link, 200) || D.promo.link,
+      until: sStr(p.until, 20),
+      text: {}
+    }
+  };
+  var langs = ['en', 'es', 'it', 'de'];
+  for (var i = 0; i < langs.length; i++) {
+    var lg = langs[i], src = pt[lg] || {}, def = D.promo.text[lg];
+    out.promo.text[lg] = {
+      text: sStr(src.text, 160) || def.text,
+      cta: sStr(src.cta, 40) || def.cta
+    };
+  }
+  return out;
+}
+
+async function handleSettingsGet(env) {
+  try {
+    var row = await env.DB.prepare('SELECT data FROM settings WHERE id=1').first();
+    if (row && row.data) {
+      try { return json(cleanSettings(JSON.parse(row.data))); } catch (e) { /* fall through */ }
+    }
+  } catch (e) { /* table may not exist yet */ }
+  return json(DEFAULT_SETTINGS);
+}
+
+async function handleSettingsSave(request, env) {
+  const u = getUser(request);
+  if (!can(u.role, 'settings_write')) return json({ error: 'forbidden' }, 403);
+  let d;
+  try { d = await request.json(); } catch (e) { return json({ error: 'bad_request' }, 400); }
+  const clean = cleanSettings(d);
+  const data = JSON.stringify(clean);
+  try {
+    await env.DB.prepare(
+      'INSERT INTO settings (id, data, updated_at, updated_by) VALUES (1, ?1, ?2, ?3) ' +
+      'ON CONFLICT(id) DO UPDATE SET data=?1, updated_at=?2, updated_by=?3'
+    ).bind(data, new Date().toISOString(), u.email).run();
+    return json({ ok: true, settings: clean });
+  } catch (e) { return json({ error: 'server' }, 500); }
+}
+
 // ---- Entry -----------------------------------------------------------------
 export default {
   async fetch(request, env, ctx) {
@@ -494,6 +615,10 @@ export default {
       if (p === '/unsubscribe') {
         if (m !== 'GET') return json({ error: 'method_not_allowed' }, 405);
         return await handleUnsub(request, env);
+      }
+      if (p === '/api/settings') {
+        if (m !== 'GET') return json({ error: 'method_not_allowed' }, 405);
+        return await handleSettingsGet(env);
       }
 
       // Admin (behind Access app "Shaka Admin")
@@ -516,6 +641,10 @@ export default {
       if (p === '/admin/api/client-delete') {
         if (m !== 'POST') return json({ error: 'method_not_allowed' }, 405);
         return await handleClientDelete(request, env);
+      }
+      if (p === '/admin/api/settings') {
+        if (m !== 'POST') return json({ error: 'method_not_allowed' }, 405);
+        return await handleSettingsSave(request, env);
       }
 
       // Rental (behind Access app "Shaka Rental")

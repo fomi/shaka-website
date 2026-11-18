@@ -1,0 +1,11 @@
+# Files that must NOT be served publicly as static assets.
+# (assets.directory is "./", i.e. the repo root, so exclude source/config here.)
+worker.js
+wrangler.jsonc
+wrangler.toml
+wrangler.json
+.assetsignore
+schema.sql
+*.sql
+README-checkin.md
+functions
