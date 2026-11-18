@@ -630,11 +630,11 @@ async function runBackup(env) {
     const b64 = b64utf8(JSON.stringify(payload, null, 2));
     const dd = pad2(now.getUTCDate()), mm = pad2(now.getUTCMonth() + 1), yyyy = now.getUTCFullYear();
     const dateStr = dd + '/' + mm + '/' + yyyy;
-    const fname = 'shaka-backup-' + yyyy + '-' + mm + '-' + dd + '.json';
+    const fname = 'shaka-backup-' + yyyy + '-' + mm + '-' + dd + '.txt';
     const html =
       '<p>Backup automatico del database Shaka.</p>' +
       '<p>Data: ' + dateStr + '<br>Clienti: ' + clients.length + '<br>Noleggi: ' + rentals.length + '</p>' +
-      '<p>Il file JSON in allegato contiene tutti i record di clienti e noleggi.</p>';
+      '<p>Il file di testo in allegato (contenuto in formato JSON) contiene tutti i record di clienti e noleggi.</p>';
     const res = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
       headers: { 'api-key': env.BREVO_API_KEY, 'content-type': 'application/json', 'accept': 'application/json' },
@@ -647,8 +647,13 @@ async function runBackup(env) {
         attachment: [{ content: b64, name: fname }]
       })
     });
-    return { ok: res.ok, status: res.status, counts: payload.counts, to: BACKUP_TO };
-  } catch (e) { return { ok: false, error: 'server' }; }
+    if (!res.ok) {
+      var detail = '';
+      try { detail = (await res.text()).slice(0, 300); } catch (e2) { detail = ''; }
+      return { ok: false, status: res.status, brevo: detail, counts: payload.counts };
+    }
+    return { ok: true, status: res.status, counts: payload.counts, to: BACKUP_TO };
+  } catch (e) { return { ok: false, error: 'server', message: String(e && e.message || e).slice(0, 200) }; }
 }
 
 // Avvio manuale del backup (solo owner), per un test immediato: GET /admin/api/backup-now
