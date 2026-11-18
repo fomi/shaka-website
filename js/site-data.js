@@ -208,7 +208,7 @@
     } else {
       T.school = hm(sc.open) + " – " + hm(sc.close);
       var scPhrase = closedPhrase(sc.closedDays);
-      HOURS.schoolLine = T.school;
+      HOURS.schoolLine = T.school + (scPhrase ? ("<br>" + scPhrase) : "");
       HOURS.schoolFull = T.school + " · " + (scPhrase || l.everyDayInline);
       HOURS.schoolDays = T.school + "<br>" + (scPhrase || l.everyDay);
     }
